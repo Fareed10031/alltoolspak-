@@ -35,6 +35,10 @@ export async function generateAI(options: AIOptions): Promise<{ text: string }> 
   }
 
   if (tool === 'resume-builder') {
+    if (options.context === 'summary') {
+      const text = enhanceResumeSummaryFallback(prompt);
+      return { text };
+    }
     const text = optimizeResumeBulletFallback(prompt);
     return { text };
   }
@@ -107,4 +111,18 @@ function optimizeResumeBulletFallback(text: string): string {
     return `${chosenVerb} ${cleaned}, driving measurable efficiency gains of 28% and boosting overall team productivity.`;
   }
   return `${chosenVerb} ${cleaned}.`;
+}
+
+function enhanceResumeSummaryFallback(text: string): string {
+  if (!text || text.trim().length < 15) {
+    return 'Results-driven software engineering leader with a proven track record architecting high-availability distributed systems, accelerating delivery velocity, and leading cross-functional teams to deliver enterprise-grade digital products.';
+  }
+  let enhanced = text.trim();
+  if (!/track record|proven|results-driven|spearheaded/i.test(enhanced)) {
+    enhanced = `Results-oriented professional with a proven track record. ${enhanced}`;
+  }
+  if (!/driving|delivering|optimizing/i.test(enhanced)) {
+    enhanced += ' Recognized for optimizing operational workflows, elevating code quality, and driving measurable business growth.';
+  }
+  return enhanced;
 }

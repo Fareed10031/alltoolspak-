@@ -83,6 +83,12 @@ app.post('/api/ai', async (req: Request, res: Response) => {
     }
 
     if (tool === 'resume-builder') {
+      const { context } = req.body;
+      if (context === 'summary') {
+        const enhanced = `Results-oriented professional with a proven track record. ${prompt.trim()} Recognized for optimizing operational workflows, elevating technical excellence, and driving measurable business growth.`;
+        return res.json({ text: enhanced, source: 'local-heuristic' });
+      }
+
       const bullets = prompt
         .split('\n')
         .filter((b: string) => b.trim().length > 0)
