@@ -108,6 +108,15 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
       iconColor: 'text-indigo-600 bg-indigo-50 dark:bg-indigo-950/40',
       description: 'Single-column professional resume layout with AI action verb optimizer and vector PDF generation via jsPDF.',
     },
+    {
+      id: 'humanize-ai-text',
+      title: 'Humanize AI Text - Undetectable AI Rewriter Free',
+      badge: 'NEW VIRAL',
+      badgeColor: 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300 border-blue-200 dark:border-blue-800',
+      icon: Sparkles,
+      iconColor: 'text-blue-600 bg-blue-50 dark:bg-blue-950/40',
+      description: 'Convert robotic AI writing into natural, fluent, human-like content. Improve readability and flow. 100% Free, Unlimited, No Login Required.',
+    },
   ];
 
   return (
@@ -116,7 +125,7 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
       <section className="text-center space-y-6 pt-4 sm:pt-10 max-w-4xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 shadow-xs">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>8-in-1 FREE Web Tools &bull; 100% Client-Side Privacy</span>
+          <span>9-in-1 FREE Web Tools &bull; 100% Client-Side Privacy</span>
         </div>
 
         <h1 className="text-4xl sm:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-[1.15]">
@@ -142,7 +151,7 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
             }}
             className="font-bold text-sm h-12 px-7 cursor-pointer shadow-lg shadow-emerald-600/20 gap-2"
           >
-            <span>Explore All 8 Tools</span>
+            <span>Explore All 9 Tools</span>
             <ArrowRight className="w-4 h-4" />
           </Button>
 

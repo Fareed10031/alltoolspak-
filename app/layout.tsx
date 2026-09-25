@@ -6,9 +6,9 @@ import { CookieBanner } from '@/components/CookieBanner';
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
-  title: 'AllToolsPak.pk - 8-in-1 FREE Online Tools | 100% Client-Side Privacy',
+  title: 'AllToolsPak.pk - 9-in-1 FREE Online Tools | 100% Client-Side Privacy',
   description:
-    'Free production-grade web tools: PDF Suite, Image Compressor, YouTube Thumbnail Grabber, Amazon EU VAT Calculator, AI Background Remover, Paraphraser, Detector & ATS Resume Builder. Zero paywalls, RAM-only processing.',
+    'Free production-grade web tools: PDF Suite, Image Compressor, YouTube Thumbnail Grabber, Amazon EU VAT Calculator, AI Background Remover, Paraphraser, Detector, ATS Resume Builder & AI Humanizer. Zero paywalls, RAM-only processing.',
   keywords: [
     'free online tools',
     'pdf merge online',
@@ -18,6 +18,8 @@ export const metadata: Metadata = {
     'ai background remover',
     'ats resume builder',
     'ai detector',
+    'humanize ai text',
+    'undetectable ai',
   ],
   authors: [{ name: 'Fareed Ullah', url: 'https://linkedin.com/in/fareed-ullah-dev' }],
   creator: 'Fareed Ullah',

@@ -72,10 +72,10 @@ export function Footer({
             </div>
           </div>
 
-          {/* Column 2: 8 Free Online Tools */}
+          {/* Column 2: Free Online Tools */}
           <div>
             <h3 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4">
-              8 Free Tools
+              9 Free Tools
             </h3>
             <ul className="space-y-2 text-xs">
               {TOOLS_CONFIG.map((t) => (

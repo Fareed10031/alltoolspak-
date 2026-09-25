@@ -7,6 +7,7 @@ import { BgRemover } from '@/components/tools/BgRemover';
 import { Paraphraser } from '@/components/tools/Paraphraser';
 import { Detector } from '@/components/tools/Detector';
 import { ResumeBuilder } from '@/components/tools/ResumeBuilder';
+import { HumanizeAI } from '@/components/tools/HumanizeAI';
 
 export interface ToolItem {
   id: string;
@@ -121,5 +122,29 @@ export const tools: ToolItem[] = [
     component: ResumeBuilder,
     category: 'Career & Productive',
     badge: '95+ ATS Score',
+  },
+  {
+    id: 'humanize-ai-text',
+    name: 'Humanize AI Text - Undetectable AI Rewriter Free',
+    description: 'Free Undetectable AI Rewriter. Convert robotic AI writing into natural, fluent, human-like content that passes AI detectors.',
+    component: HumanizeAI,
+    category: 'AI Tools',
+    badge: 'NEW VIRAL',
+  },
+  {
+    id: 'humanize-ai',
+    name: 'Humanize AI Text',
+    description: 'Free Undetectable AI Rewriter. Convert robotic AI writing into natural, fluent, human-like content that passes AI detectors.',
+    component: HumanizeAI,
+    category: 'AI Tools',
+    badge: 'NEW VIRAL',
+  },
+  {
+    id: 'ai-humanizer',
+    name: 'Humanize AI Text',
+    description: 'Free Undetectable AI Rewriter. Convert robotic AI writing into natural, fluent, human-like content that passes AI detectors.',
+    component: HumanizeAI,
+    category: 'AI Tools',
+    badge: 'NEW VIRAL',
   },
 ];

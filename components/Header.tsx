@@ -84,6 +84,14 @@ export const TOOLS_CONFIG = [
     badge: 'Career',
     color: 'text-indigo-500 bg-indigo-50 dark:bg-indigo-950/40',
   },
+  {
+    slug: 'humanize-ai-text',
+    title: 'Humanize AI Text',
+    subtitle: 'Undetectable Human Rewriter',
+    icon: Sparkles,
+    badge: 'NEW VIRAL',
+    color: 'text-blue-500 bg-blue-50 dark:bg-blue-950/40',
+  },
 ];
 
 export interface HeaderProps {
@@ -166,7 +174,7 @@ export function Header({
                 </span>
               </div>
               <p className="text-[10px] text-slate-500 dark:text-slate-400 -mt-0.5 hidden xs:block font-medium">
-                8-in-1 Client-Side Utility Suite
+                9-in-1 Client-Side Utility Suite
               </p>
             </div>
           </button>
@@ -207,7 +215,7 @@ export function Header({
               <div className="absolute top-full left-0 w-80 pt-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                 <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-2 grid gap-1">
                   <div className="px-3 py-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                    All 8 Free Tools
+                    All 9 Free Tools
                   </div>
                   {TOOLS_CONFIG.map((t) => {
                     const Icon = t.icon;
@@ -318,7 +326,7 @@ export function Header({
               Home
             </button>
             <div className="px-3 pt-2 pb-1 text-xs font-bold text-slate-400 uppercase tracking-wider">
-              8 Free Online Tools
+              9 Free Online Tools
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 pl-2">
               {TOOLS_CONFIG.map((t) => {

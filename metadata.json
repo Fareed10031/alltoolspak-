@@ -1,6 +1,6 @@
 {
   "name": "Remix AllToolsPak.pk - 8-in-1 Free Tools",
-  "description": "Free online PDF merger, image compressor, YouTube thumbnail downloader, Amazon VAT calculator, AI bg remover, paraphraser, detector, resume builder. 100% free, no signup.",
+  "description": "Free online PDF merger, image compressor, YouTube thumbnail downloader, Amazon VAT calculator, AI bg remover, paraphraser, detector, resume builder & AI humanizer. 100% free, no signup.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

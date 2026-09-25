@@ -20,6 +20,7 @@ import { BgRemover } from '@/components/tools/BgRemover';
 import { Paraphraser } from '@/components/tools/Paraphraser';
 import { Detector } from '@/components/tools/Detector';
 import { ResumeBuilder } from '@/components/tools/ResumeBuilder';
+import { HumanizeAI } from '@/components/tools/HumanizeAI';
 
 import { safeStorage, safePrefersDark, safePushState } from '@/lib/storage';
 
@@ -92,6 +93,12 @@ export function normalizeRoute(raw: string): string {
     case 'resume':
     case 'cv-builder':
       return 'resume-builder';
+
+    case 'humanize-ai-text':
+    case 'humanize-ai':
+    case 'ai-humanizer':
+    case 'humanize':
+      return 'humanize-ai-text';
 
     case 'tools':
       return 'tools';
@@ -191,6 +198,7 @@ export default function App() {
         'paraphraser',
         'detector',
         'resume-builder',
+        'humanize-ai-text',
       ].includes(resolved)
     ) {
       newPath = `/tools/${resolved}`;
@@ -241,6 +249,10 @@ export default function App() {
       case 'resume-builder':
       case 'ats-resume-builder':
         return <ResumeBuilder />;
+      case 'humanize-ai-text':
+      case 'humanize-ai':
+      case 'ai-humanizer':
+        return <HumanizeAI />;
 
       // Legal & Informational Pages
       case 'about':
