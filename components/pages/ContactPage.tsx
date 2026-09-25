@@ -63,12 +63,15 @@ export function ContactPage() {
               </div>
 
               <div className="space-y-1">
-                <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Direct Email</span>
+                <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Official Support Email</span>
                 <p className="font-semibold text-slate-900 dark:text-white flex items-center gap-1.5 text-sm">
                   <Mail className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <a href="mailto:fareedk1266@gmail.com" className="hover:text-emerald-600 underline truncate">
-                    fareedk1266@gmail.com
+                  <a href="mailto:contact@alltoolspak.pk" className="hover:text-emerald-600 underline truncate">
+                    contact@alltoolspak.pk
                   </a>
+                </p>
+                <p className="text-[11px] text-slate-500 flex items-center gap-1 pl-5">
+                  or <a href="mailto:fareedk1266@gmail.com" className="hover:underline">fareedk1266@gmail.com</a>
                 </p>
               </div>
 

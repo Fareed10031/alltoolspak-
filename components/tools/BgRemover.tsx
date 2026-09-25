@@ -430,18 +430,45 @@ export function BgRemover() {
       {/* Ad Slot #2 (Mid) */}
       <AdSlot label="In-Content Middle Display" />
 
-      {/* SEO Helpful Content (>350 words, H2, H3, Use Cases, Technical Architecture) */}
-      <section className="mt-12 space-y-8 text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+      {/* SEO Helpful Content (>400 words, What is, How to use, FAQs) */}
+      <section className="mt-12 space-y-8 text-slate-700 dark:text-slate-300 text-sm leading-relaxed border-t border-slate-200 dark:border-slate-800 pt-8">
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Browser-Based Neural Image Matting &amp; Background Isolation
+            What is the AI Background Remover?
           </h2>
           <p>
-            Extracting portraits and product shots from noisy backgrounds historically demanded hours of manual lasso tracing inside expensive desktop photo editing software like Adobe Photoshop. For small business owners in Pakistan setting up Shopify storefronts, YouTubers creating thumbnail collages, and professionals refreshing their LinkedIn headshots, fast background removal is an indispensable daily requirement.
+            The <strong>AllToolsPak.pk AI Background Remover</strong> is a next-generation neural image segmentation tool that automatically isolates subjects from their backgrounds in seconds. Historically, removing backgrounds required painstaking manual pen-tool tracing in expensive software like Adobe Photoshop. For small business owners in Pakistan launching Daraz or Shopify stores, creators making YouTube thumbnails, and job seekers refreshing corporate LinkedIn headshots, fast and accurate cutout capabilities are essential.
           </p>
           <p>
-            <strong>AllToolsPak.pk AI Background Remover</strong> utilizes deep learning segmentation architectures compiled directly into WebAssembly. Because the computer vision neural network executes locally on your device&apos;s GPU or WebAssembly SIMD runtime, your personal photographs are never sent to third-party cloud data centers, eliminating privacy risks and data scraping.
+            Unlike commercial platforms that charge monthly credits or secretly transmit your private selfies and product photos to third-party cloud data centers, AllToolsPak executes deep learning vision inference right inside your device&apos;s browser sandbox using WebAssembly and WebGL/WebGPU acceleration. Your images remain 100% confidential in volatile device RAM and are purged immediately when the session ends.
           </p>
+        </div>
+
+        {/* How to use */}
+        <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+            How to Use the AI Background Remover in 3 Simple Steps
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 1: Upload Your Image</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Drag and drop any JPG, PNG, or WebP photo (up to 15MB) containing people, products, animals, or objects into the workspace.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 2: Automated Neural Cutout</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                The neural network identifies the foreground subject and isolates it with sub-pixel edge matting. Choose transparent or select studio backdrop colors.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 3: Download HD Cutout</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Click <em>Download HD Cutout (.PNG)</em> to save the crisp transparent graphic directly to your filesystem with zero watermarks or subscription charges.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
@@ -450,9 +477,10 @@ export function BgRemover() {
               Practical Commercial Applications
             </h3>
             <ul className="list-disc pl-5 space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
-              <li><strong>E-Commerce Marketplace Guidelines:</strong> Amazon and eBay mandate pure white backgrounds (#FFFFFF) for main product catalog images. Convert living room snaps into compliant listings in seconds.</li>
+              <li><strong>E-Commerce Marketplace Compliance:</strong> Amazon and eBay mandate pure white backgrounds (#FFFFFF) for main product catalog images. Convert living room snaps into compliant listings in seconds.</li>
               <li><strong>Professional Headshots:</strong> Transform casual outdoor photos into crisp corporate portraits with studio blue or minimalist neutral backdrops.</li>
               <li><strong>Graphic Design &amp; Posters:</strong> Isolate vehicles, furniture, or fashion models onto transparent alpha layers for flyer and social media banner production.</li>
+              <li><strong>ID Card &amp; Passport Photos:</strong> Swap distracting home backgrounds with standard plain light backgrounds for official documentation.</li>
             </ul>
           </div>
 
@@ -460,13 +488,13 @@ export function BgRemover() {
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
               Sub-Pixel Alpha Matting Technology
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               Unlike simple threshold cutouts that produce coarse, pixelated edges around hair and jewelry, modern neural networks predict a continuous transparency value between 0 (complete background) and 255 (complete foreground) for every pixel. This smooth gradient prevents color fringing and halo artifacts when placing the cutout over dark or vibrant backgrounds.
             </p>
           </div>
         </div>
 
-        {/* 3 FAQs Section */}
+        {/* 4 FAQs Section */}
         <div className="space-y-4 pt-6">
           <h3 className="text-xl font-bold text-slate-900 dark:text-white">
             Frequently Asked Questions (FAQs)
@@ -494,6 +522,14 @@ export function BgRemover() {
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
                 Yes. You can toggle between transparent alpha PNG, pure studio white, professional LinkedIn blue, graphite black, or custom RGB hex codes directly in the preview.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+              <h4 className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">
+                Is there any charge, credit limit, or watermark on downloads?
+              </h4>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                No. All cutouts are 100% free, full resolution, completely watermark-free, and available for unlimited personal and commercial use.
               </p>
             </div>
           </div>

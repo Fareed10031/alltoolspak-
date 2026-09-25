@@ -368,18 +368,45 @@ export function YouTubeThumb() {
       {/* Ad Slot #2 (Mid) */}
       <AdSlot label="In-Content Middle Display" />
 
-      {/* SEO Helpful Content (>350 words, H2, H3, Use Cases, Technical Architecture) */}
-      <section className="mt-12 space-y-8 text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+      {/* SEO Helpful Content (>400 words, What is, How to use, FAQs) */}
+      <section className="mt-12 space-y-8 text-slate-700 dark:text-slate-300 text-sm leading-relaxed border-t border-slate-200 dark:border-slate-800 pt-8">
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-            High-Definition YouTube Thumbnail Extraction Without Rate Limiting
+            What is the YouTube Thumbnail Grabber?
           </h2>
           <p>
-            The video thumbnail is the single most critical factor influencing Click-Through Rate (CTR) and algorithmic recommendation velocity across YouTube. Content creators, graphic designers, UI/UX researchers, and social media strategists regularly need access to full-resolution video graphics for competitive market analysis, presentation decks, or backing up their personal channel assets.
+            The <strong>AllToolsPak.pk YouTube Thumbnail Grabber</strong> is a specialized, high-resolution media extractor that allows video editors, digital marketers, content creators, and researchers to fetch and download full-resolution video cover art directly from Google&apos;s global Content Delivery Network (CDN). A video thumbnail is the single most important factor dictating initial audience impressions and click-through rates (CTR) across YouTube search feeds and recommendation algorithms.
           </p>
           <p>
-            <strong>AllToolsPak.pk YouTube Thumbnail Downloader</strong> queries Google&apos;s global CDN image edges directly using sanitized video tokens. Unlike third-party download websites that route video streams through suspicious proxy servers filled with deceptive pop-up redirects, our tool runs client-side JavaScript regex pattern matching to resolve authentic CDN URLs immediately.
+            Unlike third-party scraper websites that route video streams through suspicious remote servers infested with malicious pop-under scripts and deceptive download buttons, AllToolsPak executes pure client-side string tokenization. Our tool extracts the sanitized 11-character video ID right in your browser, verifies image availability across Google&apos;s edge servers, and streams the binary image directly to your local storage via HTML5 Blob memory heaps with 100% security.
           </p>
+        </div>
+
+        {/* How to use */}
+        <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+            How to Use the YouTube Thumbnail Grabber in 3 Simple Steps
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 1: Paste Video URL</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Copy any standard YouTube video or Shorts link (e.g., youtube.com/watch?v=... or youtu.be/...) and paste it into the search box.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 2: Preview Resolutions</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Click <em>Extract Thumbnails</em>. All available CDN resolutions—including Ultra HD 1080p (MaxRes), High Quality (HQ), Standard (SD), and Medium (MQ)—render instantly.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 3: Direct Download</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Click <em>Download JPG</em> under your preferred quality card. The image saves directly into your device Downloads folder without new tab redirects or watermarks.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
@@ -399,13 +426,13 @@ export function YouTubeThumb() {
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
               Direct Blob Saving Architecture
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               Standard web browsers often open remote JPG images in a new browser tab when clicking download links due to cross-origin headers. AllToolsPak avoids this friction by retrieving the binary payload as an offscreen <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">Blob</code> or piping it through a local HTML5 canvas context, triggering a direct, instant filesystem save.
             </p>
           </div>
         </div>
 
-        {/* 3 FAQs Section */}
+        {/* 4 FAQs Section */}
         <div className="space-y-4 pt-6">
           <h3 className="text-xl font-bold text-slate-900 dark:text-white">
             Frequently Asked Questions (FAQs)
@@ -416,7 +443,7 @@ export function YouTubeThumb() {
                 Is it legal to download YouTube thumbnails?
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                Yes. YouTube thumbnails are publicly cached graphics hosted on Google CDN edge servers. Downloading them for presentation references, research, fair use criticism, or portfolio archiving is completely permissible.
+                Yes. YouTube thumbnails are publicly cached graphics hosted on Google CDN edge servers. Downloading them for presentation references, design inspiration, research, fair use criticism, or portfolio archiving is completely permissible.
               </p>
             </div>
             <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
@@ -433,6 +460,14 @@ export function YouTubeThumb() {
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
                 Yes. Simply copy the YouTube Shorts URL (e.g. youtube.com/shorts/VIDEO_ID), paste it into the search box, and our extractor will resolve all thumbnail resolutions instantly.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+              <h4 className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">
+                Do I need to sign up or install any browser extensions?
+              </h4>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                No. AllToolsPak.pk works right inside your standard web browser across desktop, tablet, and mobile devices without registration, installations, or fees.
               </p>
             </div>
           </div>

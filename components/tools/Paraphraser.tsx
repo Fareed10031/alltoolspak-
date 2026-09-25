@@ -406,18 +406,45 @@ export function Paraphraser() {
       {/* Ad Slot #2 (Mid) */}
       <AdSlot label="In-Content Middle Display" />
 
-      {/* SEO Helpful Content (>350 words, H2, H3, Use Cases, Technical Architecture) */}
-      <section className="mt-12 space-y-8 text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+      {/* SEO Helpful Content (>400 words, What is, How to use, FAQs) */}
+      <section className="mt-12 space-y-8 text-slate-700 dark:text-slate-300 text-sm leading-relaxed border-t border-slate-200 dark:border-slate-800 pt-8">
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Contextual Semantic Rewriting Engineered for Natural Tone and Fluency
+            What is the AI Text Paraphraser?
           </h2>
           <p>
-            Effective written communication requires versatility across academic, corporate, and creative domains. Traditional synonym-swapping spinners often replace words with obscure dictionary definitions, producing disjointed and unreadable prose that immediately flags spam filters and confuses readers.
+            The <strong>AllToolsPak.pk AI Text Paraphraser</strong> is a sophisticated neural copywriting and sentence restructuring assistant built to elevate written communication across academic, corporate, and creative domains. Traditional &quot;article spinner&quot; tools mechanically swap out individual words with awkward dictionary synonyms, producing unreadable sentences that fail plagiarism checks and confuse readers.
           </p>
           <p>
-            <strong>AllToolsPak.pk AI Paraphraser</strong> adopts contextual transformer architectures that grasp the overarching thematic intent of your paragraph before reconstructing phrasing. By evaluating whole-sentence semantics, our engine preserves technical terminology, nuances, and intended tone while delivering fresh sentence architectures.
+            AllToolsPak leverages deep contextual semantic transformers that comprehend the holistic core argument of your paragraph before formulating alternate phrasings. By restructuring sentence syntax, enhancing vocabulary density, and adapting to varied communication registers (Standard, Fluency, and Humanize), our rewriter ensures your final copy remains persuasive, articulate, and completely natural.
           </p>
+        </div>
+
+        {/* How to use */}
+        <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+            How to Use the AI Paraphraser in 3 Simple Steps
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 1: Input Your Draft</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Type or paste your text (50 to 5,000 characters) into the left-hand input box, or click <em>Paste Sample</em> to experiment with a preloaded passage.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 2: Choose Tone Mode</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Select your rewriting objective: <strong>Standard</strong> for balanced clarity, <strong>Fluency</strong> for grammar and flow, or <strong>Humanize</strong> to bypass AI detection tropes.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 3: Synthesize &amp; Copy</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Click <em>Paraphrase Text</em>. The synthesized response renders on the right. Inspect the live diff highlights and click <em>Copy</em> to paste it directly into your document.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
@@ -425,7 +452,7 @@ export function Paraphraser() {
             <h3 className="text-sm font-bold text-slate-900 dark:text-white">
               1. Standard Mode
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               Preserves the original sentence structure while substituting stagnant vocabulary with engaging synonyms. Perfect for everyday essay refinement, blog writing, and social media captions.
             </p>
           </div>
@@ -434,7 +461,7 @@ export function Paraphraser() {
             <h3 className="text-sm font-bold text-slate-900 dark:text-white">
               2. Fluency Mode
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               Eliminates grammatical redundancies, trims filler prepositional phrases, and corrects awkward phrasing. Indispensable for non-native English speakers drafting client proposals.
             </p>
           </div>
@@ -443,13 +470,13 @@ export function Paraphraser() {
             <h3 className="text-sm font-bold text-slate-900 dark:text-white">
               3. Humanize Mode
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               Injects natural human conversational burstiness, varies sentence lengths, and removes formulaic AI transition tokens (such as &quot;furthermore&quot; or &quot;delve&quot;) for natural authenticity.
             </p>
           </div>
         </div>
 
-        {/* 3 FAQs Section */}
+        {/* 4 FAQs Section */}
         <div className="space-y-4 pt-6">
           <h3 className="text-xl font-bold text-slate-900 dark:text-white">
             Frequently Asked Questions (FAQs)
@@ -477,6 +504,14 @@ export function Paraphraser() {
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
                 No. AllToolsPak.pk provides 100% free, unlimited access without subscriptions or mandatory account registrations.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+              <h4 className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">
+                Is my input text saved or used to train public AI models?
+              </h4>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                No. All incoming prompts are processed ephemerally in RAM and are never logged, stored in databases, or repurposed for training datasets.
               </p>
             </div>
           </div>

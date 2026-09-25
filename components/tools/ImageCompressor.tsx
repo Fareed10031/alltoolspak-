@@ -482,24 +482,51 @@ export function ImageCompressor() {
       {/* Ad Slot #2 (Mid) */}
       <AdSlot label="In-Content Middle Display" />
 
-      {/* SEO Helpful Content (>350 words, H2, H3, Use Cases, Technical Architecture) */}
-      <section className="mt-12 space-y-8 text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+      {/* SEO Helpful Content (>400 words, What is, How to use, FAQs) */}
+      <section className="mt-12 space-y-8 text-slate-700 dark:text-slate-300 text-sm leading-relaxed border-t border-slate-200 dark:border-slate-800 pt-8">
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-            High-Performance Image Compression Engineered for the Modern Web
+            What is the Image Compressor &amp; Resizer?
           </h2>
           <p>
-            Large image assets account for over 65% of the average web page byte weight according to HTTP Archive metrics. For content creators in Pakistan, e-commerce sellers on Daraz or Amazon, and digital marketers worldwide, unoptimized images cause sluggish mobile loading times, poor Core Web Vitals (Largest Contentful Paint), and decreased organic search rankings.
+            The <strong>AllToolsPak.pk Image Compressor &amp; Resizer</strong> is a privacy-first web utility designed to optimize JPG, PNG, and WebP graphic assets down to lightweight web-ready file sizes without sacrificing perceived visual fidelity. Unoptimized, multi-megabyte images account for over 65% of the average website payload, leading to sluggish load speeds on mobile 3G/4G connections, failed Google PageSpeed metrics, and increased bounce rates for digital storefronts on Daraz, Shopify, and Amazon.
           </p>
           <p>
-            <strong>AllToolsPak Image Compressor</strong> utilizes direct client-side bicubic raster scaling through the HTML5 Canvas <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">toDataURL()</code> interface. This guarantees lightning-fast execution without bandwidth penalties or third-party cloud uploads.
+            Unlike conventional image compression websites that force you to upload personal family photographs or proprietary e-commerce product catalogs to remote cloud servers, AllToolsPak executes all compression mathematics directly on your local device CPU. Utilizing the HTML5 Canvas API and hardware-accelerated bicubic interpolation algorithms, your images never leave your browser window, ensuring absolute data privacy and instantaneous processing speeds.
           </p>
+        </div>
+
+        {/* How to use */}
+        <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+            How to Use the Image Compressor in 3 Simple Steps
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 1: Choose Your Image</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Drag and drop any JPG, PNG, or WebP photo up to 10MB into the upload container. The original dimension and KB weight are analyzed immediately in memory.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 2: Adjust Quality &amp; Presets</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Drag the interactive quality slider (recommended: 70-80%) and select dimension presets (Square 1:1, Landscape 16:9, or Story 9:16). Inspect the live split comparison view.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 3: Instant Download</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Review your real-time byte savings (up to 85% reduced) and click <em>Download Compressed</em> for an immediate local filesystem save with zero watermarks.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
           <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
-              Social Media & E-Commerce Resizing Standards
+              Social Media &amp; E-Commerce Resizing Standards
             </h3>
             <ul className="list-disc pl-5 space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
               <li><strong>1080 &times; 1080 (Square):</strong> Standard format for Instagram feed posts, Facebook carousel catalogs, and Daraz product listings.</li>
@@ -512,13 +539,13 @@ export function ImageCompressor() {
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
               Why WebP Delivers Superior Compression
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               WebP applies predictive coding, using neighboring pixel blocks to predict values and encoding only the difference. This modern format achieves approximately 30% greater data compression than legacy JPEG at equivalent perceived quality, making it the preferred choice for modern Google PageSpeed compliance.
             </p>
           </div>
         </div>
 
-        {/* 3 FAQs Section */}
+        {/* 4 FAQs Section */}
         <div className="space-y-4 pt-6">
           <h3 className="text-xl font-bold text-slate-900 dark:text-white">
             Frequently Asked Questions (FAQs)
@@ -545,7 +572,15 @@ export function ImageCompressor() {
                 Which format gives the highest compression savings: WebP or JPG?
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                WebP provides 25% to 34% smaller file sizes than standard JPEG at equivalent structural similarity (SSIM) quality scores.
+                WebP provides 25% to 34% smaller file sizes than standard JPEG at equivalent structural similarity (SSIM) quality scores, and is supported by 98%+ of all modern web browsers.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+              <h4 className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">
+                Are there any daily limits or watermarks added to my compressed images?
+              </h4>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                None. AllToolsPak adds zero watermarks, imposes no daily download quotas, and requires no account creation or subscription fee.
               </p>
             </div>
           </div>

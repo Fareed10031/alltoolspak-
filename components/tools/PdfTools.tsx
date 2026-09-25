@@ -682,30 +682,57 @@ export function PdfTools() {
       {/* Ad Slot #2 (Mid) */}
       <AdSlot label="In-Content Middle Display" />
 
-      {/* SEO Helpful Content (>350 words, H2, H3, Use Cases, Technical Architecture) */}
-      <section className="mt-12 space-y-8 text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+      {/* SEO Helpful Content (>400 words, What is, How to use, FAQs) */}
+      <section className="mt-12 space-y-8 text-slate-700 dark:text-slate-300 text-sm leading-relaxed border-t border-slate-200 dark:border-slate-800 pt-8">
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Comprehensive PDF Processing Engineered for Zero Data Leakage
+            What is AllToolsPak PDF Suite?
           </h2>
           <p>
-            Portable Document Format (PDF) files represent the global standard for contracts, invoices, academic research, and government filings. However, most commercial PDF web portals require uploading sensitive records to remote cloud servers, exposing your private tax identifiers, intellectual property, and personal records to unmonitored storage buckets and retention policies.
+            The <strong>AllToolsPak.pk PDF Suite</strong> is an all-in-one, 100% free web utility engineered for merging multiple PDF documents, compressing bloated file sizes, and extracting clean textual data directly in your browser. Portable Document Format (PDF) files represent the global benchmark for commercial contracts, tax invoices, academic publications, and government applications. However, conventional online PDF services routinely mandate uploading private files to remote cloud servers, exposing confidential client contracts, bank statements, and proprietary data to security breaches.
           </p>
           <p>
-            <strong>AllToolsPak.pk</strong> solves this systemic privacy concern by executing the entire PDF manipulation pipeline right inside your web browser. Utilizing modern WebAssembly (Wasm) primitives and binary buffer parsing via <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">pdf-lib</code>, our tools ensure that not a single byte of your documents is ever transmitted across an external network connection. All data resides solely in volatile device RAM and is automatically cleared when you close the session.
+            AllToolsPak redefines document utility by executing the entire binary parsing and manipulation pipeline inside your local device memory using WebAssembly and <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">pdf-lib</code>. Not a single byte of your documents is ever transmitted across the internet, guaranteeing zero data leakage and 100% adherence to international privacy standards.
           </p>
+        </div>
+
+        {/* How to use */}
+        <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+            How to Use the PDF Suite in 3 Simple Steps
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 1: Select Operation</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Choose your desired tool mode from the top tabs: <strong>Merge PDFs</strong> to combine files, <strong>Compress PDF</strong> to reduce MB footprint, or <strong>PDF to Text</strong> to grab raw strings.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 2: Upload &amp; Configure</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Drag and drop your PDF files into the secure dropzone. For merge, reorder the queue with the arrow controls; for compression, set your target quality percentage.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 3: Instant Download</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Click the action button. The browser renders the output instantly in memory. Click <em>Download PDF</em> or <em>Copy Text</em> with zero countdown timers or email requirements.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
           <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
-              Primary Use Cases for Pakistani & Global Users
+              Primary Use Cases for Pakistani &amp; Global Users
             </h3>
             <ul className="list-disc pl-5 space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
-              <li><strong>Freelancers & Upwork Contractors:</strong> Combine multiple project milestones, work agreements, and identity verification cards into a single submission bundle.</li>
-              <li><strong>E-Commerce Sellers:</strong> Merge multi-page shipping invoices and Amazon FBA packaging slips without subscription fees.</li>
-              <li><strong>Students & Researchers:</strong> Extract clean, unformatted plain text from lecture notes and journal articles for AI analysis or summarization.</li>
-              <li><strong>Job Applicants:</strong> Compress oversized resume PDFs to comply with 2MB limits on enterprise ATS job portals.</li>
+              <li><strong>Freelancers &amp; Upwork Contractors:</strong> Combine multiple project milestones, work agreements, and identity verification cards into a single submission bundle.</li>
+              <li><strong>E-Commerce Sellers:</strong> Merge multi-page shipping invoices and Amazon FBA packaging slips without recurring SaaS subscription fees.</li>
+              <li><strong>Students &amp; Researchers:</strong> Extract clean, unformatted plain text from lecture notes and journal articles for AI analysis, notes, or thesis citations.</li>
+              <li><strong>Job Applicants:</strong> Compress oversized portfolio and resume PDFs to pass strict 2MB upload limits on corporate ATS job portals.</li>
             </ul>
           </div>
 
@@ -713,13 +740,13 @@ export function PdfTools() {
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
               How Our Client-Side Architecture Works
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400">
-              When you drop your files into AllToolsPak, the HTML5 File API allocates a secure memory buffer. Our binary stream deserializer traverses the PDF document cross-reference table (XRef), resolves indirect object references, and constructs a clean page index. When combining files, pages are imported as isolated reference trees, eliminating redundant duplicate fonts and minimizing cumulative file size.
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              When you drop your files into AllToolsPak, the HTML5 File API allocates a private memory buffer. Our binary stream deserializer traverses the PDF document cross-reference table (XRef), resolves indirect object references, and constructs a clean page index. When combining files, pages are imported as isolated reference trees, eliminating redundant duplicate fonts and minimizing cumulative file size.
             </p>
           </div>
         </div>
 
-        {/* 3 FAQs Section */}
+        {/* 4 FAQs Section */}
         <div className="space-y-4 pt-6">
           <h3 className="text-xl font-bold text-slate-900 dark:text-white">
             Frequently Asked Questions (FAQs)
@@ -735,10 +762,10 @@ export function PdfTools() {
             </div>
             <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
               <h4 className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">
-                How does the PDF merger handle page numbers and orientation?
+                How does the PDF merger handle page numbers, orientations, and fonts?
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                The merger preserves all native vector dimensions, embedded fonts, and page orientations across each imported PDF document, stitching them seamlessly into an unified file.
+                The merger preserves all native vector dimensions, embedded TrueType/OpenType fonts, hyperlinks, and page orientations across each imported PDF document, stitching them seamlessly into an unified file.
               </p>
             </div>
             <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
@@ -746,7 +773,15 @@ export function PdfTools() {
                 Can I extract text from scanned PDF documents?
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                The text extractor reads digital text streams directly from PDF font mappings. For scanned raster pages, please ensure the document has OCR embedded.
+                The text extractor reads digital text streams directly from PDF font mappings. For scanned raster pages or photos of documents, please ensure the document has an OCR text layer embedded.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+              <h4 className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">
+                Is there any maximum file size or daily page limit?
+              </h4>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                There are zero artificial restrictions or paywalls. You can process as many documents as your device RAM comfortably supports, free of charge, with no registration required.
               </p>
             </div>
           </div>

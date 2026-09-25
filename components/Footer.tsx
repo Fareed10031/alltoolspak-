@@ -163,8 +163,17 @@ export function Footer({
             <div className="flex items-center gap-2.5 text-xs text-slate-600 dark:text-slate-400">
               <Mail className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <a
-                href="mailto:fareedk1266@gmail.com"
+                href="mailto:contact@alltoolspak.pk"
                 className="hover:text-emerald-600 dark:hover:text-emerald-400 underline font-medium"
+              >
+                contact@alltoolspak.pk
+              </a>
+            </div>
+            <div className="flex items-center gap-2.5 text-xs text-slate-600 dark:text-slate-400">
+              <Mail className="w-4 h-4 text-slate-400 shrink-0" />
+              <a
+                href="mailto:fareedk1266@gmail.com"
+                className="hover:text-emerald-600 dark:hover:text-emerald-400 font-medium text-slate-500 dark:text-slate-400"
               >
                 fareedk1266@gmail.com
               </a>
@@ -188,7 +197,7 @@ export function Footer({
               </a>
             </div>
             <p className="text-[11px] text-slate-500 dark:text-slate-400 pt-2 leading-relaxed">
-              Managed by Fareed Ullah. Dedicated to providing ad-supported, privacy-respecting online utilities accessible globally without subscriptions.
+              Managed & Engineered by <strong>Fareed Ullah</strong> in Peshawar, Pakistan. Dedicated to providing ad-supported, privacy-respecting online utilities accessible globally without subscriptions.
             </p>
           </div>
         </div>

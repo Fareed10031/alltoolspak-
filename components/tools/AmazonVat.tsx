@@ -548,18 +548,45 @@ export function AmazonVat() {
       {/* Ad Slot #2 (Mid) */}
       <AdSlot label="In-Content Middle Display" />
 
-      {/* SEO Helpful Content (>350 words, H2, H3, Use Cases, Technical Architecture) */}
-      <section className="mt-12 space-y-8 text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+      {/* SEO Helpful Content (>400 words, What is, How to use, FAQs) */}
+      <section className="mt-12 space-y-8 text-slate-700 dark:text-slate-300 text-sm leading-relaxed border-t border-slate-200 dark:border-slate-800 pt-8">
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Automating Cross-Border Amazon EU Value Added Tax (VAT) Calculation
+            What is the Amazon EU VAT Calculator?
           </h2>
           <p>
-            Selling products across European Union marketplaces (Amazon.de, Amazon.fr, Amazon.it, Amazon.es, Amazon.nl, Amazon.pl, and Amazon.be) requires strict compliance with destination VAT regulations under the EU E-Commerce Package and the One-Stop Shop (OSS) simplified declaration system. Sellers in Pakistan, the UK, the US, and across Europe who store inventory in central European fulfillment centers frequently encounter complex, multi-currency settlement reports.
+            The <strong>AllToolsPak.pk Amazon EU VAT Calculator</strong> is an automated financial bookkeeping and tax reconciliation utility specifically engineered for Amazon FBA and FBM e-commerce sellers operating across European marketplaces (Amazon.de, Amazon.fr, Amazon.it, Amazon.es, Amazon.nl, Amazon.pl, and Amazon.se). Under the European Union&apos;s E-Commerce VAT package and the One-Stop Shop (OSS) simplified declaration scheme, cross-border B2C distance sales must be taxed at the destination member state&apos;s statutory rate.
           </p>
           <p>
-            <strong>AllToolsPak.pk Amazon EU VAT Calculator</strong> eliminates hundreds of hours of manual bookkeeping. By loading your raw Amazon order reports, the client-side parsing engine instantly extracts gross revenue amounts, determines the destination member state, applies the correct statutory standard tax rate, and separates net taxable revenue from VAT dues.
+            Sellers frequently spend dozens of manual hours unravelling raw Amazon order reports, extracting gross revenues, applying destination VAT rates, calculating underlying net sales, and assembling customer invoices to satisfy German (Finanzamt) and French (DGFiP) audit standards. AllToolsPak parses CSV settlement reports client-side using JavaScript stream readers, instantly calculates destination VAT, and exports complete batch PDF invoices and Excel reconciliation sheets with zero data uploads.
           </p>
+        </div>
+
+        {/* How to use */}
+        <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+            How to Use the Amazon EU VAT Calculator in 3 Simple Steps
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 1: Choose Input Method</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Choose between <strong>Single Transaction Calculator</strong> (for fast one-off invoice math) or <strong>Batch CSV / Excel Mode</strong> (for full order history reconciliation).
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 2: Enter Sales Data</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Drop your Amazon order report or enter gross amount and destination country (e.g. Germany 19%, France 20%, Italy 22%). The engine automatically applies the statutory VAT rate.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 3: Export Invoices &amp; ZIP</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Instantly view the net revenue and tax dues. Download individual PDF invoices, bulk ZIP archives containing all generated customer receipts, or the formatted Excel summary.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
@@ -583,13 +610,13 @@ export function AmazonVat() {
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
               Batch Invoice Archiving &amp; Audit Trail
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               Tax authorities in Germany (Finanzamt) and France (DGFiP) require e-commerce merchants to retain individual customer invoices for up to 10 years. With one click, AllToolsPak compiles professional vector PDF invoices for each transaction and packages them into a compressed ZIP file using client-side <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">jszip</code>, preventing server bandwidth costs and respecting financial confidentiality.
             </p>
           </div>
         </div>
 
-        {/* 3 FAQs Section */}
+        {/* 4 FAQs Section */}
         <div className="space-y-4 pt-6">
           <h3 className="text-xl font-bold text-slate-900 dark:text-white">
             Frequently Asked Questions (FAQs)
@@ -617,6 +644,14 @@ export function AmazonVat() {
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
                 Yes. The destination VAT breakdown matches the quarterly declaration structure required by the EU One-Stop Shop (OSS) scheme for cross-border B2C distance sales.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+              <h4 className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">
+                Are my company&apos;s financial sales figures stored on any server?
+              </h4>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                Never. All calculations, CSV parses, Excel outputs, and ZIP archives are generated strictly inside your browser memory (RAM), preserving absolute business confidentiality.
               </p>
             </div>
           </div>

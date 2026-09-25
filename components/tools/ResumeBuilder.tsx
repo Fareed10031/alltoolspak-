@@ -816,18 +816,45 @@ export function ResumeBuilder() {
       {/* Ad Slot #2 (Mid) */}
       <AdSlot label="In-Content Middle Display" />
 
-      {/* SEO Helpful Content (>350 words, H2, H3, Use Cases, Technical Architecture) */}
-      <section className="mt-12 space-y-8 text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+      {/* SEO Helpful Content (>400 words, What is, How to use, FAQs) */}
+      <section className="mt-12 space-y-8 text-slate-700 dark:text-slate-300 text-sm leading-relaxed border-t border-slate-200 dark:border-slate-800 pt-8">
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Applicant Tracking System (ATS) Architecture and Engineering
+            What is the ATS Resume Builder?
           </h2>
           <p>
-            Modern Fortune 500 enterprises and global remote hiring platforms utilize automated Applicant Tracking Systems (ATS) including Workday, Lever, Greenhouse, and Taleo to triage incoming job applications. Research indicates that over 75% of candidate resumes are discarded before reaching a human recruiter due to unparseable graphical layouts, nested multi-column tables, or unindexed image fonts.
+            The <strong>AllToolsPak.pk ATS Resume Builder</strong> is a career advancement and CV optimization platform engineered to help job applicants create single-column, machine-readable resumes that achieve 95%+ parsing scores across modern Applicant Tracking Systems (ATS) including Workday, Greenhouse, Lever, Taleo, and iCIMS. Industry statistics show that over 75% of qualified applicants are automatically filtered out by hiring bots before a human recruiter ever sees their document due to multi-column tables, text boxes, non-standard section headers, or unindexed raster fonts.
           </p>
           <p>
-            <strong>AllToolsPak.pk ATS Resume Builder</strong> follows the gold-standard single-column hierarchical document blueprint recommended by top technical recruiters. By outputting pure vector PDF glyphs with standard section headers, our resumes achieve a 95%+ parsing score across all major hiring software suites.
+            AllToolsPak solves this bottleneck by implementing the strict single-column typographical layout recommended by Fortune 500 recruiters. Equipped with an AI Bullet Optimizer that rewrites passive task descriptions into quantified achievements following Google&apos;s celebrated <em>XYZ Formula</em>, our builder compiles clean vector PDFs using <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">jsPDF</code> right in your browser without tracking or storage fees.
           </p>
+        </div>
+
+        {/* How to use */}
+        <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+            How to Use the ATS Resume Builder in 3 Simple Steps
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 1: Fill Profile &amp; History</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Enter your contact info, summary, core skills, work history, and education, or click <em>Load Executive Sample</em> to start with prefilled professional data.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 2: AI Bullet Optimization</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Click <em>AI Optimize Bullets</em> on any job role. The assistant restructures your work duties into high-impact Google XYZ bullet points with action verbs and metrics.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 space-y-2">
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">Step 3: Export Clean Vector PDF</span>
+              <p className="text-slate-600 dark:text-slate-400">
+                Switch to <em>Live Preview</em> to inspect typography and margins. Click <em>Download Clean ATS PDF</em> for an instant, selectable vector document ready to submit.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
@@ -835,7 +862,7 @@ export function ResumeBuilder() {
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
               Why the Google XYZ Bullet Formula Wins Interviews
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               Our AI bullet rewrite tool automatically restructures candidate work history around the renowned Google hiring formula: <em>&quot;Accomplished [X] as measured by [Y], by doing [Z]&quot;</em>. Replacing passive responsibilities with active power verbs and quantifiable business impact metrics dramatically increases callback rates for competitive software engineering, finance, and marketing openings.
             </p>
           </div>
@@ -844,13 +871,13 @@ export function ResumeBuilder() {
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
               Vector PDF Stream Generation via jsPDF
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               Unlike generic resume generators that take screenshot canvas snapshots (raster images) and wrap them inside a PDF container—making text unselectable and unsearchable—AllToolsPak constructs native PostScript-compatible text operators. This guarantees optical character transparency and instant optical parsing.
             </p>
           </div>
         </div>
 
-        {/* 3 FAQs Section */}
+        {/* 4 FAQs Section */}
         <div className="space-y-4 pt-6">
           <h3 className="text-xl font-bold text-slate-900 dark:text-white">
             Frequently Asked Questions (FAQs)
@@ -878,6 +905,14 @@ export function ResumeBuilder() {
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
                 Yes. Our PDF engine generates pure selectable vector glyphs and compliant Helvetica font mappings rather than raster images, ensuring complete optical character transparency for hiring scanners.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+              <h4 className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">
+                Is my personal employment history saved on your servers?
+              </h4>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                No. All draft data is stored exclusively in your local browser sandbox or device memory. We never sell, store, or monetize your contact or career records.
               </p>
             </div>
           </div>

@@ -22,6 +22,107 @@ import { ResumeBuilder } from '@/components/tools/ResumeBuilder';
 
 import { safeStorage, safePrefersDark, safePushState } from '@/lib/storage';
 
+export function normalizeRoute(raw: string): string {
+  if (!raw) return 'home';
+  let clean = raw.toLowerCase().trim();
+  // Strip protocol and origin if full URL passed
+  clean = clean.replace(/^https?:\/\/[^/]+/i, '');
+  // Strip query params and hashes
+  clean = clean.split('?')[0].split('#')[0];
+  // Strip leading and trailing slashes
+  clean = clean.replace(/^\/+|\/+$/g, '');
+
+  if (!clean || clean === '' || clean === 'home') {
+    return 'home';
+  }
+
+  if (clean.startsWith('tools/')) {
+    clean = clean.replace(/^tools\//, '');
+  }
+
+  // Canonical mapping & aliases
+  switch (clean) {
+    case 'pdf-tools':
+    case 'pdf':
+    case 'pdf-suite':
+    case 'pdf-merger':
+    case 'pdf-to-word':
+      return 'pdf-tools';
+
+    case 'image-compress':
+    case 'image-compressor':
+    case 'compress-image':
+    case 'image-resize':
+      return 'image-compress';
+
+    case 'youtube-thumb':
+    case 'youtube-thumbnail':
+    case 'youtube-thumbnail-downloader':
+    case 'youtube-thumbnail-grabber':
+    case 'yt-thumb':
+      return 'youtube-thumb';
+
+    case 'amazon-vat':
+    case 'amazon-vat-calculator':
+    case 'eu-vat-calculator':
+    case 'vat-calculator':
+      return 'amazon-vat';
+
+    case 'bg-remover':
+    case 'background-remover':
+    case 'ai-background-remover':
+    case 'remove-bg':
+      return 'bg-remover';
+
+    case 'paraphraser':
+    case 'ai-paraphraser':
+    case 'paraphrase':
+    case 'text-rewriter':
+      return 'paraphraser';
+
+    case 'detector':
+    case 'ai-detector':
+    case 'ai-content-detector':
+    case 'gpt-detector':
+      return 'detector';
+
+    case 'resume-builder':
+    case 'ats-resume-builder':
+    case 'resume':
+    case 'cv-builder':
+      return 'resume-builder';
+
+    case 'tools':
+      return 'tools';
+
+    case 'about':
+    case 'about-us':
+      return 'about';
+
+    case 'privacy':
+    case 'privacy-policy':
+      return 'privacy';
+
+    case 'terms':
+    case 'terms-of-service':
+      return 'terms';
+
+    case 'disclaimer':
+      return 'disclaimer';
+
+    case 'cookies':
+    case 'cookie-policy':
+      return 'cookies';
+
+    case 'contact':
+    case 'contact-us':
+      return 'contact';
+
+    default:
+      return clean;
+  }
+}
+
 export default function App() {
   const [currentPage, setCurrentPage] = useState<string>('home');
   const [isDark, setIsDark] = useState<boolean>(false);
@@ -42,39 +143,32 @@ export default function App() {
     // Path initialization
     try {
       const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
-      resolveRoute(pathname);
+      const resolved = normalizeRoute(pathname);
+      setCurrentPage(resolved);
     } catch {
-      resolveRoute('/');
+      setCurrentPage('home');
     }
 
     // Browser back/forward event listener
     const handlePopState = () => {
       try {
-        resolveRoute(window.location.pathname);
+        const resolved = normalizeRoute(window.location.pathname);
+        setCurrentPage(resolved);
       } catch {
-        resolveRoute('/');
+        setCurrentPage('home');
       }
     };
+
     if (typeof window !== 'undefined') {
       window.addEventListener('popstate', handlePopState);
       return () => window.removeEventListener('popstate', handlePopState);
     }
   }, []);
 
-  const resolveRoute = (path: string) => {
-    const clean = path.replace(/^\/|\/$/g, '');
-    if (!clean || clean === '') {
-      setCurrentPage('home');
-    } else if (clean.startsWith('tools/')) {
-      const toolId = clean.replace('tools/', '');
-      setCurrentPage(toolId);
-    } else {
-      setCurrentPage(clean);
-    }
-  };
-
   const navigateTo = (page: string) => {
-    setCurrentPage(page);
+    const resolved = normalizeRoute(page);
+    setCurrentPage(resolved);
+
     try {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch {
@@ -82,8 +176,10 @@ export default function App() {
     }
 
     let newPath = '/';
-    if (page === 'home') {
+    if (resolved === 'home') {
       newPath = '/';
+    } else if (resolved === 'tools') {
+      newPath = '/tools';
     } else if (
       [
         'pdf-tools',
@@ -94,11 +190,11 @@ export default function App() {
         'paraphraser',
         'detector',
         'resume-builder',
-      ].includes(page)
+      ].includes(resolved)
     ) {
-      newPath = `/tools/${page}`;
+      newPath = `/tools/${resolved}`;
     } else {
-      newPath = `/${page}`;
+      newPath = `/${resolved}`;
     }
 
     safePushState(newPath);
@@ -119,24 +215,30 @@ export default function App() {
   const renderContent = () => {
     switch (currentPage) {
       case 'home':
+      case 'tools':
         return <HomePage onSelectTool={navigateTo} onNavigate={navigateTo} />;
 
-      // 8 Tools
+      // 8 Core Tools & Aliases
       case 'pdf-tools':
         return <PdfTools />;
       case 'image-compress':
+      case 'image-compressor':
         return <ImageCompressor />;
       case 'youtube-thumb':
+      case 'youtube-thumbnail':
         return <YouTubeThumb />;
       case 'amazon-vat':
         return <AmazonVat />;
       case 'bg-remover':
+      case 'background-remover':
         return <BgRemover />;
       case 'paraphraser':
         return <Paraphraser />;
       case 'detector':
+      case 'ai-detector':
         return <Detector />;
       case 'resume-builder':
+      case 'ats-resume-builder':
         return <ResumeBuilder />;
 
       // Legal & Informational Pages
@@ -162,7 +264,7 @@ export default function App() {
             </p>
             <button
               onClick={() => navigateTo('home')}
-              className="px-4 py-2 rounded-lg bg-emerald-600 text-white text-xs font-semibold cursor-pointer"
+              className="px-6 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold cursor-pointer shadow-md shadow-emerald-600/20"
             >
               Return to All Tools
             </button>

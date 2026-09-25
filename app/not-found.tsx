@@ -1,21 +1,16 @@
 import React from 'react';
-import { ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <div className="min-h-[60vh] flex flex-col items-center justify-center p-6 text-center space-y-4">
-      <h1 className="text-4xl font-extrabold text-slate-900 dark:text-white">404</h1>
-      <h2 className="text-lg font-bold text-slate-700 dark:text-slate-300">Tool or Page Not Found</h2>
-      <p className="text-xs text-slate-500 max-w-sm">
-        The tool or resource you are looking for has moved or does not exist.
+    <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4">
+      <h2 className="text-4xl font-bold text-slate-900 dark:text-white">Page Not Found</h2>
+      <p className="mt-2 text-slate-500 dark:text-slate-400 max-w-md">
+        The requested page or tool does not exist. Please return to the homepage.
       </p>
-      <a href="/" className="inline-flex">
-        <Button variant="emerald" size="sm" className="gap-2 cursor-pointer">
-          <ArrowLeft className="w-4 h-4" />
-          Back to All Tools
-        </Button>
-      </a>
+      <Link href="/" className="mt-6 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-full font-semibold text-sm transition-colors shadow-md shadow-emerald-600/20">
+        Return to All Tools
+      </Link>
     </div>
   );
 }
