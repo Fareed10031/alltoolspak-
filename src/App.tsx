@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
+import { Analytics } from '@vercel/analytics/react';
 import { HomePage } from '@/components/pages/HomePage';
 import { AboutPage } from '@/components/pages/AboutPage';
 import { PrivacyPage } from '@/components/pages/PrivacyPage';
@@ -289,6 +290,7 @@ export default function App() {
 
       <Footer onNavigate={navigateTo} onSelectTool={navigateTo} />
       <CookieBanner onNavigate={navigateTo} />
+      <Analytics />
     </div>
   );
 }

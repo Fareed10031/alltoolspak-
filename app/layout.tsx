@@ -3,6 +3,7 @@ import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: 'AllToolsPak.pk - 8-in-1 FREE Online Tools | 100% Client-Side Privacy',
@@ -18,8 +19,8 @@ export const metadata: Metadata = {
     'ats resume builder',
     'ai detector',
   ],
-  authors: [{ name: 'Fareed Khan', url: 'https://linkedin.com/in/fareed-khan-dev' }],
-  creator: 'Fareed Khan',
+  authors: [{ name: 'Fareed Ullah', url: 'https://linkedin.com/in/fareed-ullah-dev' }],
+  creator: 'Fareed Ullah',
   publisher: 'AllToolsPak.pk',
   robots: {
     index: true,
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'AllToolsPak.pk - 8-in-1 Free Web Tools',
-    description: 'Fast, client-side, zero-paywall utility suite built in Pakistan by Fareed Khan.',
+    description: 'Fast, client-side, zero-paywall utility suite built in Pakistan by Fareed Ullah.',
   },
 };
 
@@ -49,6 +50,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased">
         {children}
+        <Analytics />
       </body>
     </html>
   );
