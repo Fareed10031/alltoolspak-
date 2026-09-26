@@ -66,8 +66,8 @@ export function ContactPage() {
                 <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Official Support Email</span>
                 <p className="font-semibold text-slate-900 dark:text-white flex items-center gap-1.5 text-sm">
                   <Mail className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <a href="mailto:contact@alltoolspak.pk" className="hover:text-emerald-600 underline truncate">
-                    contact@alltoolspak.pk
+                  <a href="mailto:contact@alltoolspk.com" className="hover:text-emerald-600 underline truncate">
+                    contact@alltoolspk.com
                   </a>
                 </p>
                 <p className="text-[11px] text-slate-500 flex items-center gap-1 pl-5">
@@ -125,7 +125,7 @@ export function ContactPage() {
                     Message Sent Successfully!
                   </h3>
                   <p className="text-xs text-slate-600 dark:text-slate-400 max-w-sm mx-auto">
-                    Thank you for reaching out, {name}. Fareed Ullah and the AllToolsPak team will get back to your email ({email}) shortly.
+                    Thank you for reaching out, {name}. Fareed Ullah and the alltoolspk.com team will get back to your email ({email}) shortly.
                   </p>
                   <Button
                     variant="outline"

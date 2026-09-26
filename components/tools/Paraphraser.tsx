@@ -201,7 +201,7 @@ export function Paraphraser() {
         name: 'Is there a daily limit on how many words I can paraphrase?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'No. AllToolsPak.pk provides 100% free, unlimited access without subscriptions or mandatory account registrations.',
+          text: 'No. alltoolspk.com provides 100% free, unlimited access without subscriptions or mandatory account registrations.',
         },
       },
     ],
@@ -413,10 +413,10 @@ export function Paraphraser() {
             What is the AI Text Paraphraser?
           </h2>
           <p>
-            The <strong>AllToolsPak.pk AI Text Paraphraser</strong> is a sophisticated neural copywriting and sentence restructuring assistant built to elevate written communication across academic, corporate, and creative domains. Traditional &quot;article spinner&quot; tools mechanically swap out individual words with awkward dictionary synonyms, producing unreadable sentences that fail plagiarism checks and confuse readers.
+            The <strong>alltoolspk.com AI Text Paraphraser</strong> is a sophisticated neural copywriting and sentence restructuring assistant built to elevate written communication across academic, corporate, and creative domains. Traditional &quot;article spinner&quot; tools mechanically swap out individual words with awkward dictionary synonyms, producing unreadable sentences that fail plagiarism checks and confuse readers.
           </p>
           <p>
-            AllToolsPak leverages deep contextual semantic transformers that comprehend the holistic core argument of your paragraph before formulating alternate phrasings. By restructuring sentence syntax, enhancing vocabulary density, and adapting to varied communication registers (Standard, Fluency, and Humanize), our rewriter ensures your final copy remains persuasive, articulate, and completely natural.
+            alltoolspk.com leverages deep contextual semantic transformers that comprehend the holistic core argument of your paragraph before formulating alternate phrasings. By restructuring sentence syntax, enhancing vocabulary density, and adapting to varied communication registers (Standard, Fluency, and Humanize), our rewriter ensures your final copy remains persuasive, articulate, and completely natural.
           </p>
         </div>
 
@@ -503,7 +503,7 @@ export function Paraphraser() {
                 Is there a daily limit on how many words I can paraphrase?
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                No. AllToolsPak.pk provides 100% free, unlimited access without subscriptions or mandatory account registrations.
+                No. alltoolspk.com provides 100% free, unlimited access without subscriptions or mandatory account registrations.
               </p>
             </div>
             <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">

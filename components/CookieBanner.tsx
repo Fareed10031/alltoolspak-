@@ -7,7 +7,7 @@ export function CookieBanner({ onNavigate }: { onNavigate?: (path: string) => vo
   const [hasConsent, setHasConsent] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const stored = safeStorage.getItem('alltoolspak_consent');
+    const stored = safeStorage.getItem('alltoolspk_consent');
     if (stored !== null) {
       setHasConsent(stored === 'true');
     } else {
@@ -16,7 +16,7 @@ export function CookieBanner({ onNavigate }: { onNavigate?: (path: string) => vo
   }, []);
 
   const handleChoice = (accepted: boolean) => {
-    safeStorage.setItem('alltoolspak_consent', String(accepted));
+    safeStorage.setItem('alltoolspk_consent', String(accepted));
     setHasConsent(accepted);
   };
 
@@ -38,7 +38,7 @@ export function CookieBanner({ onNavigate }: { onNavigate?: (path: string) => vo
             Cookie & Privacy Preference
           </h3>
           <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-            AllToolsPak.pk processes all PDF, image, and VAT files client-side in RAM. We use minimal cookies strictly for site functionality and aggregated analytics in accordance with GDPR Art 17 and CCPA.
+            alltoolspk.com processes all PDF, image, and VAT files client-side in RAM. We use minimal cookies strictly for site functionality and aggregated analytics in accordance with GDPR Art 17 and CCPA.
           </p>
           <div className="pt-1">
             <button

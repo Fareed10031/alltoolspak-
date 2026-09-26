@@ -375,10 +375,10 @@ export function YouTubeThumb() {
             What is the YouTube Thumbnail Grabber?
           </h2>
           <p>
-            The <strong>AllToolsPak.pk YouTube Thumbnail Grabber</strong> is a specialized, high-resolution media extractor that allows video editors, digital marketers, content creators, and researchers to fetch and download full-resolution video cover art directly from Google&apos;s global Content Delivery Network (CDN). A video thumbnail is the single most important factor dictating initial audience impressions and click-through rates (CTR) across YouTube search feeds and recommendation algorithms.
+            The <strong>alltoolspk.com YouTube Thumbnail Grabber</strong> is a specialized, high-resolution media extractor that allows video editors, digital marketers, content creators, and researchers to fetch and download full-resolution video cover art directly from Google&apos;s global Content Delivery Network (CDN). A video thumbnail is the single most important factor dictating initial audience impressions and click-through rates (CTR) across YouTube search feeds and recommendation algorithms.
           </p>
           <p>
-            Unlike third-party scraper websites that route video streams through suspicious remote servers infested with malicious pop-under scripts and deceptive download buttons, AllToolsPak executes pure client-side string tokenization. Our tool extracts the sanitized 11-character video ID right in your browser, verifies image availability across Google&apos;s edge servers, and streams the binary image directly to your local storage via HTML5 Blob memory heaps with 100% security.
+            Unlike third-party scraper websites that route video streams through suspicious remote servers infested with malicious pop-under scripts and deceptive download buttons, alltoolspk.com executes pure client-side string tokenization. Our tool extracts the sanitized 11-character video ID right in your browser, verifies image availability across Google&apos;s edge servers, and streams the binary image directly to your local storage via HTML5 Blob memory heaps with 100% security.
           </p>
         </div>
 
@@ -427,7 +427,7 @@ export function YouTubeThumb() {
               Direct Blob Saving Architecture
             </h3>
             <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-              Standard web browsers often open remote JPG images in a new browser tab when clicking download links due to cross-origin headers. AllToolsPak avoids this friction by retrieving the binary payload as an offscreen <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">Blob</code> or piping it through a local HTML5 canvas context, triggering a direct, instant filesystem save.
+              Standard web browsers often open remote JPG images in a new browser tab when clicking download links due to cross-origin headers. alltoolspk.com avoids this friction by retrieving the binary payload as an offscreen <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">Blob</code> or piping it through a local HTML5 canvas context, triggering a direct, instant filesystem save.
             </p>
           </div>
         </div>
@@ -467,7 +467,7 @@ export function YouTubeThumb() {
                 Do I need to sign up or install any browser extensions?
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                No. AllToolsPak.pk works right inside your standard web browser across desktop, tablet, and mobile devices without registration, installations, or fees.
+                No. alltoolspk.com works right inside your standard web browser across desktop, tablet, and mobile devices without registration, installations, or fees.
               </p>
             </div>
           </div>

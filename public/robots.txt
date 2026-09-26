@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://alltoolspak.web.app/sitemap.xml
+Sitemap: https://alltoolspk.com/sitemap.xml

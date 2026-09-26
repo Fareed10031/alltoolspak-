@@ -555,10 +555,10 @@ export function AmazonVat() {
             What is the Amazon EU VAT Calculator?
           </h2>
           <p>
-            The <strong>AllToolsPak.pk Amazon EU VAT Calculator</strong> is an automated financial bookkeeping and tax reconciliation utility specifically engineered for Amazon FBA and FBM e-commerce sellers operating across European marketplaces (Amazon.de, Amazon.fr, Amazon.it, Amazon.es, Amazon.nl, Amazon.pl, and Amazon.se). Under the European Union&apos;s E-Commerce VAT package and the One-Stop Shop (OSS) simplified declaration scheme, cross-border B2C distance sales must be taxed at the destination member state&apos;s statutory rate.
+            The <strong>alltoolspk.com Amazon EU VAT Calculator</strong> is an automated financial bookkeeping and tax reconciliation utility specifically engineered for Amazon FBA and FBM e-commerce sellers operating across European marketplaces (Amazon.de, Amazon.fr, Amazon.it, Amazon.es, Amazon.nl, Amazon.pl, and Amazon.se). Under the European Union&apos;s E-Commerce VAT package and the One-Stop Shop (OSS) simplified declaration scheme, cross-border B2C distance sales must be taxed at the destination member state&apos;s statutory rate.
           </p>
           <p>
-            Sellers frequently spend dozens of manual hours unravelling raw Amazon order reports, extracting gross revenues, applying destination VAT rates, calculating underlying net sales, and assembling customer invoices to satisfy German (Finanzamt) and French (DGFiP) audit standards. AllToolsPak parses CSV settlement reports client-side using JavaScript stream readers, instantly calculates destination VAT, and exports complete batch PDF invoices and Excel reconciliation sheets with zero data uploads.
+            Sellers frequently spend dozens of manual hours unravelling raw Amazon order reports, extracting gross revenues, applying destination VAT rates, calculating underlying net sales, and assembling customer invoices to satisfy German (Finanzamt) and French (DGFiP) audit standards. alltoolspk.com parses CSV settlement reports client-side using JavaScript stream readers, instantly calculates destination VAT, and exports complete batch PDF invoices and Excel reconciliation sheets with zero data uploads.
           </p>
         </div>
 
@@ -611,7 +611,7 @@ export function AmazonVat() {
               Batch Invoice Archiving &amp; Audit Trail
             </h3>
             <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-              Tax authorities in Germany (Finanzamt) and France (DGFiP) require e-commerce merchants to retain individual customer invoices for up to 10 years. With one click, AllToolsPak compiles professional vector PDF invoices for each transaction and packages them into a compressed ZIP file using client-side <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">jszip</code>, preventing server bandwidth costs and respecting financial confidentiality.
+              Tax authorities in Germany (Finanzamt) and France (DGFiP) require e-commerce merchants to retain individual customer invoices for up to 10 years. With one click, alltoolspk.com compiles professional vector PDF invoices for each transaction and packages them into a compressed ZIP file using client-side <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">jszip</code>, preventing server bandwidth costs and respecting financial confidentiality.
             </p>
           </div>
         </div>

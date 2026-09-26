@@ -437,10 +437,10 @@ export function BgRemover() {
             What is the AI Background Remover?
           </h2>
           <p>
-            The <strong>AllToolsPak.pk AI Background Remover</strong> is a next-generation neural image segmentation tool that automatically isolates subjects from their backgrounds in seconds. Historically, removing backgrounds required painstaking manual pen-tool tracing in expensive software like Adobe Photoshop. For small business owners in Pakistan launching Daraz or Shopify stores, creators making YouTube thumbnails, and job seekers refreshing corporate LinkedIn headshots, fast and accurate cutout capabilities are essential.
+            The <strong>alltoolspk.com AI Background Remover</strong> is a next-generation neural image segmentation tool that automatically isolates subjects from their backgrounds in seconds. Historically, removing backgrounds required painstaking manual pen-tool tracing in expensive software like Adobe Photoshop. For small business owners in Pakistan launching Daraz or Shopify stores, creators making YouTube thumbnails, and job seekers refreshing corporate LinkedIn headshots, fast and accurate cutout capabilities are essential.
           </p>
           <p>
-            Unlike commercial platforms that charge monthly credits or secretly transmit your private selfies and product photos to third-party cloud data centers, AllToolsPak executes deep learning vision inference right inside your device&apos;s browser sandbox using WebAssembly and WebGL/WebGPU acceleration. Your images remain 100% confidential in volatile device RAM and are purged immediately when the session ends.
+            Unlike commercial platforms that charge monthly credits or secretly transmit your private selfies and product photos to third-party cloud data centers, alltoolspk.com executes deep learning vision inference right inside your device&apos;s browser sandbox using WebAssembly and WebGL/WebGPU acceleration. Your images remain 100% confidential in volatile device RAM and are purged immediately when the session ends.
           </p>
         </div>
 

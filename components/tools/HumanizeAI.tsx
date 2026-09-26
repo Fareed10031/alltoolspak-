@@ -234,10 +234,10 @@ export function HumanizeAI() {
         <div className="mt-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 md:p-8 space-y-6">
           <div>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              What is AI Humanizer by AllToolsPak.pk?
+              What is AI Humanizer by alltoolspk.com?
             </h2>
             <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm sm:text-base mt-2">
-              AllToolsPak.pk AI Humanizer is an advanced, free text rewriting platform engineered to convert rigid, robotic AI-generated syntax into smooth, expressive, human-quality prose. Whether your draft originated from ChatGPT, Claude, Gemini, or any large language model, our browser-native algorithms introduce dynamic sentence burstiness, vocabulary variation, and natural transitions to ensure your message connects with real human readers.
+              alltoolspk.com AI Humanizer is an advanced, free text rewriting platform engineered to convert rigid, robotic AI-generated syntax into smooth, expressive, human-quality prose. Whether your draft originated from ChatGPT, Claude, Gemini, or any large language model, our browser-native algorithms introduce dynamic sentence burstiness, vocabulary variation, and natural transitions to ensure your message connects with real human readers.
             </p>
             <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm sm:text-base mt-2">
               Unlike cloud-hosted paraphrasers that store your drafts or train future models on your private intellectual property, our Humanizer operates entirely client-side in your device memory. Every transformation happens right in your browser, guaranteeing 100% data confidentiality and zero data leaks.

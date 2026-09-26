@@ -28,7 +28,7 @@ app.post('/api/ai', async (req: Request, res: Response) => {
     if (apiKey && apiKey !== 'MY_GEMINI_API_KEY') {
       try {
         const ai = new GoogleGenAI({ apiKey });
-        let systemInstruction = 'You are an expert copywriter and editor for AllToolsPak.';
+        let systemInstruction = 'You are an expert copywriter and editor for alltoolspk.com.';
 
         if (tool === 'paraphraser') {
           systemInstruction = `You are an expert AI text paraphraser. Mode: ${mode || 'Standard'}. Rewrite the provided text naturally, preserving all key meanings, while matching the specified tone. Return ONLY the rewritten text without commentary or quotes.`;

@@ -183,7 +183,7 @@ export function ImageCompressor() {
         name: 'Are my personal photos uploaded to remote servers?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'No. AllToolsPak.pk compresses images purely on your device using the HTML5 Canvas API in volatile RAM. No image byte ever leaves your browser.',
+          text: 'No. alltoolspk.com compresses images purely on your device using the HTML5 Canvas API in volatile RAM. No image byte ever leaves your browser.',
         },
       },
       {
@@ -463,7 +463,7 @@ export function ImageCompressor() {
                 {compressedSrc && (
                   <a
                     href={compressedSrc}
-                    download={`alltoolspak_${file?.name.split('.')[0] || 'optimized'}.${format.replace('image/', '')}`}
+                    download={`alltoolspk_${file?.name.split('.')[0] || 'optimized'}.${format.replace('image/', '')}`}
                     className="inline-flex items-center justify-center h-11 px-6 rounded-xl bg-emerald-600 text-white font-bold text-sm hover:bg-emerald-700 shadow-lg shadow-emerald-600/20 cursor-pointer"
                   >
                     <Download className="w-4 h-4 mr-2" />
@@ -489,10 +489,10 @@ export function ImageCompressor() {
             What is the Image Compressor &amp; Resizer?
           </h2>
           <p>
-            The <strong>AllToolsPak.pk Image Compressor &amp; Resizer</strong> is a privacy-first web utility designed to optimize JPG, PNG, and WebP graphic assets down to lightweight web-ready file sizes without sacrificing perceived visual fidelity. Unoptimized, multi-megabyte images account for over 65% of the average website payload, leading to sluggish load speeds on mobile 3G/4G connections, failed Google PageSpeed metrics, and increased bounce rates for digital storefronts on Daraz, Shopify, and Amazon.
+            The <strong>alltoolspk.com Image Compressor &amp; Resizer</strong> is a privacy-first web utility designed to optimize JPG, PNG, and WebP graphic assets down to lightweight web-ready file sizes without sacrificing perceived visual fidelity. Unoptimized, multi-megabyte images account for over 65% of the average website payload, leading to sluggish load speeds on mobile 3G/4G connections, failed Google PageSpeed metrics, and increased bounce rates for digital storefronts on Daraz, Shopify, and Amazon.
           </p>
           <p>
-            Unlike conventional image compression websites that force you to upload personal family photographs or proprietary e-commerce product catalogs to remote cloud servers, AllToolsPak executes all compression mathematics directly on your local device CPU. Utilizing the HTML5 Canvas API and hardware-accelerated bicubic interpolation algorithms, your images never leave your browser window, ensuring absolute data privacy and instantaneous processing speeds.
+            Unlike conventional image compression websites that force you to upload personal family photographs or proprietary e-commerce product catalogs to remote cloud servers, alltoolspk.com executes all compression mathematics directly on your local device CPU. Utilizing the HTML5 Canvas API and hardware-accelerated bicubic interpolation algorithms, your images never leave your browser window, ensuring absolute data privacy and instantaneous processing speeds.
           </p>
         </div>
 
@@ -564,7 +564,7 @@ export function ImageCompressor() {
                 Are my personal photos uploaded to remote servers?
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                No. AllToolsPak.pk compresses images purely on your device using the HTML5 Canvas API in volatile RAM. No image byte ever leaves your browser.
+                No. alltoolspk.com compresses images purely on your device using the HTML5 Canvas API in volatile RAM. No image byte ever leaves your browser.
               </p>
             </div>
             <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
@@ -580,7 +580,7 @@ export function ImageCompressor() {
                 Are there any daily limits or watermarks added to my compressed images?
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                None. AllToolsPak adds zero watermarks, imposes no daily download quotas, and requires no account creation or subscription fee.
+                None. alltoolspk.com adds zero watermarks, imposes no daily download quotas, and requires no account creation or subscription fee.
               </p>
             </div>
           </div>

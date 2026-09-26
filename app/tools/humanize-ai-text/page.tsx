@@ -254,10 +254,10 @@ export default function HumanizeAIPage() {
           <div className="mt-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 md:p-8 space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                What is AI Humanizer by All Tools Pak?
+                What is AI Humanizer by alltoolspk.com?
               </h2>
               <p className="text-gray-600 dark:text-gray-300 mt-3 leading-relaxed text-sm sm:text-base">
-                All Tools Pak AI Humanizer is a free online paraphrasing tool designed to improve the readability and natural flow of AI-generated content.
+                alltoolspk.com AI Humanizer is a free online paraphrasing tool designed to improve the readability and natural flow of AI-generated content.
                 It helps bloggers, students, and content creators rewrite text to sound more fluent, clear, and human-like while preserving the original meaning.
                 Our tool does not store any data and works 100% in your browser for complete privacy.
               </p>

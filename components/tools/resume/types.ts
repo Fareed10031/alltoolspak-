@@ -121,13 +121,13 @@ export const INITIAL_RESUME_DATA: ResumeData = {
   contact: {
     fullName: 'Fareed Ullah',
     jobTitle: 'Senior Software Engineer & Full-Stack Architect',
-    email: 'contact@alltoolspak.pk',
+    email: 'contact@alltoolspk.com',
     phone: '+92 340 4526741',
     location: 'Peshawar, Pakistan',
     linkedIn: 'linkedin.com/in/fareed-ullah-dev',
     github: 'github.com/fareed-ullah-dev',
-    portfolio: 'https://alltoolspak.pk',
-    website: 'https://alltoolspak.pk',
+    portfolio: 'https://alltoolspk.com',
+    website: 'https://alltoolspk.com',
     photoUrl: '',
     includePhoto: false,
     includeQrCode: true,
@@ -138,7 +138,7 @@ export const INITIAL_RESUME_DATA: ResumeData = {
     {
       id: 'exp-1',
       role: 'Lead Application Architect',
-      company: 'AllToolsPak Systems',
+      company: 'alltoolspk.com Systems',
       location: 'Peshawar, Pakistan',
       startDate: '2023',
       endDate: 'Present',
@@ -202,8 +202,8 @@ export const INITIAL_RESUME_DATA: ResumeData = {
   projects: [
     {
       id: 'proj-1',
-      name: 'AllToolsPak Client-Side Suite',
-      link: 'https://alltoolspak.pk',
+      name: 'alltoolspk.com Client-Side Suite',
+      link: 'https://alltoolspk.com',
       techStack: 'TypeScript, React 19, Tailwind CSS, jsPDF, WebAssembly',
       bullet1:
         'Engineered high-performance utility platform processing documents in client RAM without server storage under GDPR Article 17.',

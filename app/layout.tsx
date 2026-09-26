@@ -6,7 +6,7 @@ import { CookieBanner } from '@/components/CookieBanner';
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
-  title: 'AllToolsPak.pk - 9-in-1 FREE Online Tools | 100% Client-Side Privacy',
+  title: 'alltoolspk.com - 9-in-1 FREE Online Tools | 100% Client-Side Privacy',
   description:
     'Free production-grade web tools: PDF Suite, Image Compressor, YouTube Thumbnail Grabber, Amazon EU VAT Calculator, AI Background Remover, Paraphraser, Detector, ATS Resume Builder & AI Humanizer. Zero paywalls, RAM-only processing.',
   keywords: [
@@ -23,22 +23,22 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Fareed Ullah', url: 'https://linkedin.com/in/fareed-ullah-dev' }],
   creator: 'Fareed Ullah',
-  publisher: 'AllToolsPak.pk',
+  publisher: 'alltoolspk.com',
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
-    title: 'AllToolsPak.pk - 8-in-1 FREE Web Tools',
+    title: 'alltoolspk.com - 8-in-1 FREE Web Tools',
     description: '100% Free & Client-Side: PDF Tools, Image Compressor, Amazon VAT, AI Background Remover & ATS Resume Builder.',
-    url: 'https://alltoolspak.pk',
-    siteName: 'AllToolsPak.pk',
+    url: 'https://alltoolspk.com',
+    siteName: 'alltoolspk.com',
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AllToolsPak.pk - 8-in-1 Free Web Tools',
+    title: 'alltoolspk.com - 8-in-1 Free Web Tools',
     description: 'Fast, client-side, zero-paywall utility suite built in Pakistan by Fareed Ullah.',
   },
 };

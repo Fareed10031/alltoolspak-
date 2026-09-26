@@ -46,7 +46,7 @@ class RootErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState
           <div className="max-w-md p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-4">
             <h2 className="text-xl font-bold text-slate-900 dark:text-white">Workspace Restored</h2>
             <p className="text-xs text-slate-500">
-              The application recovered from an unexpected client event. Click below to continue using AllToolsPak.
+              The application recovered from an unexpected client event. Click below to continue using alltoolspk.com.
             </p>
             <button
               onClick={() => {
@@ -55,7 +55,7 @@ class RootErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState
               }}
               className="px-4 py-2 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer"
             >
-              Reload AllToolsPak
+              Reload alltoolspk.com
             </button>
           </div>
         </div>

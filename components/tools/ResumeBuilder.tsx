@@ -21,7 +21,7 @@ import { ResumePreview } from './resume/ResumePreview';
 import { exportResumeToPDF } from './resume/ResumePdfExporter';
 import { safeStorage } from '@/lib/storage';
 
-const STORAGE_KEY = 'alltoolspak_resume_data_2026';
+const STORAGE_KEY = 'alltoolspk_resume_data_2026';
 
 export function ResumeBuilder() {
   const [data, setData] = useState<ResumeData>(INITIAL_RESUME_DATA);
@@ -190,7 +190,7 @@ export function ResumeBuilder() {
         name: 'Should I include a photo on my ATS resume?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'For US, UK, and Canadian corporate positions, photos must be excluded to prevent hiring bias violations and ATS parsing rejections. For European (DACH, France) and Middle East/Gulf CVs, professional photos are commonly expected. AllToolsPak includes a one-click toggle to easily support both formats.',
+          text: 'For US, UK, and Canadian corporate positions, photos must be excluded to prevent hiring bias violations and ATS parsing rejections. For European (DACH, France) and Middle East/Gulf CVs, professional photos are commonly expected. alltoolspk.com includes a one-click toggle to easily support both formats.',
         },
       },
       {
@@ -340,10 +340,10 @@ export function ResumeBuilder() {
             What is the ATS Resume Builder?
           </h2>
           <p>
-            The <strong>AllToolsPak.pk ATS Resume Builder</strong> is a career advancement and CV optimization platform engineered to help job applicants create single-column, machine-readable resumes that achieve 95%+ parsing scores across modern Applicant Tracking Systems (ATS) including Workday, Greenhouse, Lever, Taleo, and iCIMS. Industry statistics show that over 75% of qualified applicants are automatically filtered out by hiring bots before a human recruiter ever sees their document due to multi-column tables, text boxes, non-standard section headers, or unindexed raster fonts.
+            The <strong>alltoolspk.com ATS Resume Builder</strong> is a career advancement and CV optimization platform engineered to help job applicants create single-column, machine-readable resumes that achieve 95%+ parsing scores across modern Applicant Tracking Systems (ATS) including Workday, Greenhouse, Lever, Taleo, and iCIMS. Industry statistics show that over 75% of qualified applicants are automatically filtered out by hiring bots before a human recruiter ever sees their document due to multi-column tables, text boxes, non-standard section headers, or unindexed raster fonts.
           </p>
           <p>
-            AllToolsPak solves this bottleneck by implementing the strict single-column typographical layout recommended by Fortune 500 recruiters. Equipped with an AI Bullet Optimizer that rewrites passive task descriptions into quantified achievements following Google&apos;s celebrated <em>XYZ Formula</em>, our builder compiles clean vector PDFs using <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">jsPDF</code> right in your browser without tracking or storage fees.
+            alltoolspk.com solves this bottleneck by implementing the strict single-column typographical layout recommended by Fortune 500 recruiters. Equipped with an AI Bullet Optimizer that rewrites passive task descriptions into quantified achievements following Google&apos;s celebrated <em>XYZ Formula</em>, our builder compiles clean vector PDFs using <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">jsPDF</code> right in your browser without tracking or storage fees.
           </p>
         </div>
 
@@ -389,7 +389,7 @@ export function ResumeBuilder() {
               Vector PDF Stream Generation via jsPDF
             </h3>
             <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-              Unlike generic resume generators that take screenshot canvas snapshots (raster images) and wrap them inside a PDF container—making text unselectable and unsearchable—AllToolsPak constructs native PostScript-compatible text operators. This guarantees optical character transparency and instant optical parsing.
+              Unlike generic resume generators that take screenshot canvas snapshots (raster images) and wrap them inside a PDF container—making text unselectable and unsearchable—alltoolspk.com constructs native PostScript-compatible text operators. This guarantees optical character transparency and instant optical parsing.
             </p>
           </div>
         </div>
@@ -413,7 +413,7 @@ export function ResumeBuilder() {
                 Should I include a photo on my ATS resume?
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                For US, UK, and Canadian corporate positions, photos must be excluded to prevent hiring bias violations and ATS parsing rejections. For European (DACH, France) and Middle East/Gulf CVs, professional photos are commonly expected. AllToolsPak includes a one-click toggle to easily support both formats.
+                For US, UK, and Canadian corporate positions, photos must be excluded to prevent hiring bias violations and ATS parsing rejections. For European (DACH, France) and Middle East/Gulf CVs, professional photos are commonly expected. alltoolspk.com includes a one-click toggle to easily support both formats.
               </p>
             </div>
             <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">

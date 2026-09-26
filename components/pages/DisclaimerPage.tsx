@@ -22,7 +22,7 @@ export function DisclaimerPage() {
           Disclaimer &amp; Financial Notice
         </h1>
         <p className="text-xs text-slate-500 dark:text-slate-400">
-          Last Updated: September 24, 2026 &bull; AllToolsPak.pk
+          Last Updated: September 24, 2026 &bull; alltoolspk.com
         </p>
       </div>
 
@@ -35,7 +35,7 @@ export function DisclaimerPage() {
           <span>Not Tax, Accounting, or Legal Advice</span>
         </div>
         <p className="text-xs sm:text-sm text-red-800 dark:text-red-200 leading-relaxed font-medium">
-          The information, formulas, calculations, and software tools provided on AllToolsPak.pk (including but not limited to the Amazon EU VAT Calculator) are intended strictly for educational, informational, and computational convenience purposes. <strong>They do not constitute formal tax, legal, or accounting advice.</strong>
+          The information, formulas, calculations, and software tools provided on alltoolspk.com (including but not limited to the Amazon EU VAT Calculator) are intended strictly for educational, informational, and computational convenience purposes. <strong>They do not constitute formal tax, legal, or accounting advice.</strong>
         </p>
         <p className="text-xs text-red-700 dark:text-red-300 leading-relaxed">
           European Union cross-border Value Added Tax (VAT) regulations, distance selling thresholds, and One-Stop Shop (OSS) filings must be officially verified at{' '}
@@ -58,7 +58,7 @@ export function DisclaimerPage() {
             1. Amazon EU VAT Calculations &amp; Currency Conversion
           </h2>
           <p>
-            While our engine applies standard statutory VAT rates across destination EU member states (e.g. Germany 19%, France 20%, Italy 22%, Spain 21%), specific product categories may qualify for reduced or super-reduced rates (such as books, children&apos;s apparel, or medical devices). AllToolsPak.pk assumes standard rates unless customized. You remain exclusively responsible for the legal accuracy of your tax returns submitted to fiscal authorities.
+            While our engine applies standard statutory VAT rates across destination EU member states (e.g. Germany 19%, France 20%, Italy 22%, Spain 21%), specific product categories may qualify for reduced or super-reduced rates (such as books, children&apos;s apparel, or medical devices). alltoolspk.com assumes standard rates unless customized. You remain exclusively responsible for the legal accuracy of your tax returns submitted to fiscal authorities.
           </p>
         </section>
 
@@ -76,7 +76,7 @@ export function DisclaimerPage() {
             3. Limitation of Liability
           </h2>
           <p>
-            Under no circumstances shall AllToolsPak.pk, its founder Fareed Ullah, or its affiliates be held liable for any direct, indirect, incidental, consequential, special, or punitive damages arising from the use or inability to use our tools, including financial losses, tax penalties, audit adjustments, or missed employment opportunities.
+            Under no circumstances shall alltoolspk.com, its founder Fareed Ullah, or its affiliates be held liable for any direct, indirect, incidental, consequential, special, or punitive damages arising from the use or inability to use our tools, including financial losses, tax penalties, audit adjustments, or missed employment opportunities.
           </p>
         </section>
       </div>

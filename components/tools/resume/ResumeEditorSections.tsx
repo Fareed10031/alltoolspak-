@@ -283,7 +283,7 @@ export function ResumeEditorSections({ data, onChange }: ResumeEditorSectionsPro
               type="email"
               value={data.contact.email}
               onChange={(e) => onChange({ contact: { ...data.contact, email: e.target.value } })}
-              placeholder="contact@alltoolspak.pk"
+              placeholder="contact@alltoolspk.com"
             />
           </div>
           <div className="space-y-1">
@@ -332,7 +332,7 @@ export function ResumeEditorSections({ data, onChange }: ResumeEditorSectionsPro
             <Input
               value={data.contact.portfolio}
               onChange={(e) => onChange({ contact: { ...data.contact, portfolio: e.target.value } })}
-              placeholder="https://alltoolspak.pk"
+              placeholder="https://alltoolspk.com"
             />
           </div>
           <div className="space-y-1 flex flex-col justify-end">

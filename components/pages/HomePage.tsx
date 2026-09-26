@@ -254,13 +254,13 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
         <div className="text-center space-y-3 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300">
             <Award className="w-3.5 h-3.5" />
-            <span>The AllToolsPak Advantage</span>
+            <span>The alltoolspk.com Advantage</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
-            Why Choose AllToolsPak.pk?
+            Why Choose alltoolspk.com?
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-            Most online utility websites trick users with free trials, require invasive logins, or secretly harvest private tax spreadsheets and photos on cloud servers. Here is how AllToolsPak is fundamentally different.
+            Most online utility websites trick users with free trials, require invasive logins, or secretly harvest private tax spreadsheets and photos on cloud servers. Here is how alltoolspk.com is fundamentally different.
           </p>
         </div>
 
@@ -349,7 +349,7 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
             How Client-Side Computing Protects You
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-            Unlike legacy software that uploads private files to third-party cloud servers, AllToolsPak executes operations inside your local sandbox.
+            Unlike legacy software that uploads private files to third-party cloud servers, alltoolspk.com executes operations inside your local sandbox.
           </p>
         </div>
 
@@ -419,14 +419,14 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
                   <span>Peshawar, Khyber Pakhtunkhwa, Pakistan</span>
                 </div>
                 <p className="text-xs text-emerald-400 font-mono mt-0.5">
-                  contact@alltoolspak.pk &bull; fareedk1266@gmail.com
+                  contact@alltoolspk.com &bull; fareedk1266@gmail.com
                 </p>
               </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-2.5">
               <a
-                href="mailto:contact@alltoolspak.pk"
+                href="mailto:contact@alltoolspk.com"
                 className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1.5 transition-colors shadow-sm"
               >
                 <Mail className="w-3.5 h-3.5" />
@@ -469,10 +469,10 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
                 Founder&apos;s Mission Statement
               </h4>
               <p>
-                &quot;I created <strong>AllToolsPak.pk</strong> with a straightforward conviction: digital utilities essential for everyday work—like merging legal PDFs, calculating Amazon VAT, extracting YouTube graphics, compressing images, and building resumes—should be <strong>100% free, private, and accessible to everyone without paywalls or subscriptions</strong>.
+                &quot;I created <strong>alltoolspk.com</strong> with a straightforward conviction: digital utilities essential for everyday work—like merging legal PDFs, calculating Amazon VAT, extracting YouTube graphics, compressing images, and building resumes—should be <strong>100% free, private, and accessible to everyone without paywalls or subscriptions</strong>.
               </p>
               <p>
-                Operating out of Peshawar, Pakistan, I watched students, Upwork freelancers, and Amazon FBA sellers waste hard-earned income on deceptive software tools that lock basic export buttons behind expensive recurring paywalls. AllToolsPak eliminates that exploitation by moving all compute workloads directly to your device browser. No data ever leaves your device, and no payment will ever be demanded.&quot;
+                Operating out of Peshawar, Pakistan, I watched students, Upwork freelancers, and Amazon FBA sellers waste hard-earned income on deceptive software tools that lock basic export buttons behind expensive recurring paywalls. alltoolspk.com eliminates that exploitation by moving all compute workloads directly to your device browser. No data ever leaves your device, and no payment will ever be demanded.&quot;
               </p>
             </div>
 
@@ -518,7 +518,7 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
             Trusted by Users Across Pakistan
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-            Join thousands of freelancers, students, and sellers using AllToolsPak.pk tools daily. All processing is done 100% in your browser for privacy.
+            Join thousands of freelancers, students, and sellers using alltoolspk.com tools daily. All processing is done 100% in your browser for privacy.
           </p>
         </div>
 

@@ -32,7 +32,7 @@ export function AboutPage() {
           <span>E-E-A-T Verified Publisher &bull; Sept 2026</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-          About Fareed Ullah &amp; AllToolsPak.pk
+          About Fareed Ullah &amp; alltoolspk.com
         </h1>
         <p className="text-sm text-slate-600 dark:text-slate-400">
           Engineered in Peshawar, Pakistan with an uncompromising commitment to client-side data privacy and zero paywalls.
@@ -65,7 +65,7 @@ export function AboutPage() {
                   Fareed Ullah
                 </h2>
                 <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
-                  Owner &amp; Lead Systems Engineer of AllToolsPak.pk
+                  Owner &amp; Lead Systems Engineer of alltoolspk.com
                 </p>
               </div>
 
@@ -81,12 +81,12 @@ export function AboutPage() {
               </div>
 
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed pt-1">
-                Fareed Ullah is a software engineer and web systems architect based in Peshawar, Pakistan. Motivated by the frustrating paywalls, upload queues, and privacy violations common across online tool websites, Fareed engineered <strong>AllToolsPak.pk</strong> with a clear purpose: to deliver an uncompromising suite of 8 essential digital utilities—including PDF merge/compression, image optimization, YouTube thumbnail extraction, EU Amazon VAT calculation, AI background removal, text paraphrasing, AI content detection, and ATS resume building—that operate <strong>100% on the client side</strong>.
+                Fareed Ullah is a software engineer and web systems architect based in Peshawar, Pakistan. Motivated by the frustrating paywalls, upload queues, and privacy violations common across online tool websites, Fareed engineered <strong>alltoolspk.com</strong> with a clear purpose: to deliver an uncompromising suite of 8 essential digital utilities—including PDF merge/compression, image optimization, YouTube thumbnail extraction, EU Amazon VAT calculation, AI background removal, text paraphrasing, AI content detection, and ATS resume building—that operate <strong>100% on the client side</strong>.
               </p>
 
               <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 text-xs text-slate-600 dark:text-slate-300 space-y-1.5">
                 <p className="font-bold text-slate-900 dark:text-white">
-                  The Purpose of AllToolsPak.pk:
+                  The Purpose of alltoolspk.com:
                 </p>
                 <p className="leading-relaxed">
                   Our mission is to democratize high-grade digital utilities for students, remote freelancers, accountants, and e-commerce entrepreneurs in Pakistan and worldwide. Files and documents never leave your device RAM, guaranteeing zero data harvesting, no mandatory user accounts, and zero subscription fees.
@@ -95,11 +95,11 @@ export function AboutPage() {
 
               <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
                 <a
-                  href="mailto:contact@alltoolspak.pk"
+                  href="mailto:contact@alltoolspk.com"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-colors shadow-sm"
                 >
                   <Mail className="w-3.5 h-3.5" />
-                  <span>contact@alltoolspak.pk</span>
+                  <span>contact@alltoolspk.com</span>
                 </a>
 
                 <a
@@ -147,14 +147,14 @@ export function AboutPage() {
             Official Google Search E-E-A-T Quality Commitment
           </h2>
           <p>
-            At AllToolsPak.pk, our operational philosophy strictly adheres to Google Search Quality Evaluator Guidelines for <strong>Experience, Expertise, Authoritativeness, and Trustworthiness (E-E-A-T)</strong>:
+            At alltoolspk.com, our operational philosophy strictly adheres to Google Search Quality Evaluator Guidelines for <strong>Experience, Expertise, Authoritativeness, and Trustworthiness (E-E-A-T)</strong>:
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
             <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 space-y-1">
               <h3 className="font-bold text-xs text-slate-900 dark:text-white">1. Direct Practical Experience</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400">
-                Every utility on AllToolsPak is developed and maintained by active practitioners who solve real-world e-commerce, tax filing, and multimedia compression workflows on a daily basis.
+                Every utility on alltoolspk.com is developed and maintained by active practitioners who solve real-world e-commerce, tax filing, and multimedia compression workflows on a daily basis.
               </p>
             </div>
 

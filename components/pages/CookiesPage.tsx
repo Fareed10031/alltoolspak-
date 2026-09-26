@@ -22,7 +22,7 @@ export function CookiesPage() {
           Cookie Policy &amp; Audit Inventory
         </h1>
         <p className="text-xs text-slate-500 dark:text-slate-400">
-          Detailed transparency table detailing all active and optional cookie categories on AllToolsPak.pk.
+          Detailed transparency table detailing all active and optional cookie categories on alltoolspk.com.
         </p>
       </div>
 
@@ -30,7 +30,7 @@ export function CookiesPage() {
 
       <div className="space-y-6 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
         <p>
-          AllToolsPak.pk adheres to the principle of data minimization. We do not store session cookies or tracking cookies for your document processing tasks. All PDF, image, and VAT calculations run client-side in RAM. The only cookies and local storage tokens utilized on this website are documented in the audit table below.
+          alltoolspk.com adheres to the principle of data minimization. We do not store session cookies or tracking cookies for your document processing tasks. All PDF, image, and VAT calculations run client-side in RAM. The only cookies and local storage tokens utilized on this website are documented in the audit table below.
         </p>
 
         {/* Audit Table */}
@@ -52,7 +52,7 @@ export function CookiesPage() {
                     <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
                     Strictly Necessary
                   </td>
-                  <td className="p-4 font-mono font-semibold">alltoolspak_consent</td>
+                  <td className="p-4 font-mono font-semibold">alltoolspk_consent</td>
                   <td className="p-4 text-slate-500">First-Party (Local)</td>
                   <td className="p-4">Stores whether user accepted or rejected non-essential cookie banners.</td>
                   <td className="p-4 text-slate-500">Persistent (Local Storage)</td>
@@ -87,7 +87,7 @@ export function CookiesPage() {
             How to Control and Revoke Cookie Consent
           </h2>
           <p>
-            You can modify your cookie choices at any time by clearing your browser storage for <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">alltoolspak.pk</code> or configuring your web browser to block third-party cookies by default. Our tools will remain 100% operational regardless of your cookie preferences.
+            You can modify your cookie choices at any time by clearing your browser storage for <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">alltoolspk.com</code> or configuring your web browser to block third-party cookies by default. Our tools will remain 100% operational regardless of your cookie preferences.
           </p>
           <p className="text-xs text-slate-500 dark:text-slate-400">
             For questions regarding cookie governance or technical data handling, email Fareed Ullah at{' '}

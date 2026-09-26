@@ -152,8 +152,8 @@ export function PdfTools() {
       doc.setAuthor('');
       doc.setSubject('');
       doc.setKeywords([]);
-      doc.setProducer('AllToolsPak Compressor');
-      doc.setCreator('AllToolsPak.pk');
+      doc.setProducer('alltoolspk.com Compressor');
+      doc.setCreator('alltoolspk.com');
 
       const savedBytes = await doc.save({ useObjectStreams: true });
       // Calculate realistic compressed size with quality factor
@@ -209,7 +209,7 @@ export function PdfTools() {
         if (textParts.length > 0) {
           setExtractedText(textParts.slice(0, 500).join(' '));
         } else {
-          setExtractedText(`[Text Extracted from ${file.name}]\n\nAllToolsPak Client Parser: The document contains structural layout objects. Extracted text preview is ready for copying or saving.`);
+          setExtractedText(`[Text Extracted from ${file.name}]\n\nalltoolspk.com Client Parser: The document contains structural layout objects. Extracted text preview is ready for copying or saving.`);
         }
       }
     } catch {
@@ -253,7 +253,7 @@ export function PdfTools() {
         name: 'Is my PDF uploaded to any external server during merge or compression?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'No. AllToolsPak.pk operates with 100% client-side WebAssembly and JavaScript sandboxing. Your PDF files never leave your device memory (RAM), ensuring absolute confidentiality for business, tax, and legal documents.',
+          text: 'No. alltoolspk.com operates with 100% client-side WebAssembly and JavaScript sandboxing. Your PDF files never leave your device memory (RAM), ensuring absolute confidentiality for business, tax, and legal documents.',
         },
       },
       {
@@ -455,7 +455,7 @@ export function PdfTools() {
                       {mergedBlobUrl && (
                         <a
                           href={mergedBlobUrl}
-                          download="AllToolsPak_Merged.pdf"
+                          download="alltoolspk_Merged.pdf"
                           className="inline-flex items-center justify-center h-10 px-4 py-2 rounded-lg bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-semibold text-sm hover:bg-slate-800 dark:hover:bg-slate-200 shadow-md cursor-pointer"
                         >
                           <Download className="w-4 h-4 mr-2" />
@@ -686,13 +686,13 @@ export function PdfTools() {
       <section className="mt-12 space-y-8 text-slate-700 dark:text-slate-300 text-sm leading-relaxed border-t border-slate-200 dark:border-slate-800 pt-8">
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-            What is AllToolsPak PDF Suite?
+            What is alltoolspk.com PDF Suite?
           </h2>
           <p>
-            The <strong>AllToolsPak.pk PDF Suite</strong> is an all-in-one, 100% free web utility engineered for merging multiple PDF documents, compressing bloated file sizes, and extracting clean textual data directly in your browser. Portable Document Format (PDF) files represent the global benchmark for commercial contracts, tax invoices, academic publications, and government applications. However, conventional online PDF services routinely mandate uploading private files to remote cloud servers, exposing confidential client contracts, bank statements, and proprietary data to security breaches.
+            The <strong>alltoolspk.com PDF Suite</strong> is an all-in-one, 100% free web utility engineered for merging multiple PDF documents, compressing bloated file sizes, and extracting clean textual data directly in your browser. Portable Document Format (PDF) files represent the global benchmark for commercial contracts, tax invoices, academic publications, and government applications. However, conventional online PDF services routinely mandate uploading private files to remote cloud servers, exposing confidential client contracts, bank statements, and proprietary data to security breaches.
           </p>
           <p>
-            AllToolsPak redefines document utility by executing the entire binary parsing and manipulation pipeline inside your local device memory using WebAssembly and <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">pdf-lib</code>. Not a single byte of your documents is ever transmitted across the internet, guaranteeing zero data leakage and 100% adherence to international privacy standards.
+            alltoolspk.com redefines document utility by executing the entire binary parsing and manipulation pipeline inside your local device memory using WebAssembly and <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">pdf-lib</code>. Not a single byte of your documents is ever transmitted across the internet, guaranteeing zero data leakage and 100% adherence to international privacy standards.
           </p>
         </div>
 
@@ -741,7 +741,7 @@ export function PdfTools() {
               How Our Client-Side Architecture Works
             </h3>
             <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-              When you drop your files into AllToolsPak, the HTML5 File API allocates a private memory buffer. Our binary stream deserializer traverses the PDF document cross-reference table (XRef), resolves indirect object references, and constructs a clean page index. When combining files, pages are imported as isolated reference trees, eliminating redundant duplicate fonts and minimizing cumulative file size.
+              When you drop your files into alltoolspk.com, the HTML5 File API allocates a private memory buffer. Our binary stream deserializer traverses the PDF document cross-reference table (XRef), resolves indirect object references, and constructs a clean page index. When combining files, pages are imported as isolated reference trees, eliminating redundant duplicate fonts and minimizing cumulative file size.
             </p>
           </div>
         </div>
@@ -757,7 +757,7 @@ export function PdfTools() {
                 Is my PDF uploaded to any external server during merge or compression?
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                No. AllToolsPak.pk operates with 100% client-side WebAssembly and JavaScript sandboxing. Your PDF files never leave your device memory (RAM), ensuring absolute confidentiality for business, tax, and legal documents.
+                No. alltoolspk.com operates with 100% client-side WebAssembly and JavaScript sandboxing. Your PDF files never leave your device memory (RAM), ensuring absolute confidentiality for business, tax, and legal documents.
               </p>
             </div>
             <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
