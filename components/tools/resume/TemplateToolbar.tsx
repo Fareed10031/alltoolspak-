@@ -120,17 +120,6 @@ export function TemplateToolbar({
           </Button>
 
           <Button
-            variant="outline"
-            size="sm"
-            onClick={onSaveDraft}
-            className="text-xs cursor-pointer h-8 gap-1 text-slate-700 dark:text-slate-300"
-            title="Download JSON draft"
-          >
-            <Save className="w-3.5 h-3.5" />
-            <span>Save</span>
-          </Button>
-
-          <Button
             variant="emerald"
             size="sm"
             disabled={isExporting}
@@ -138,7 +127,7 @@ export function TemplateToolbar({
             className="text-xs font-bold cursor-pointer h-8 gap-1.5 shadow-md shadow-emerald-600/20"
           >
             <Download className="w-3.5 h-3.5" />
-            <span>{isExporting ? 'Generating PDF...' : 'Export ATS PDF'}</span>
+            <span>{isExporting ? 'Generating PDF...' : 'Download Resume (PDF)'}</span>
           </Button>
         </div>
       </div>

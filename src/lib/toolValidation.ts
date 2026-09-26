@@ -3,28 +3,23 @@ export interface ValidationResult {
   missing: string[];
 }
 
-export function validateRequiredFields(
-  data: Record<string, any>,
-  requiredFields: string[]
-): ValidationResult {
-  const missing = requiredFields.filter((field) => {
-    const value = data[field];
-    if (value === undefined || value === null) return true;
-    if (typeof value === 'string' && value.trim() === '') return true;
-    if (Array.isArray(value) && value.length === 0) return true;
-    return false;
+export function validateRequiredFields(data: any, fields: string[]): ValidationResult {
+  if (!data) return { isValid: false, missing: fields };
+  const missing = fields.filter((f) => {
+    const v = data[f] ?? data.contact?.[f] ?? "";
+    return !v || (typeof v === 'string' && v.trim() === '') || (Array.isArray(v) && v.length === 0);
   });
   return { isValid: missing.length === 0, missing };
 }
 
-export function guardDownload(result: ValidationResult): boolean {
-  if (!result.isValid) {
-    const message = `⚠️ Please complete required fields:\n\n• ${result.missing.join('\n• ')}\n\nThen try to download again.`;
+export function guardDownload(res: any): boolean {
+  if (!res || !res.isValid) {
+    const msg = `Please fill required fields: ${res?.missing ? res.missing.join(', ') : 'All required fields'}`;
     if (typeof window !== 'undefined' && typeof window.alert === 'function') {
       try {
-        alert(message);
+        alert(msg);
       } catch {
-        console.warn(message);
+        console.warn(msg);
       }
     }
     return false;

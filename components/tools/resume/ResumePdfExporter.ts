@@ -402,6 +402,7 @@ export async function exportResumeToPDF(data: ResumeData): Promise<void> {
     }
   }
 
-  const filename = `${data.contact.fullName.replace(/\s+/g, '_')}_ATS_Resume_2026.pdf`;
+  const safeName = (data.contact.fullName || 'My').trim().replace(/\s+/g, '_');
+  const filename = `${safeName}_Resume.pdf`;
   doc.save(filename);
 }

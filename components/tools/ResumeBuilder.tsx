@@ -22,6 +22,7 @@ import { exportResumeToPDF } from './resume/ResumePdfExporter';
 import { safeStorage } from '@/lib/storage';
 import { validateRequiredFields, guardDownload } from '@/lib/toolValidation';
 import ToolGuard from '@/components/ToolGuard';
+import BaseTool from '@/components/BaseTool';
 
 const STORAGE_KEY = 'alltoolspk_resume_data_2026';
 const REQUIRED_RESUME_FIELDS = ['fullName', 'email', 'jobTitle'];
@@ -40,8 +41,14 @@ export function ResumeBuilder() {
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed && parsed.contact && parsed.contact.fullName) {
-          setData(parsed);
-          setLastSaved('Restored from Local Storage');
+          // If the cached draft is old default "Fareed Ullah", discard it immediately
+          if (parsed.contact.fullName === 'Fareed Ullah' || parsed.contact.fullName.includes('Fareed')) {
+            safeStorage.removeItem(STORAGE_KEY);
+            setData(INITIAL_RESUME_DATA);
+          } else {
+            setData(parsed);
+            setLastSaved('Restored from Local Storage');
+          }
         }
       }
     } catch {
@@ -106,19 +113,9 @@ export function ResumeBuilder() {
     }
   };
 
-  // Save JSON Draft
+  // Save / Download Handler -> Generates PDF
   const handleSaveDraft = () => {
-    const validation = validateRequiredFields(data.contact, REQUIRED_RESUME_FIELDS);
-    if (!guardDownload(validation)) return;
-
-    const safeName = (data.contact.fullName || 'Resume').trim().replace(/\s+/g, '_');
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${safeName}_Resume_2026.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    handleExportPDF();
   };
 
   // Load JSON Draft
@@ -343,6 +340,24 @@ export function ResumeBuilder() {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Unified BaseTool Export Guard & Button */}
+      <div className="mb-8 p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+        <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+          Download Your ATS-Compliant PDF Resume
+        </h3>
+        <p className="text-xs text-slate-500 dark:text-slate-400">
+          Once your Full Name, Email Address, and Target Job Title are filled, click below to generate and download your clean vector PDF instantly.
+        </p>
+        <BaseTool
+          toolName="Resume (PDF)"
+          requiredFields={['fullName', 'email', 'jobTitle']}
+          initialData={data.contact}
+          onGenerate={() => handleExportPDF()}
+        >
+          {() => null}
+        </BaseTool>
       </div>
 
       {/* AI Disclosure requirement */}
