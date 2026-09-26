@@ -29,8 +29,8 @@ export function Footer({
               <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-sm">
                 <Sparkles className="w-4 h-4" />
               </div>
-              <span className="font-extrabold text-lg text-slate-900 dark:text-white">
-                AllToolsPak<span className="text-emerald-600 dark:text-emerald-400">.pk</span>
+              <span className="font-extrabold text-lg text-slate-900 dark:text-white lowercase">
+                alltools<span className="text-emerald-600 dark:text-emerald-400">pk.com</span>
               </span>
             </div>
             <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -204,7 +204,7 @@ export function Footer({
 
         {/* Bottom copyright line */}
         <div className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
-          <p>&copy; 2026 AllToolsPak.pk. All rights reserved.</p>
+          <p>&copy; 2026 alltoolspk.com. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <button
               onClick={() => onNavigate('/privacy')}

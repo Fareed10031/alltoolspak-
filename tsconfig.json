@@ -19,6 +19,9 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "next/link": [
+        "./lib/next-link.tsx"
       ]
     },
     "allowImportingTsExtensions": true,

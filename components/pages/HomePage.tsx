@@ -145,7 +145,7 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
             variant="emerald"
             size="lg"
             onClick={() => {
-              const el = document.getElementById('tools-grid');
+              const el = document.getElementById('tools') || document.getElementById('tools-grid');
               el?.scrollIntoView({ behavior: 'smooth' });
             }}
             className="font-bold text-sm h-12 px-7 cursor-pointer shadow-lg shadow-emerald-600/20 gap-2"
@@ -191,8 +191,8 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
       {/* Ad Slot (Top) */}
       <AdSlot label="Homepage Premium Leaderboard" />
 
-      {/* 8-in-1 Tools Grid */}
-      <section id="tools-grid" className="space-y-6 scroll-mt-20">
+      {/* 9-in-1 Tools Grid */}
+      <section id="tools" className="space-y-6 scroll-mt-20">
         <div className="text-center space-y-2 max-w-2xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Complete Suite of Web Utilities
