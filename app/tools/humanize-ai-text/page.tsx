@@ -6,6 +6,8 @@ import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
 import { Sparkles, Copy, Check, RotateCcw } from 'lucide-react';
 import { AdSlot } from '@/components/AdSlot';
+import { validateRequiredFields, guardDownload } from '@/lib/toolValidation';
+import ToolGuard from '@/components/ToolGuard';
 
 export default function HumanizeAIPage() {
   const [input, setInput] = useState('');
@@ -72,7 +74,8 @@ export default function HumanizeAIPage() {
   };
 
   const handleHumanize = () => {
-    if (!input.trim()) return;
+    const validation = validateRequiredFields({ input }, ['input']);
+    if (!guardDownload(validation)) return;
     setLoading(true);
     setTimeout(() => {
       setOutput(humanizeText(input));

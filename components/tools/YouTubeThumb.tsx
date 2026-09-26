@@ -13,6 +13,8 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { AdSlot } from '@/components/AdSlot';
 import { AIDisclosure } from '@/components/AIDisclosure';
+import { validateRequiredFields, guardDownload } from '@/lib/toolValidation';
+import ToolGuard from '@/components/ToolGuard';
 
 interface QualityOption {
   key: string;
@@ -54,8 +56,8 @@ const QUALITY_OPTIONS: QualityOption[] = [
 ];
 
 export function YouTubeThumb() {
-  const [urlInput, setUrlInput] = useState<string>('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
-  const [videoId, setVideoId] = useState<string>('dQw4w9WgXcQ');
+  const [urlInput, setUrlInput] = useState<string>('');
+  const [videoId, setVideoId] = useState<string>('');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [downloadingKey, setDownloadingKey] = useState<string | null>(null);
   const [inputError, setInputError] = useState<string>('');
@@ -88,7 +90,11 @@ export function YouTubeThumb() {
   };
 
   const handleDownload = async (imageUrl: string, filename: string, key: string) => {
+    const validation = validateRequiredFields({ urlInput, videoId }, ['urlInput', 'videoId']);
+    if (!guardDownload(validation)) return;
+
     setDownloadingKey(key);
+
     try {
       // Attempt fetch blob first
       const response = await fetch(imageUrl, { mode: 'cors' });
@@ -264,8 +270,8 @@ export function YouTubeThumb() {
             </button>
           </div>
 
-          {/* Video Metadata Indicator */}
-          {videoId && (
+          {/* Video Metadata Indicator or ToolGuard */}
+          {videoId ? (
             <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
                 <Youtube className="w-4 h-4 text-red-500 shrink-0" />
@@ -283,6 +289,10 @@ export function YouTubeThumb() {
                 <ExternalLink className="w-3 h-3" />
               </a>
             </div>
+          ) : (
+            <ToolGuard isValid={false} missing={['YouTube Video URL or Video ID']}>
+              {null}
+            </ToolGuard>
           )}
 
           {/* 4 Thumbnails Grid */}

@@ -17,6 +17,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { AdSlot } from '@/components/AdSlot';
 import { AIDisclosure } from '@/components/AIDisclosure';
+import { validateRequiredFields, guardDownload } from '@/lib/toolValidation';
+import ToolGuard from '@/components/ToolGuard';
 
 interface VatOrder {
   orderId: string;
@@ -117,6 +119,9 @@ export function AmazonVat() {
 
   // Generate Single PDF Invoice
   const generateSinglePdf = (order: VatOrder) => {
+    const validation = validateRequiredFields(order, ['orderId', 'country', 'grossAmount']);
+    if (!guardDownload(validation)) return;
+
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
@@ -200,7 +205,8 @@ export function AmazonVat() {
 
   // ZIP all PDFs
   const generateZipAll = async () => {
-    if (orders.length === 0) return;
+    const validation = validateRequiredFields({ orders }, ['orders']);
+    if (!guardDownload(validation)) return;
     setConfirmedVerification(true);
 
     setIsExportingZip(true);

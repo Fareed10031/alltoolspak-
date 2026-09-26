@@ -13,6 +13,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { AdSlot } from '@/components/AdSlot';
 import { AIDisclosure } from '@/components/AIDisclosure';
+import { validateRequiredFields, guardDownload } from '@/lib/toolValidation';
+import ToolGuard from '@/components/ToolGuard';
 
 export function BgRemover() {
   const [originalSrc, setOriginalSrc] = useState<string | null>(null);
@@ -135,7 +137,11 @@ export function BgRemover() {
   };
 
   const handleDownloadHD = () => {
-    if (!resultSrc) return;
+    const validation = validateRequiredFields(
+      { originalFile: originalFile?.name, resultSrc },
+      ['originalFile', 'resultSrc']
+    );
+    if (!guardDownload(validation) || !resultSrc) return;
 
     if (bgColor === 'transparent') {
       const link = document.createElement('a');

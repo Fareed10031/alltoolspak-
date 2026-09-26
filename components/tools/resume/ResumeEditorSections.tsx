@@ -266,7 +266,7 @@ export function ResumeEditorSections({ data, onChange }: ResumeEditorSectionsPro
             <Input
               value={data.contact.fullName}
               onChange={(e) => onChange({ contact: { ...data.contact, fullName: e.target.value } })}
-              placeholder="e.g. Fareed Ullah"
+              placeholder="e.g. Alex Morgan"
             />
           </div>
           <div className="space-y-1">
@@ -283,7 +283,7 @@ export function ResumeEditorSections({ data, onChange }: ResumeEditorSectionsPro
               type="email"
               value={data.contact.email}
               onChange={(e) => onChange({ contact: { ...data.contact, email: e.target.value } })}
-              placeholder="contact@alltoolspk.com"
+              placeholder="e.g. alex.morgan@example.com"
             />
           </div>
           <div className="space-y-1">
@@ -291,7 +291,7 @@ export function ResumeEditorSections({ data, onChange }: ResumeEditorSectionsPro
             <Input
               value={data.contact.phone}
               onChange={(e) => onChange({ contact: { ...data.contact, phone: e.target.value } })}
-              placeholder="+92 340 4526741"
+              placeholder="+1 (555) 019-2834"
             />
           </div>
           <div className="space-y-1">
@@ -299,7 +299,7 @@ export function ResumeEditorSections({ data, onChange }: ResumeEditorSectionsPro
             <Input
               value={data.contact.location}
               onChange={(e) => onChange({ contact: { ...data.contact, location: e.target.value } })}
-              placeholder="Peshawar, Pakistan"
+              placeholder="e.g. New York, NY"
             />
           </div>
           <div className="space-y-1">
@@ -332,7 +332,7 @@ export function ResumeEditorSections({ data, onChange }: ResumeEditorSectionsPro
             <Input
               value={data.contact.portfolio}
               onChange={(e) => onChange({ contact: { ...data.contact, portfolio: e.target.value } })}
-              placeholder="https://alltoolspk.com"
+              placeholder="https://example.com"
             />
           </div>
           <div className="space-y-1 flex flex-col justify-end">

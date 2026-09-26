@@ -17,6 +17,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { AdSlot } from '@/components/AdSlot';
 import { AIDisclosure } from '@/components/AIDisclosure';
+import { validateRequiredFields, guardDownload } from '@/lib/toolValidation';
+import ToolGuard from '@/components/ToolGuard';
 
 interface LoadedPdf {
   id: string;
@@ -100,7 +102,10 @@ export function PdfTools() {
   };
 
   const handleMergeAction = async () => {
-    if (mergeFiles.length < 2) return;
+    if (mergeFiles.length < 2) {
+      guardDownload({ isValid: false, missing: ['Select at least 2 PDF files to merge'] });
+      return;
+    }
     setIsMerging(true);
     try {
       const mergedPdf = await PDFDocument.create();
@@ -142,7 +147,8 @@ export function PdfTools() {
   };
 
   const handleCompressAction = async () => {
-    if (!compressFile) return;
+    const validation = validateRequiredFields({ compressFile: compressFile?.name }, ['compressFile']);
+    if (!guardDownload(validation) || !compressFile) return;
     setIsCompressing(true);
     try {
       // Optimize PDF streams and objects
@@ -227,7 +233,11 @@ export function PdfTools() {
   };
 
   const downloadTextFile = () => {
-    if (!extractedText) return;
+    const validation = validateRequiredFields(
+      { textFile: textFile?.name, extractedText },
+      ['textFile', 'extractedText']
+    );
+    if (!guardDownload(validation)) return;
     const blob = new Blob([extractedText], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

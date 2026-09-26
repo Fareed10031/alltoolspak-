@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { Sparkles, Copy, Check, RotateCcw } from 'lucide-react';
 import { AdSlot } from '@/components/AdSlot';
+import { validateRequiredFields, guardDownload } from '@/lib/toolValidation';
+import ToolGuard from '@/components/ToolGuard';
 
 export function HumanizeAI() {
   const [input, setInput] = useState('');
@@ -69,7 +71,8 @@ export function HumanizeAI() {
   };
 
   const handleHumanize = () => {
-    if (!input.trim()) return;
+    const validation = validateRequiredFields({ input }, ['input']);
+    if (!guardDownload(validation)) return;
     setLoading(true);
     setTimeout(() => {
       setOutput(humanizeText(input));

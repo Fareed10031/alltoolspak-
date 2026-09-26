@@ -12,6 +12,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { AdSlot } from '@/components/AdSlot';
 import { AIDisclosure } from '@/components/AIDisclosure';
+import { validateRequiredFields, guardDownload } from '@/lib/toolValidation';
+import ToolGuard from '@/components/ToolGuard';
 
 type ResizePreset = 'original' | '1080x1080' | '1280x720' | '1080x1920';
 
@@ -463,6 +465,12 @@ export function ImageCompressor() {
                 {compressedSrc && (
                   <a
                     href={compressedSrc}
+                    onClick={(e) => {
+                      const validation = validateRequiredFields({ file: file?.name, compressedSrc }, ['file', 'compressedSrc']);
+                      if (!guardDownload(validation)) {
+                        e.preventDefault();
+                      }
+                    }}
                     download={`alltoolspk_${file?.name.split('.')[0] || 'optimized'}.${format.replace('image/', '')}`}
                     className="inline-flex items-center justify-center h-11 px-6 rounded-xl bg-emerald-600 text-white font-bold text-sm hover:bg-emerald-700 shadow-lg shadow-emerald-600/20 cursor-pointer"
                   >

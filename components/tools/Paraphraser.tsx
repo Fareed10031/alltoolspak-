@@ -16,6 +16,8 @@ import { AdSlot } from '@/components/AdSlot';
 import { AIDisclosure } from '@/components/AIDisclosure';
 import { Download } from 'lucide-react';
 import { generateAI } from '@/lib/ai';
+import { validateRequiredFields, guardDownload } from '@/lib/toolValidation';
+import ToolGuard from '@/components/ToolGuard';
 
 type ParaphraseMode = 'Standard' | 'Fluency' | 'Humanize';
 
@@ -152,7 +154,8 @@ export function Paraphraser() {
   };
 
   const downloadOutputText = () => {
-    if (!outputText) return;
+    const validation = validateRequiredFields({ inputText, outputText }, ['inputText', 'outputText']);
+    if (!guardDownload(validation)) return;
     const blob = new Blob([outputText], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

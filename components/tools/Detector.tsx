@@ -14,6 +14,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { AdSlot } from '@/components/AdSlot';
 import { AIDisclosure } from '@/components/AIDisclosure';
+import { validateRequiredFields, guardDownload } from '@/lib/toolValidation';
+import ToolGuard from '@/components/ToolGuard';
 
 interface SentenceAnalysis {
   text: string;
@@ -139,7 +141,8 @@ export function Detector() {
   };
 
   const exportAuditReport = () => {
-    if (!analyzed) return;
+    const validation = validateRequiredFields({ text, analyzed: analyzed ? 'analyzed' : '' }, ['text', 'analyzed']);
+    if (!guardDownload(validation)) return;
     const report = {
       auditTimestamp: new Date().toISOString(),
       targetTextLength: text.length,

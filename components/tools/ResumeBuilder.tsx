@@ -20,8 +20,11 @@ import { ResumeEditorSections } from './resume/ResumeEditorSections';
 import { ResumePreview } from './resume/ResumePreview';
 import { exportResumeToPDF } from './resume/ResumePdfExporter';
 import { safeStorage } from '@/lib/storage';
+import { validateRequiredFields, guardDownload } from '@/lib/toolValidation';
+import ToolGuard from '@/components/ToolGuard';
 
 const STORAGE_KEY = 'alltoolspk_resume_data_2026';
+const REQUIRED_RESUME_FIELDS = ['fullName', 'email', 'jobTitle'];
 
 export function ResumeBuilder() {
   const [data, setData] = useState<ResumeData>(INITIAL_RESUME_DATA);
@@ -90,6 +93,9 @@ export function ResumeBuilder() {
 
   // Export PDF Handler
   const handleExportPDF = async () => {
+    const validation = validateRequiredFields(data.contact, REQUIRED_RESUME_FIELDS);
+    if (!guardDownload(validation)) return;
+
     setIsExporting(true);
     try {
       await exportResumeToPDF(data);
@@ -102,11 +108,15 @@ export function ResumeBuilder() {
 
   // Save JSON Draft
   const handleSaveDraft = () => {
+    const validation = validateRequiredFields(data.contact, REQUIRED_RESUME_FIELDS);
+    if (!guardDownload(validation)) return;
+
+    const safeName = (data.contact.fullName || 'Resume').trim().replace(/\s+/g, '_');
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${data.contact.fullName.replace(/\s+/g, '_')}_Resume_2026.json`;
+    a.download = `${safeName}_Resume_2026.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -291,6 +301,14 @@ export function ResumeBuilder() {
           isExporting={isExporting}
         />
       </div>
+
+      {/* Action Required ToolGuard for Export Compliance */}
+      <ToolGuard
+        isValid={validateRequiredFields(data.contact, REQUIRED_RESUME_FIELDS).isValid}
+        missing={validateRequiredFields(data.contact, REQUIRED_RESUME_FIELDS).missing}
+      >
+        {null}
+      </ToolGuard>
 
       {/* Main Workspace (Editor or Live A4 Preview) */}
       <div className="mb-8">

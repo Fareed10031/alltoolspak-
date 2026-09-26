@@ -119,130 +119,28 @@ export interface ResumeData {
 
 export const INITIAL_RESUME_DATA: ResumeData = {
   contact: {
-    fullName: 'Fareed Ullah',
-    jobTitle: 'Senior Software Engineer & Full-Stack Architect',
-    email: 'contact@alltoolspk.com',
-    phone: '+92 340 4526741',
-    location: 'Peshawar, Pakistan',
-    linkedIn: 'linkedin.com/in/fareed-ullah-dev',
-    github: 'github.com/fareed-ullah-dev',
-    portfolio: 'https://alltoolspk.com',
-    website: 'https://alltoolspk.com',
+    fullName: '',
+    jobTitle: '',
+    email: '',
+    phone: '',
+    location: '',
+    linkedIn: '',
+    github: '',
+    portfolio: '',
+    website: '',
     photoUrl: '',
     includePhoto: false,
-    includeQrCode: true,
+    includeQrCode: false,
   },
-  summary:
-    'Results-driven Software Engineer with 4+ years of expertise architecting high-performance client-side web utilities, distributed backend services, and scalable cloud systems. Proven track record optimizing web delivery velocity by 40%, cutting infrastructure overhead, and delivering reliable tools to 100,000+ monthly active users.',
-  experiences: [
-    {
-      id: 'exp-1',
-      role: 'Lead Application Architect',
-      company: 'alltoolspk.com Systems',
-      location: 'Peshawar, Pakistan',
-      startDate: '2023',
-      endDate: 'Present',
-      isCurrent: true,
-      bullets: [
-        'Architected 8-in-1 browser-based utility suite utilizing WebAssembly and HTML5 Canvas, serving 100,000+ monthly active users with zero server bandwidth costs.',
-        'Engineered ATS Resume Builder with client-side vector PDF compilation and real-time linguistic score algorithms, boosting user interview conversion rates by 34%.',
-        'Spearheaded performance optimization of client-side image compression and PDF manipulation, reducing mobile memory consumption by 42%.',
-      ],
-    },
-    {
-      id: 'exp-2',
-      role: 'Full-Stack Developer',
-      company: 'Apex Cloud Solutions',
-      location: 'Remote',
-      startDate: '2021',
-      endDate: '2023',
-      isCurrent: false,
-      bullets: [
-        'Developed RESTful microservices on Node.js and TypeScript, handling 500K+ monthly API calls with 99.95% uptime SLA.',
-        'Automated cross-border VAT reconciliation engines for European e-commerce clients, processing over €750K in quarterly sales volume.',
-        'Streamlined CI/CD deployment pipelines on Docker and GitHub Actions, cutting release deployment cycle time from 45 minutes to 7 minutes.',
-      ],
-    },
-  ],
-  educations: [
-    {
-      id: 'edu-1',
-      degree: 'B.S. in Computer Science',
-      institution: 'University of Engineering & Technology, Peshawar',
-      year: '2019 - 2023',
-      gpa: '3.8 / 4.0',
-    },
-  ],
-  skillCategories: [
-    {
-      id: 'cat-tech',
-      category: 'Technical Skills & Frameworks',
-      skills: [
-        { name: 'TypeScript', level: 5 },
-        { name: 'React 19 & Next.js', level: 5 },
-        { name: 'Node.js & Express', level: 5 },
-        { name: 'Tailwind CSS', level: 5 },
-        { name: 'WebAssembly (Wasm)', level: 4 },
-        { name: 'PostgreSQL & SQL', level: 4 },
-        { name: 'Docker & Git', level: 5 },
-        { name: 'REST & GraphQL APIs', level: 5 },
-      ],
-    },
-    {
-      id: 'cat-soft',
-      category: 'Professional & Methodological',
-      skills: [
-        { name: 'System Architecture', level: 5 },
-        { name: 'Agile & Scrum', level: 5 },
-        { name: 'Code Review & Mentorship', level: 4 },
-        { name: 'Technical Documentation', level: 5 },
-      ],
-    },
-  ],
-  projects: [
-    {
-      id: 'proj-1',
-      name: 'alltoolspk.com Client-Side Suite',
-      link: 'https://alltoolspk.com',
-      techStack: 'TypeScript, React 19, Tailwind CSS, jsPDF, WebAssembly',
-      bullet1:
-        'Engineered high-performance utility platform processing documents in client RAM without server storage under GDPR Article 17.',
-      bullet2:
-        'Achieved 100/100 Google Lighthouse Core Web Vitals score through code splitting and tree shaking.',
-    },
-  ],
-  certifications: [
-    {
-      id: 'cert-1',
-      name: 'Full-Stack Web Architecture Certification',
-      issuer: 'Meta & Coursera',
-      date: '2023',
-      link: 'https://coursera.org/verify',
-    },
-  ],
-  awards: [
-    {
-      id: 'aw-1',
-      title: 'Top Innovation Award – National Software Olympiad',
-      issuer: 'Tech Pakistan Forum',
-      date: '2023',
-      description: 'Recognized for building accessible privacy-first browser computing tools.',
-    },
-  ],
-  volunteer: [
-    {
-      id: 'vol-1',
-      role: 'Coding Mentor',
-      organization: 'Code For Pakistan Community',
-      dates: '2022 - Present',
-      description: 'Mentored 35+ aspiring developers in foundational TypeScript and modern React workflows.',
-    },
-  ],
-  languages: [
-    { id: 'lang-1', language: 'English', proficiency: 'Professional Working / Fluent' },
-    { id: 'lang-2', language: 'Urdu', proficiency: 'Native / Bilingual' },
-    { id: 'lang-3', language: 'Pashto', proficiency: 'Native' },
-  ],
+  summary: '',
+  experiences: [],
+  educations: [],
+  skillCategories: [],
+  projects: [],
+  certifications: [],
+  awards: [],
+  volunteer: [],
+  languages: [],
   customSections: [],
   sectionOrder: [
     'summary',
@@ -262,3 +160,4 @@ export const INITIAL_RESUME_DATA: ResumeData = {
   lineSpacing: 'standard',
   margins: 'normal',
 };
+
