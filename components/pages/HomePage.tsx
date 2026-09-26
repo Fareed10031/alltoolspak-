@@ -13,7 +13,6 @@ import {
   Lock,
   ArrowRight,
   CheckCircle2,
-  Star,
   Users,
   Terminal,
   Cpu,
@@ -512,61 +511,52 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Trusted by Users Across Pakistan (Compliant - No Fake Reviews) */}
       <section className="space-y-6">
         <div className="text-center space-y-2 max-w-2xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
-            Trusted by Creators &amp; Professionals
+            Trusted by Users Across Pakistan
           </h2>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-            Empowering Pakistani and international businesses with free, dependable web utilities.
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            Join thousands of freelancers, students, and sellers using AllToolsPak.pk tools daily. All processing is done 100% in your browser for privacy.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 shadow-xs">
-            <div className="flex items-center gap-1 text-amber-400">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-amber-400" />
-              ))}
+          <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3 shadow-xs hover:border-emerald-500/40 transition-colors">
+            <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center">
+              <Lock className="w-6 h-6" />
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed italic">
-              &quot;The Amazon EU VAT calculator saved our Lahore e-commerce agency dozens of manual reconciliation hours. Generating ZIP archives of all EU invoices in one click is pure genius.&quot;
+            <h3 className="text-base font-bold text-slate-900 dark:text-white">
+              100% Private - No Uploads
+            </h3>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              Your files, spreadsheets, and images are processed strictly in your local device RAM. Zero data is ever sent to or stored on external servers.
             </p>
-            <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
-              <p className="text-xs font-bold text-slate-900 dark:text-white">Zeeshan Malik</p>
-              <p className="text-[11px] text-slate-400">Amazon FBA Seller, Lahore</p>
-            </div>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 shadow-xs">
-            <div className="flex items-center gap-1 text-amber-400">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-amber-400" />
-              ))}
+          <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3 shadow-xs hover:border-emerald-500/40 transition-colors">
+            <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 flex items-center justify-center">
+              <Zap className="w-6 h-6" />
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed italic">
-              &quot;I use the YouTube Thumbnail extractor daily for design research. It resolves full 1080p graphics instantly and downloads directly without shady redirect pop-ups.&quot;
+            <h3 className="text-base font-bold text-slate-900 dark:text-white">
+              Free &amp; Fast - No Login
+            </h3>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              Zero subscriptions, no credit card forms, and no sign-up gates. Instant WebAssembly compute powered directly by your browser engine.
             </p>
-            <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
-              <p className="text-xs font-bold text-slate-900 dark:text-white">Ayesha Rehman</p>
-              <p className="text-[11px] text-slate-400">Digital Content Creator, Islamabad</p>
-            </div>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 shadow-xs">
-            <div className="flex items-center gap-1 text-amber-400">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-amber-400" />
-              ))}
+          <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3 shadow-xs hover:border-emerald-500/40 transition-colors">
+            <div className="w-12 h-12 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 flex items-center justify-center">
+              <Globe className="w-6 h-6" />
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed italic">
-              &quot;The ATS Resume Builder created an immaculate single-column vector PDF that passed every corporate hiring portal without glitching. Got interview calls within a week!&quot;
+            <h3 className="text-base font-bold text-slate-900 dark:text-white">
+              Made for Pakistan
+            </h3>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              Tailored specifically for Pakistani creators, students, remote workers, and Amazon sellers needing dependable, unrestricted utility software.
             </p>
-            <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
-              <p className="text-xs font-bold text-slate-900 dark:text-white">Bilal Tariq</p>
-              <p className="text-[11px] text-slate-400">Software Engineer, Karachi</p>
-            </div>
           </div>
         </div>
       </section>
