@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
-import { Sparkles, Copy, Check, RotateCcw } from 'lucide-react';
+import { Sparkles, Copy, Check, RotateCcw, Download } from 'lucide-react';
 import { AdSlot } from '@/components/AdSlot';
 import { validateRequiredFields, guardDownload } from '@/lib/toolValidation';
 import ToolGuard from '@/components/ToolGuard';
@@ -88,6 +88,19 @@ export default function HumanizeAIPage() {
     navigator.clipboard.writeText(output);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleDownload = () => {
+    const validation = validateRequiredFields({ input, output }, ['input', 'output']);
+    if (!guardDownload(validation)) return;
+    const snippet = input.trim().split(/\s+/).slice(0, 3).join('_').replace(/[^a-zA-Z0-9_]/g, '') || 'humanized';
+    const blob = new Blob([output], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${snippet}_humanized_text.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const wordCount = input.trim() ? input.trim().split(/\s+/).length : 0;
@@ -215,10 +228,10 @@ export default function HumanizeAIPage() {
                         <p className="font-extrabold text-red-500 text-lg">{aiScore}%</p>
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-2 mt-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3">
                       <button
                         onClick={handleCopy}
-                        className="py-3 border border-gray-200 dark:border-slate-700 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-slate-800 cursor-pointer flex items-center justify-center gap-1.5 transition-colors"
+                        className="py-3 border border-gray-200 dark:border-slate-700 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-slate-800 cursor-pointer flex items-center justify-center gap-1.5 transition-colors text-xs sm:text-sm"
                       >
                         {copied ? (
                           <>
@@ -233,11 +246,18 @@ export default function HumanizeAIPage() {
                         )}
                       </button>
                       <button
+                        onClick={handleDownload}
+                        className="py-3 bg-[#0055FF] hover:bg-blue-700 text-white rounded-xl font-bold cursor-pointer transition-colors flex items-center justify-center gap-1.5 text-xs sm:text-sm shadow-md shadow-blue-500/20"
+                      >
+                        <Download className="w-4 h-4" />
+                        <span>Download .TXT</span>
+                      </button>
+                      <button
                         onClick={() => {
                           setInput('');
                           setOutput('');
                         }}
-                        className="py-3 bg-gray-900 hover:bg-black text-white rounded-xl font-bold cursor-pointer transition-colors"
+                        className="py-3 bg-gray-900 hover:bg-black text-white rounded-xl font-bold cursor-pointer transition-colors text-xs sm:text-sm"
                       >
                         Clear All
                       </button>

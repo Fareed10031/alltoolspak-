@@ -465,7 +465,11 @@ export function PdfTools() {
                       {mergedBlobUrl && (
                         <a
                           href={mergedBlobUrl}
-                          download="alltoolspk_Merged.pdf"
+                          download={
+                            mergeFiles.length > 0
+                              ? `${mergeFiles[0].name.replace(/\.[^/.]+$/, '')}_Merged.pdf`
+                              : 'Merged_Document.pdf'
+                          }
                           className="inline-flex items-center justify-center h-10 px-4 py-2 rounded-lg bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-semibold text-sm hover:bg-slate-800 dark:hover:bg-slate-200 shadow-md cursor-pointer"
                         >
                           <Download className="w-4 h-4 mr-2" />

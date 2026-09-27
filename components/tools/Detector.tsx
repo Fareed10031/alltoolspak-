@@ -143,27 +143,42 @@ export function Detector() {
   const exportAuditReport = () => {
     const validation = validateRequiredFields({ text, analyzed: analyzed ? 'analyzed' : '' }, ['text', 'analyzed']);
     if (!guardDownload(validation)) return;
-    const report = {
-      auditTimestamp: new Date().toISOString(),
-      targetTextLength: text.length,
-      wordCount,
-      overallAiProbability: `${aiScore}%`,
-      verdict: aiScore > 65 ? 'Likely AI' : aiScore > 35 ? 'Mixed / Edited' : 'Human',
-      statisticalMetrics: metrics,
-      sentenceBreakdown: sentences.map((s, i) => ({
-        index: i + 1,
-        text: s.text,
-        aiScore: `${s.score}%`,
-        classification: s.isAi ? 'AI Pattern' : 'Natural',
-        identifiedMarkers: s.triggerWords,
-      })),
-    };
 
-    const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+    const verdict = aiScore > 65 ? 'Likely AI-Generated' : aiScore > 35 ? 'Mixed / AI-Assisted' : 'Likely Human-Written';
+    const snippet = text.trim().split(/\s+/).slice(0, 3).join('_').replace(/[^a-zA-Z0-9_]/g, '') || 'content';
+
+    const textReport = [
+      '====================================================',
+      '        ALLTOOLSPK AI CONTENT DETECTION AUDIT       ',
+      '====================================================',
+      `Date & Time: ${new Date().toLocaleString()}`,
+      `Overall AI Probability: ${aiScore}%`,
+      `Final Verdict: ${verdict}`,
+      `Word Count: ${wordCount} words`,
+      `Character Count: ${text.length} characters`,
+      `Perplexity Index: ${metrics.perplexity.toFixed(1)} / 100`,
+      `Burstiness Index: ${metrics.burstiness.toFixed(1)} / 100`,
+      `AI Vocabulary Markers Found: ${metrics.aiWordsFound}`,
+      '----------------------------------------------------',
+      'SENTENCE-BY-SENTENCE BREAKDOWN:',
+      '----------------------------------------------------',
+      ...sentences.map(
+        (s, i) =>
+          `[#${i + 1}] (${s.isAi ? 'AI FLAG' : 'NATURAL'} - ${s.score}% AI Score)\n"${s.text}"\nTrigger markers: ${
+            s.triggerWords.length > 0 ? s.triggerWords.join(', ') : 'None'
+          }\n`
+      ),
+      '====================================================',
+      'Audited with AllToolsPK 100% Client-Side Detection Suite',
+      'https://alltoolspk.com/tools/detector',
+      '====================================================',
+    ].join('\n');
+
+    const blob = new Blob([textReport], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `ai_detection_audit_${Date.now()}.json`;
+    a.download = `${snippet}_AI_Audit_Report.txt`;
     a.click();
     URL.revokeObjectURL(url);
   };

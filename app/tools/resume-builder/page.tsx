@@ -1,43 +1,26 @@
 'use client';
 
 import React from 'react';
-import { HomePage } from '@/components/pages/HomePage';
+import { ResumeBuilder } from '@/components/tools/ResumeBuilder';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
 
-export default function Page() {
+export default function ResumeBuilderPage() {
   const navigateTo = (page: string) => {
-    if (page === 'home') {
+    if (page === 'home' || page === '/') {
       window.location.href = '/';
-    } else if (
-      [
-        'pdf-tools',
-        'image-compress',
-        'image-compressor',
-        'youtube-thumb',
-        'youtube-thumbnail',
-        'amazon-vat',
-        'bg-remover',
-        'background-remover',
-        'paraphraser',
-        'detector',
-        'ai-detector',
-        'resume-builder',
-        'ats-resume-builder',
-        'humanize-ai-text',
-      ].includes(page)
-    ) {
-      window.location.href = `/tools/${page}`;
+    } else if (page.startsWith('/tools/') || page.startsWith('/')) {
+      window.location.href = page;
     } else {
-      window.location.href = `/${page}`;
+      window.location.href = `/tools/${page}`;
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
       <Header
-        activeTool="home"
+        activeTool="resume-builder"
         onSelectTool={navigateTo}
         onNavigate={navigateTo}
         isDark={false}
@@ -45,8 +28,10 @@ export default function Page() {
           document.documentElement.classList.toggle('dark');
         }}
       />
-      <main className="flex-1">
-        <HomePage onSelectTool={navigateTo} onNavigate={navigateTo} />
+      <main className="flex-1 py-8 sm:py-12 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto">
+          <ResumeBuilder />
+        </div>
       </main>
       <Footer onNavigate={navigateTo} onSelectTool={navigateTo} />
       <CookieBanner onNavigate={navigateTo} />

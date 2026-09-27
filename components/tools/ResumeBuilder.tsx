@@ -23,6 +23,7 @@ import { safeStorage } from '@/lib/storage';
 import { validateRequiredFields, guardDownload } from '@/lib/toolValidation';
 import ToolGuard from '@/components/ToolGuard';
 import BaseTool from '@/components/BaseTool';
+import ProToolWrapper from '@/components/ProToolWrapper';
 
 const STORAGE_KEY = 'alltoolspk_resume_data_2026';
 const REQUIRED_RESUME_FIELDS = ['fullName', 'email', 'jobTitle'];
@@ -342,22 +343,34 @@ export function ResumeBuilder() {
         )}
       </div>
 
-      {/* Unified BaseTool Export Guard & Button */}
-      <div className="mb-8 p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-        <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-          Download Your ATS-Compliant PDF Resume
-        </h3>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
-          Once your Full Name, Email Address, and Target Job Title are filled, click below to generate and download your clean vector PDF instantly.
-        </p>
-        <BaseTool
-          toolName="Resume (PDF)"
+      {/* Unified ProToolWrapper Export Guard & Button */}
+      <div className="mb-8">
+        <ProToolWrapper
+          toolName="ATS Resume (PDF)"
           requiredFields={['fullName', 'email', 'jobTitle']}
-          initialData={data.contact}
-          onGenerate={() => handleExportPDF()}
+          onDownload={() => handleExportPDF()}
+          index={7}
+          description="Vector PDF Generation • 100% Client-Side • ATS Optimized"
         >
-          {() => null}
-        </BaseTool>
+          {() => (
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 text-xs text-slate-600 dark:text-slate-300">
+              <p className="font-semibold text-slate-800 dark:text-slate-200 mb-1">
+                Download Status &amp; Compliance Check
+              </p>
+              <p>
+                {data.contact.fullName && data.contact.email && data.contact.jobTitle ? (
+                  <span className="text-emerald-600 dark:text-emerald-400 font-bold">
+                    ✓ Ready to compile: {data.contact.fullName}_Resume.pdf
+                  </span>
+                ) : (
+                  <span>
+                    Fill in your Full Name, Target Job Title, and Email in the editor above to unlock instant PDF generation.
+                  </span>
+                )}
+              </p>
+            </div>
+          )}
+        </ProToolWrapper>
       </div>
 
       {/* AI Disclosure requirement */}

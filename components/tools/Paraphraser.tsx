@@ -156,11 +156,12 @@ export function Paraphraser() {
   const downloadOutputText = () => {
     const validation = validateRequiredFields({ inputText, outputText }, ['inputText', 'outputText']);
     if (!guardDownload(validation)) return;
+    const snippet = inputText.trim().split(/\s+/).slice(0, 3).join('_').replace(/[^a-zA-Z0-9_]/g, '') || 'paraphrased';
     const blob = new Blob([outputText], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `paraphrased_${mode.toLowerCase()}_text.txt`;
+    a.download = `${snippet}_${mode.toLowerCase()}.txt`;
     a.click();
     URL.revokeObjectURL(url);
   };
