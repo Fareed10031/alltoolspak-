@@ -239,7 +239,7 @@ export function UnitConverterTool() {
                   placeholder="e.g. 100"
                   value={form.inputValue || ''}
                   onChange={(e) => setForm({ ...form, inputValue: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
                 />
               </div>
 
@@ -250,7 +250,7 @@ export function UnitConverterTool() {
                 <select
                   value={fromUnit}
                   onChange={(e) => setForm({ ...form, fromUnit: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none cursor-pointer capitalize"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none cursor-pointer capitalize"
                 >
                   {Object.keys(cat.units).map((u) => (
                     <option key={u} value={u}>
@@ -267,7 +267,7 @@ export function UnitConverterTool() {
                 <select
                   value={toUnit}
                   onChange={(e) => setForm({ ...form, toUnit: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none cursor-pointer capitalize"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none cursor-pointer capitalize"
                 >
                   {Object.keys(cat.units).map((u) => (
                     <option key={u} value={u}>

@@ -29,8 +29,10 @@ export function BgRemover() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-    const file = e.target.files[0];
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+    const file = files[0];
+    e.target.value = '';
     setOriginalFile(file);
     const reader = new FileReader();
     reader.onload = (event) => {

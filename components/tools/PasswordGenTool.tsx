@@ -16,6 +16,7 @@ export function PasswordGenTool() {
 
   const [generatedPass, setGeneratedPass] = useState('');
   const [copied, setCopied] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const generatePasswordString = (
     length: number,
@@ -39,14 +40,44 @@ export function PasswordGenTool() {
 
   const copyToClipboard = () => {
     if (!generatedPass) return;
-    navigator.clipboard.writeText(generatedPass);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(generatedPass).then(
+        () => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        },
+        () => {
+          fallbackCopyText(generatedPass);
+        }
+      );
+    } else {
+      fallbackCopyText(generatedPass);
+    }
+  };
+
+  const fallbackCopyText = (text: string) => {
+    try {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // ignore
+    }
   };
 
   const downloadPasswordTxt = (form: Record<string, any>) => {
     if (!generatedPass) {
-      alert('Please generate a password first.');
+      setErrorMessage('Please generate a password first.');
       return;
     }
 
@@ -74,7 +105,7 @@ export function PasswordGenTool() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    const safePurpose = purpose.replace(/[^a-zA-Z0-9]/g, '_');
+    const safePurpose = purpose.replace(/[^a-zA-Z0-9_-]/g, '_');
     a.download = `${safePurpose}_Secure_Password.txt`;
     document.body.appendChild(a);
     a.click();
@@ -124,29 +155,35 @@ export function PasswordGenTool() {
                 placeholder="e.g. Personal Gmail, Work VPN, GitHub"
                 value={form.purpose || ''}
                 onChange={(e) => setForm({ ...form, purpose: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
               />
             </div>
 
-            {/* Generated Password Box */}
+            {errorMessage && (
+              <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 text-xs font-semibold">
+                {errorMessage}
+              </div>
+            )}
+
+            {/* Generated Password Box - Responsive & Touch-friendly */}
             <div className="p-4 rounded-2xl bg-slate-900 text-white font-mono text-base sm:text-lg flex items-center justify-between gap-3 shadow-inner">
-              <span className="truncate tracking-wider">{generatedPass || '••••••••••••••••'}</span>
+              <span className="truncate tracking-wider select-all">{generatedPass || '••••••••••••••••'}</span>
               <div className="flex items-center gap-2 shrink-0">
                 <button
                   type="button"
                   onClick={copyToClipboard}
-                  className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                  className="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
                   title="Copy password"
                 >
-                  {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                  {copied ? <Check className="w-5 h-5 text-emerald-400" /> : <Copy className="w-5 h-5" />}
                 </button>
                 <button
                   type="button"
                   onClick={handleRegenerate}
-                  className="p-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition-colors cursor-pointer"
-                  title="Generate new"
+                  className="w-10 h-10 rounded-xl bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center transition-colors cursor-pointer"
+                  title="Generate new password"
                 >
-                  <RefreshCw className="w-4 h-4" />
+                  <RefreshCw className="w-5 h-5" />
                 </button>
               </div>
             </div>
@@ -155,7 +192,7 @@ export function PasswordGenTool() {
             <div className="space-y-4 p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/60">
               <div className="flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300">
                 <span>Password Length</span>
-                <span className="text-blue-600 text-sm">{length} characters</span>
+                <span className="text-blue-600 font-bold text-sm">{length} characters</span>
               </div>
               <input
                 type="range"
@@ -168,11 +205,11 @@ export function PasswordGenTool() {
                   const pass = generatePasswordString(val, uppercase, numbers, symbols);
                   setGeneratedPass(pass);
                 }}
-                className="w-full accent-blue-600 cursor-pointer"
+                className="w-full accent-blue-600 cursor-pointer h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none"
               />
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
+                <label className="flex items-center gap-2.5 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer py-1">
                   <input
                     type="checkbox"
                     checked={uppercase}
@@ -181,12 +218,12 @@ export function PasswordGenTool() {
                       const pass = generatePasswordString(length, e.target.checked, numbers, symbols);
                       setGeneratedPass(pass);
                     }}
-                    className="rounded accent-blue-600"
+                    className="w-4 h-4 rounded accent-blue-600"
                   />
                   <span>Uppercase (A-Z)</span>
                 </label>
 
-                <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
+                <label className="flex items-center gap-2.5 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer py-1">
                   <input
                     type="checkbox"
                     checked={numbers}
@@ -195,12 +232,12 @@ export function PasswordGenTool() {
                       const pass = generatePasswordString(length, uppercase, e.target.checked, symbols);
                       setGeneratedPass(pass);
                     }}
-                    className="rounded accent-blue-600"
+                    className="w-4 h-4 rounded accent-blue-600"
                   />
                   <span>Numbers (0-9)</span>
                 </label>
 
-                <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
+                <label className="flex items-center gap-2.5 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer py-1">
                   <input
                     type="checkbox"
                     checked={symbols}
@@ -209,7 +246,7 @@ export function PasswordGenTool() {
                       const pass = generatePasswordString(length, uppercase, numbers, e.target.checked);
                       setGeneratedPass(pass);
                     }}
-                    className="rounded accent-blue-600"
+                    className="w-4 h-4 rounded accent-blue-600"
                   />
                   <span>Symbols (!@#$)</span>
                 </label>

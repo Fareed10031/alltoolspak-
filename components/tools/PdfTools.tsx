@@ -52,11 +52,12 @@ export function PdfTools() {
 
   // Handle PDF uploads for merge
   const handleMergeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
     const newFiles: LoadedPdf[] = [];
 
-    for (let i = 0; i < e.target.files.length; i++) {
-      const file = e.target.files[i];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
       if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) continue;
       try {
         const buffer = await file.arrayBuffer();
@@ -83,6 +84,7 @@ export function PdfTools() {
     }
     setMergeFiles((prev) => [...prev, ...newFiles]);
     setMergedBlobUrl(null);
+    e.target.value = '';
   };
 
   const removeMergeFile = (id: string) => {
@@ -127,8 +129,10 @@ export function PdfTools() {
 
   // Compress logic
   const handleCompressUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-    const file = e.target.files[0];
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+    const file = files[0];
+    e.target.value = '';
     try {
       const buffer = await file.arrayBuffer();
       const pdfDoc = await PDFDocument.load(buffer, { ignoreEncryption: true });
@@ -179,8 +183,10 @@ export function PdfTools() {
 
   // PDF to Text Extraction
   const handleTextUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-    const file = e.target.files[0];
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+    const file = files[0];
+    e.target.value = '';
     setTextFile(file);
     setIsExtracting(true);
     try {

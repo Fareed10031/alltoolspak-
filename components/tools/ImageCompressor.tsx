@@ -40,8 +40,12 @@ export function ImageCompressor() {
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     setErrorMsg('');
-    if (!e.target.files || e.target.files.length === 0) return;
-    const uploadedFile = e.target.files[0];
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+    const uploadedFile = files[0];
+
+    // Reset input for reliable mobile re-upload
+    e.target.value = '';
 
     // Check 10MB limit
     if (uploadedFile.size > 10 * 1024 * 1024) {

@@ -4,7 +4,17 @@ import React, { useState } from 'react';
 import jsPDF from 'jspdf';
 import { ProToolBase } from '@/components/ProToolBase';
 import { TOOLS } from '@/lib/config';
-import { Upload, Image as ImageIcon, FileCheck } from 'lucide-react';
+import { Upload, Image as ImageIcon, Trash2, Plus, FileText, CheckCircle2 } from 'lucide-react';
+
+interface UploadedImageItem {
+  id: string;
+  file: File;
+  name: string;
+  size: number;
+  previewUrl: string;
+  width: number;
+  height: number;
+}
 
 export function ImageToPdfTool() {
   const tool = TOOLS.find((t) => t.slug === 'image-to-pdf') || {
@@ -15,74 +25,152 @@ export function ImageToPdfTool() {
     colorIndex: 3,
   };
 
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
-  const [imageMeta, setImageMeta] = useState<{ width: number; height: number; name: string } | null>(
-    null
-  );
+  const [images, setImages] = useState<UploadedImageItem[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const handleImageUploaded = (
+  const handleImagesUploaded = (
     e: React.ChangeEvent<HTMLInputElement>,
     setForm: React.Dispatch<React.SetStateAction<Record<string, any>>>
   ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    setErrorMessage('');
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
 
-    const url = URL.createObjectURL(file);
-    const img = new Image();
-    img.src = url;
-    img.onload = () => {
-      setImageSrc(url);
-      setImageMeta({
-        width: img.width,
-        height: img.height,
-        name: file.name.replace(/\.[^/.]+$/, ''),
-      });
-      setForm((prev) => ({
-        ...prev,
-        hasImage: 'true',
-        documentTitle: prev.documentTitle || file.name.replace(/\.[^/.]+$/, ''),
-      }));
-    };
-  };
-
-  const generateImagePdf = (form: Record<string, any>) => {
-    if (!imageSrc || !imageMeta) {
-      alert('Please upload an image first.');
+    // Filter only image files
+    const validImageFiles = files.filter((f) => f.type.startsWith('image/'));
+    if (validImageFiles.length === 0) {
+      setErrorMessage('Please select valid image files (JPG, PNG, WebP).');
+      e.target.value = '';
       return;
     }
 
-    const orientation = imageMeta.width > imageMeta.height ? 'landscape' : 'portrait';
+    const newItems: UploadedImageItem[] = [];
+    let processedCount = 0;
+
+    validImageFiles.forEach((file) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.src = url;
+      img.onload = () => {
+        newItems.push({
+          id: `${file.name}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+          file,
+          name: file.name.replace(/\.[^/.]+$/, ''),
+          size: file.size,
+          previewUrl: url,
+          width: img.naturalWidth || img.width || 800,
+          height: img.naturalHeight || img.height || 600,
+        });
+
+        processedCount += 1;
+        if (processedCount === validImageFiles.length) {
+          setImages((prev) => {
+            const updated = [...prev, ...newItems];
+            setForm((formPrev) => ({
+              ...formPrev,
+              hasImage: updated.length > 0 ? 'true' : '',
+              imageCount: updated.length,
+              documentTitle:
+                formPrev.documentTitle || updated[0]?.name || 'Converted_Document',
+            }));
+            return updated;
+          });
+        }
+      };
+      img.onerror = () => {
+        processedCount += 1;
+        if (processedCount === validImageFiles.length && newItems.length > 0) {
+          setImages((prev) => {
+            const updated = [...prev, ...newItems];
+            setForm((formPrev) => ({
+              ...formPrev,
+              hasImage: updated.length > 0 ? 'true' : '',
+              imageCount: updated.length,
+              documentTitle:
+                formPrev.documentTitle || updated[0]?.name || 'Converted_Document',
+            }));
+            return updated;
+          });
+        }
+      };
+    });
+
+    // Reset input value so user can re-select same file or add more on mobile
+    e.target.value = '';
+  };
+
+  const removeImage = (
+    id: string,
+    setForm: React.Dispatch<React.SetStateAction<Record<string, any>>>
+  ) => {
+    setImages((prev) => {
+      const target = prev.find((item) => item.id === id);
+      if (target?.previewUrl) {
+        URL.revokeObjectURL(target.previewUrl);
+      }
+      const updated = prev.filter((item) => item.id !== id);
+      setForm((formPrev) => ({
+        ...formPrev,
+        hasImage: updated.length > 0 ? 'true' : '',
+        imageCount: updated.length,
+      }));
+      return updated;
+    });
+  };
+
+  const generateImagePdf = (form: Record<string, any>) => {
+    if (images.length === 0) {
+      setErrorMessage('Please upload at least one image to convert to PDF.');
+      return;
+    }
+
+    const firstImg = images[0];
+    const initialOrientation =
+      firstImg.width > firstImg.height ? 'landscape' : 'portrait';
+
     const doc = new jsPDF({
-      orientation,
+      orientation: initialOrientation,
       unit: 'pt',
       format: 'a4',
     });
 
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
+    images.forEach((imgItem, index) => {
+      if (index > 0) {
+        const orientation =
+          imgItem.width > imgItem.height ? 'landscape' : 'portrait';
+        doc.addPage('a4', orientation);
+      }
 
-    // Scale image while preserving aspect ratio with padding
-    const padding = 36;
-    const maxWidth = pageWidth - padding * 2;
-    const maxHeight = pageHeight - padding * 2;
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const padding = 28;
+      const maxWidth = pageWidth - padding * 2;
+      const maxHeight = pageHeight - padding * 2;
 
-    const imgRatio = imageMeta.width / imageMeta.height;
-    let renderWidth = maxWidth;
-    let renderHeight = renderWidth / imgRatio;
+      const imgRatio = imgItem.width / imgItem.height;
+      let renderWidth = maxWidth;
+      let renderHeight = renderWidth / imgRatio;
 
-    if (renderHeight > maxHeight) {
-      renderHeight = maxHeight;
-      renderWidth = renderHeight * imgRatio;
-    }
+      if (renderHeight > maxHeight) {
+        renderHeight = maxHeight;
+        renderWidth = renderHeight * imgRatio;
+      }
 
-    const x = (pageWidth - renderWidth) / 2;
-    const y = (pageHeight - renderHeight) / 2;
+      const x = (pageWidth - renderWidth) / 2;
+      const y = (pageHeight - renderHeight) / 2;
 
-    doc.addImage(imageSrc, 'JPEG', x, y, renderWidth, renderHeight);
+      // Add image to current PDF page
+      doc.addImage(imgItem.previewUrl, 'JPEG', x, y, renderWidth, renderHeight);
+    });
 
-    const safeTitle = (form.documentTitle || imageMeta.name || 'Converted_Image')
+    const safeTitle = (
+      form.documentTitle ||
+      images[0]?.name ||
+      'Converted_Document'
+    )
       .trim()
-      .replace(/\s+/g, '_');
+      .replace(/[^a-zA-Z0-9_-]/g, '_');
+
     doc.save(`${safeTitle}.pdf`);
   };
 
@@ -93,34 +181,45 @@ export function ImageToPdfTool() {
       initialState={{
         hasImage: '',
         documentTitle: '',
+        imageCount: 0,
       }}
       render={(form, setForm) => (
         <div className="space-y-6">
-          <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-blue-500 rounded-2xl p-8 text-center bg-slate-50/50 dark:bg-slate-800/30 transition-colors">
+          {/* File Upload Box - Mobile Optimized */}
+          <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-blue-500 rounded-2xl p-6 sm:p-8 text-center bg-slate-50/50 dark:bg-slate-800/30 transition-colors">
             <input
               type="file"
               id="image-to-pdf-input"
-              accept="image/png, image/jpeg, image/webp"
-              onChange={(e) => handleImageUploaded(e, setForm)}
+              accept="image/png, image/jpeg, image/webp, image/*"
+              multiple
+              onChange={(e) => handleImagesUploaded(e, setForm)}
               className="hidden"
             />
             <label
               htmlFor="image-to-pdf-input"
-              className="cursor-pointer flex flex-col items-center justify-center space-y-3"
+              className="cursor-pointer flex flex-col items-center justify-center space-y-3 min-h-[140px]"
             >
               <div className="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 flex items-center justify-center shadow-xs">
                 <Upload className="w-7 h-7" />
               </div>
               <div className="space-y-1">
-                <p className="text-sm font-bold text-slate-800 dark:text-slate-200">
-                  {imageMeta ? imageMeta.name : 'Click to select JPG, PNG, or WebP'}
+                <p className="text-sm sm:text-base font-bold text-slate-800 dark:text-slate-200">
+                  {images.length > 0
+                    ? `Tap to add more photos (${images.length} selected)`
+                    : 'Tap to select photos or scans'}
                 </p>
                 <p className="text-xs text-slate-500">
-                  High-resolution photo, scan, or graphic • 100% Client-Side
+                  Supports multiple JPG, PNG, or WebP &bull; Combines into multi-page PDF &bull; 100% Client-Side
                 </p>
               </div>
             </label>
           </div>
+
+          {errorMessage && (
+            <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 text-xs font-semibold">
+              {errorMessage}
+            </div>
+          )}
 
           <div>
             <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
@@ -128,22 +227,56 @@ export function ImageToPdfTool() {
             </label>
             <input
               type="text"
-              placeholder="e.g. Scanned_Receipt or Portfolio_Cover"
+              placeholder="e.g. Scanned_Receipts or Meeting_Notes"
               value={form.documentTitle || ''}
               onChange={(e) => setForm({ ...form, documentTitle: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
             />
           </div>
 
-          {imageSrc && (
-            <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-center">
-              <span className="text-xs font-bold text-slate-500 block mb-2">Image Preview</span>
-              <div className="h-56 flex items-center justify-center overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-800">
-                <img src={imageSrc} alt="Preview" className="max-h-full object-contain" />
+          {/* Uploaded Images List with Preview Cards */}
+          {images.length > 0 && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-xs font-bold text-slate-500 px-1">
+                <span>Selected Images ({images.length} pages)</span>
+                <span className="text-emerald-600 flex items-center gap-1 font-semibold">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  Ready to compile into PDF
+                </span>
               </div>
-              <p className="text-[11px] text-slate-400 mt-2">
-                Dimensions: {imageMeta?.width}px × {imageMeta?.height}px • Auto-scaled to standard A4 page
-              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-80 overflow-y-auto p-1">
+                {images.map((img, idx) => (
+                  <div
+                    key={img.id}
+                    className="relative flex items-center gap-3 p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs"
+                  >
+                    <div className="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-700 overflow-hidden shrink-0 flex items-center justify-center">
+                      <img
+                        src={img.previewUrl}
+                        alt={img.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">
+                        Page {idx + 1}: {img.name}
+                      </p>
+                      <p className="text-[10px] text-slate-400">
+                        {img.width}×{img.height}px &bull; {(img.size / 1024).toFixed(0)} KB
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeImage(img.id, setForm)}
+                      className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
+                      title="Remove image"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>

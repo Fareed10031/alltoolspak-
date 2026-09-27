@@ -160,7 +160,7 @@ export function AmazonEuVatTool() {
                   placeholder="e.g. John Doe or Enterprise GmbH"
                   value={form.buyerName || ''}
                   onChange={(e) => setForm({ ...form, buyerName: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
                 />
               </div>
 
@@ -174,7 +174,7 @@ export function AmazonEuVatTool() {
                   placeholder="e.g. 119.00"
                   value={form.grossAmount || ''}
                   onChange={(e) => setForm({ ...form, grossAmount: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
                 />
               </div>
 
@@ -185,7 +185,7 @@ export function AmazonEuVatTool() {
                 <select
                   value={form.country || 'DE'}
                   onChange={(e) => setForm({ ...form, country: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none cursor-pointer"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none cursor-pointer"
                 >
                   {Object.entries(VAT_RATES).map(([code, item]) => (
                     <option key={code} value={code}>
@@ -204,7 +204,7 @@ export function AmazonEuVatTool() {
                   placeholder="e.g. AMZ-98234"
                   value={form.orderId || ''}
                   onChange={(e) => setForm({ ...form, orderId: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
                 />
               </div>
             </div>

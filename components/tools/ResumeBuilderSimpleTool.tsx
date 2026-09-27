@@ -147,7 +147,7 @@ export function ResumeBuilderSimpleTool() {
                 placeholder="e.g. Alex Morgan"
                 value={form.fullName || ''}
                 onChange={(e) => setForm({ ...form, fullName: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
               />
             </div>
 
@@ -160,7 +160,7 @@ export function ResumeBuilderSimpleTool() {
                 placeholder="e.g. Senior Software Engineer"
                 value={form.jobTitle || ''}
                 onChange={(e) => setForm({ ...form, jobTitle: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
               />
             </div>
 
@@ -173,7 +173,7 @@ export function ResumeBuilderSimpleTool() {
                 placeholder="e.g. alex.morgan@example.com"
                 value={form.email || ''}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
               />
             </div>
 
@@ -186,7 +186,7 @@ export function ResumeBuilderSimpleTool() {
                 placeholder="e.g. +1 (555) 019-2834 • New York, NY"
                 value={form.phone || ''}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
               />
             </div>
           </div>
@@ -200,7 +200,7 @@ export function ResumeBuilderSimpleTool() {
               placeholder="Results-driven professional with 5+ years of experience in scalable systems, leadership, and cross-functional project execution."
               value={form.summary || ''}
               onChange={(e) => setForm({ ...form, summary: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
             />
           </div>
 
@@ -213,7 +213,7 @@ export function ResumeBuilderSimpleTool() {
               placeholder="e.g. TypeScript, React, Python, Cloud Architecture, Agile, Project Leadership"
               value={form.skills || ''}
               onChange={(e) => setForm({ ...form, skills: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
             />
           </div>
 
@@ -226,7 +226,7 @@ export function ResumeBuilderSimpleTool() {
               placeholder="Lead Engineer at TechCorp (2022 - Present)&#10;• Spearheaded migration of core microservices, improving throughput by 42%.&#10;• Mentored team of 8 engineers and introduced automated CI/CD pipeline."
               value={form.experience || ''}
               onChange={(e) => setForm({ ...form, experience: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
             />
           </div>
 
@@ -239,7 +239,7 @@ export function ResumeBuilderSimpleTool() {
               placeholder="e.g. B.S. in Computer Science, University of Technology (2021) • AWS Solutions Architect"
               value={form.education || ''}
               onChange={(e) => setForm({ ...form, education: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
             />
           </div>
         </div>

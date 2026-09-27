@@ -4,7 +4,14 @@ import React, { useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import { ProToolBase } from '@/components/ProToolBase';
 import { TOOLS } from '@/lib/config';
-import { FileText, Plus, Trash2, ArrowUpDown } from 'lucide-react';
+import { FileText, Plus, Trash2, ArrowUpDown, CheckCircle2 } from 'lucide-react';
+
+interface PdfFileItem {
+  id: string;
+  file: File;
+  name: string;
+  size: number;
+}
 
 export function PdfMergerTool() {
   const tool = TOOLS.find((t) => t.slug === 'pdf-merge') || {
@@ -15,64 +22,98 @@ export function PdfMergerTool() {
     colorIndex: 2,
   };
 
-  const [pdfFiles, setPdfFiles] = useState<File[]>([]);
+  const [pdfFiles, setPdfFiles] = useState<PdfFileItem[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleFilesAdded = (
     e: React.ChangeEvent<HTMLInputElement>,
     setForm: React.Dispatch<React.SetStateAction<Record<string, any>>>
   ) => {
+    setErrorMessage('');
     const selected = Array.from(e.target.files || []);
     if (selected.length === 0) return;
 
-    const updated = [...pdfFiles, ...selected];
-    setPdfFiles(updated);
+    // Filter valid PDFs
+    const validPdfs = selected.filter(
+      (f) => f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf')
+    );
 
-    setForm((prev) => ({
-      ...prev,
-      hasFiles: updated.length >= 2 ? 'true' : '',
-      fileCount: updated.length,
+    if (validPdfs.length === 0) {
+      setErrorMessage('Please select valid PDF documents.');
+      e.target.value = '';
+      return;
+    }
+
+    const newItems: PdfFileItem[] = validPdfs.map((file) => ({
+      id: `${file.name}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+      file,
+      name: file.name,
+      size: file.size,
     }));
+
+    setPdfFiles((prev) => {
+      const updated = [...prev, ...newItems];
+      setForm((formPrev) => ({
+        ...formPrev,
+        hasFiles: updated.length >= 2 ? 'true' : '',
+        fileCount: updated.length,
+      }));
+      return updated;
+    });
+
+    // Mobile bug fix: Reset input value so tapping to add more files works reliably on iOS & Android
+    e.target.value = '';
   };
 
   const removeFile = (
-    index: number,
+    id: string,
     setForm: React.Dispatch<React.SetStateAction<Record<string, any>>>
   ) => {
-    const updated = pdfFiles.filter((_, i) => i !== index);
-    setPdfFiles(updated);
-    setForm((prev) => ({
-      ...prev,
-      hasFiles: updated.length >= 2 ? 'true' : '',
-      fileCount: updated.length,
-    }));
+    setPdfFiles((prev) => {
+      const updated = prev.filter((item) => item.id !== id);
+      setForm((formPrev) => ({
+        ...formPrev,
+        hasFiles: updated.length >= 2 ? 'true' : '',
+        fileCount: updated.length,
+      }));
+      return updated;
+    });
   };
 
   const generateMergedPdf = async (form: Record<string, any>) => {
     if (pdfFiles.length < 2) {
-      alert('Please upload at least 2 PDF files to merge.');
+      setErrorMessage('Please upload at least 2 PDF files to merge.');
       return;
     }
 
-    const mergedPdf = await PDFDocument.create();
+    try {
+      const mergedPdf = await PDFDocument.create();
 
-    for (const file of pdfFiles) {
-      const arrayBuffer = await file.arrayBuffer();
-      const pdf = await PDFDocument.load(arrayBuffer);
-      const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-      copiedPages.forEach((page) => mergedPdf.addPage(page));
+      for (const item of pdfFiles) {
+        const arrayBuffer = await item.file.arrayBuffer();
+        const pdf = await PDFDocument.load(arrayBuffer);
+        const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+        copiedPages.forEach((page) => mergedPdf.addPage(page));
+      }
+
+      const mergedBytes = await mergedPdf.save();
+      const blob = new Blob([mergedBytes as unknown as BlobPart], {
+        type: 'application/pdf',
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      const baseName =
+        pdfFiles[0]?.name.replace(/\.[^/.]+$/, '') || 'Combined_Document';
+      a.download = `${baseName}_Merged.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('PDF Merge Error:', err);
+      setErrorMessage('Error merging PDF files. Please ensure files are not password-protected.');
     }
-
-    const mergedBytes = await mergedPdf.save();
-    const blob = new Blob([mergedBytes as unknown as BlobPart], { type: 'application/pdf' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    const baseName = pdfFiles[0]?.name.replace(/\.[^/.]+$/, '') || 'document';
-    a.download = `${baseName}_Merged.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
   };
 
   return (
@@ -85,7 +126,7 @@ export function PdfMergerTool() {
       }}
       render={(form, setForm) => (
         <div className="space-y-6">
-          <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-blue-500 rounded-2xl p-8 text-center bg-slate-50/50 dark:bg-slate-800/30 transition-colors">
+          <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-blue-500 rounded-2xl p-6 sm:p-8 text-center bg-slate-50/50 dark:bg-slate-800/30 transition-colors">
             <input
               type="file"
               id="pdf-merge-input"
@@ -96,54 +137,74 @@ export function PdfMergerTool() {
             />
             <label
               htmlFor="pdf-merge-input"
-              className="cursor-pointer flex flex-col items-center justify-center space-y-3"
+              className="cursor-pointer flex flex-col items-center justify-center space-y-3 min-h-[140px]"
             >
               <div className="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 flex items-center justify-center shadow-xs">
                 <FileText className="w-7 h-7" />
               </div>
               <div className="space-y-1">
-                <p className="text-sm font-bold text-slate-800 dark:text-slate-200">
-                  Click to add PDF documents
+                <p className="text-sm sm:text-base font-bold text-slate-800 dark:text-slate-200">
+                  {pdfFiles.length > 0
+                    ? `Tap to add more PDFs (${pdfFiles.length} selected)`
+                    : 'Tap to select PDF documents'}
                 </p>
                 <p className="text-xs text-slate-500">
-                  Select 2 or more PDF files • Unlimited file size • 100% Client-Side
+                  Select 2 or more PDF files &bull; Unlimited file size &bull; 100% Client-Side
                 </p>
               </div>
             </label>
           </div>
 
-          {/* List of Added Files */}
+          {errorMessage && (
+            <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 text-xs font-semibold">
+              {errorMessage}
+            </div>
+          )}
+
+          {/* List of Added Files - Touch-friendly for mobile */}
           {pdfFiles.length > 0 && (
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs font-bold text-slate-500">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-xs font-bold text-slate-500 px-1">
                 <span>Selected PDFs ({pdfFiles.length})</span>
-                <span className={pdfFiles.length >= 2 ? 'text-emerald-600' : 'text-amber-500'}>
-                  {pdfFiles.length >= 2
-                    ? '✓ Ready to merge'
-                    : 'Add at least 1 more file to unlock merge'}
+                <span
+                  className={
+                    pdfFiles.length >= 2
+                      ? 'text-emerald-600 flex items-center gap-1 font-semibold'
+                      : 'text-amber-500 font-semibold'
+                  }
+                >
+                  {pdfFiles.length >= 2 ? (
+                    <>
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      Ready to merge
+                    </>
+                  ) : (
+                    'Add 1 more PDF to merge'
+                  )}
                 </span>
               </div>
-              <div className="space-y-2 max-h-60 overflow-y-auto">
-                {pdfFiles.map((file, idx) => (
+              <div className="space-y-2 max-h-72 overflow-y-auto p-1">
+                {pdfFiles.map((item, idx) => (
                   <div
-                    key={`${file.name}-${idx}`}
-                    className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium"
+                    key={item.id}
+                    className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium shadow-xs"
                   >
-                    <div className="flex items-center gap-2 truncate">
-                      <span className="w-5 h-5 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600 dark:text-slate-300">
+                    <div className="flex items-center gap-2.5 truncate min-w-0 pr-2">
+                      <span className="w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-[11px] font-bold text-slate-600 dark:text-slate-300 shrink-0">
                         {idx + 1}
                       </span>
                       <span className="truncate text-slate-800 dark:text-slate-200 font-semibold">
-                        {file.name}
+                        {item.name}
                       </span>
-                      <span className="text-slate-400 text-[10px]">
-                        ({(file.size / 1024).toFixed(1)} KB)
+                      <span className="text-slate-400 text-[10px] shrink-0">
+                        ({(item.size / 1024).toFixed(0)} KB)
                       </span>
                     </div>
+                    {/* Minimum 44px tap target for mobile */}
                     <button
                       type="button"
-                      onClick={() => removeFile(idx, setForm)}
-                      className="text-rose-500 hover:text-rose-700 p-1 cursor-pointer"
+                      onClick={() => removeFile(item.id, setForm)}
+                      className="w-9 h-9 flex items-center justify-center rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer shrink-0"
                       title="Remove file"
                     >
                       <Trash2 className="w-4 h-4" />

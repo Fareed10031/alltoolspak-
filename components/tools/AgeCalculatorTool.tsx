@@ -176,7 +176,7 @@ export function AgeCalculatorTool() {
                   placeholder="e.g. Jordan Smith"
                   value={form.userName || ''}
                   onChange={(e) => setForm({ ...form, userName: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
                 />
               </div>
 
@@ -188,7 +188,7 @@ export function AgeCalculatorTool() {
                   type="date"
                   value={form.birthDate || ''}
                   onChange={(e) => setForm({ ...form, birthDate: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none cursor-pointer"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none cursor-pointer"
                 />
               </div>
             </div>
