@@ -30,17 +30,15 @@ interface VatOrder {
   vatAmount: number;
 }
 
-const VAT_RATES: Record<string, number> = {
-  DE: 19,
-  FR: 20,
-  IT: 22,
-  ES: 21,
-  NL: 21,
-  BE: 21,
-  PL: 23,
-  AT: 20,
-  SE: 25,
-  IE: 23,
+import { vatCountries } from '@/lib/vatCountries';
+
+const findVatRate = (countryInput: string): number => {
+  const normalized = countryInput.trim().toUpperCase();
+  const found = vatCountries.find(
+    (c) => c.code.toUpperCase() === normalized || c.name.toUpperCase() === normalized
+  );
+  if (found && found.code !== 'OTHER') return found.rate;
+  return 19; // Default rate
 };
 
 export function AmazonVat() {
@@ -69,7 +67,7 @@ export function AmazonVat() {
         const grossAmount = parseFloat(cols[2].replace(/[^0-9.-]/g, '')) || 0;
         const date = cols[3] || '2026-09-24';
 
-        const rate = VAT_RATES[country] || 20; // default 20% if unknown EU
+        const rate = findVatRate(country);
         const net = grossAmount / (1 + rate / 100);
         const vat = grossAmount - net;
 
