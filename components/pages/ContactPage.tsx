@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
-import { AdSlot } from '@/components/AdSlot';
 
 export function ContactPage() {
   const [name, setName] = useState('');
@@ -46,8 +45,6 @@ export function ContactPage() {
           Questions, feature requests, or technical bug reports? We respond within 24 business hours.
         </p>
       </div>
-
-      <AdSlot label="Contact Top Ad" />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Contact Info Column */}
@@ -211,8 +208,6 @@ export function ContactPage() {
           </Card>
         </div>
       </div>
-
-      <AdSlot label="Contact Bottom Ad" />
     </div>
   );
 }

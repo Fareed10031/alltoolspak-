@@ -1,7 +1,6 @@
 import React from 'react';
 import { ShieldCheck, Lock, EyeOff, ServerOff, FileCheck, Mail } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { AdSlot } from '@/components/AdSlot';
 
 export function PrivacyPage() {
   return (
@@ -26,8 +25,6 @@ export function PrivacyPage() {
           Last Updated: September 24, 2026 &bull; Asia/Karachi Standard Time &bull; Contact: fareedk1266@gmail.com
         </p>
       </div>
-
-      <AdSlot label="Privacy Policy Top Ad" />
 
       {/* Main Legal Content (600+ words) */}
       <div className="space-y-8 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -146,8 +143,6 @@ export function PrivacyPage() {
           </div>
         </section>
       </div>
-
-      <AdSlot label="Privacy Policy Bottom Ad" />
     </div>
   );
 }

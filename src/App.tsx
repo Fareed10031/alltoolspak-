@@ -11,15 +11,22 @@ import { DisclaimerPage } from '@/components/pages/DisclaimerPage';
 import { CookiesPage } from '@/components/pages/CookiesPage';
 import { ContactPage } from '@/components/pages/ContactPage';
 
-// Tools
-import { PdfTools } from '@/components/tools/PdfTools';
+// 9 New Core Pro Tools
+import { AmazonEuVatTool } from '@/components/tools/AmazonEuVatTool';
+import { BackgroundRemoverTool } from '@/components/tools/BackgroundRemoverTool';
+import { PdfMergerTool } from '@/components/tools/PdfMergerTool';
+import { ImageToPdfTool } from '@/components/tools/ImageToPdfTool';
+import { QrGeneratorTool } from '@/components/tools/QrGeneratorTool';
+import { PasswordGenTool } from '@/components/tools/PasswordGenTool';
+import { ResumeBuilderSimpleTool } from '@/components/tools/ResumeBuilderSimpleTool';
+import { AgeCalculatorTool } from '@/components/tools/AgeCalculatorTool';
+import { UnitConverterTool } from '@/components/tools/UnitConverterTool';
+
+// Companion / Legacy Tools
 import { ImageCompressor } from '@/components/tools/ImageCompressor';
 import { YouTubeThumb } from '@/components/tools/YouTubeThumb';
-import { AmazonVat } from '@/components/tools/AmazonVat';
-import { BgRemover } from '@/components/tools/BgRemover';
 import { Paraphraser } from '@/components/tools/Paraphraser';
 import { Detector } from '@/components/tools/Detector';
-import { ResumeBuilder } from '@/components/tools/ResumeBuilder';
 import { HumanizeAI } from '@/components/tools/HumanizeAI';
 
 import { safeStorage, safePrefersDark, safePushState } from '@/lib/storage';
@@ -44,49 +51,43 @@ export function normalizeRoute(raw: string): string {
 
   // Canonical mapping & aliases
   switch (clean) {
-    case 'pdf-tools':
-    case 'pdf':
-    case 'pdf-suite':
-    case 'pdf-merger':
-    case 'pdf-to-word':
-      return 'pdf-tools';
-
-    case 'image-compress':
-    case 'image-compressor':
-    case 'compress-image':
-    case 'image-resize':
-      return 'image-compress';
-
-    case 'youtube-thumb':
-    case 'youtube-thumbnail':
-    case 'youtube-thumbnail-downloader':
-    case 'youtube-thumbnail-grabber':
-    case 'yt-thumb':
-      return 'youtube-thumb';
-
+    case 'amazon-eu-vat':
     case 'amazon-vat':
     case 'amazon-vat-calculator':
     case 'eu-vat-calculator':
     case 'vat-calculator':
-      return 'amazon-vat';
+      return 'amazon-eu-vat';
 
-    case 'bg-remover':
     case 'background-remover':
+    case 'bg-remover':
     case 'ai-background-remover':
     case 'remove-bg':
-      return 'bg-remover';
+      return 'background-remover';
 
-    case 'paraphraser':
-    case 'ai-paraphraser':
-    case 'paraphrase':
-    case 'text-rewriter':
-      return 'paraphraser';
+    case 'pdf-merge':
+    case 'pdf-merger':
+    case 'pdf-tools':
+    case 'pdf':
+    case 'pdf-suite':
+      return 'pdf-merge';
 
-    case 'detector':
-    case 'ai-detector':
-    case 'ai-content-detector':
-    case 'gpt-detector':
-      return 'detector';
+    case 'image-to-pdf':
+    case 'img-to-pdf':
+    case 'jpg-to-pdf':
+    case 'png-to-pdf':
+      return 'image-to-pdf';
+
+    case 'qr-generator':
+    case 'qr-code':
+    case 'qr-code-generator':
+    case 'qr':
+      return 'qr-generator';
+
+    case 'password-gen':
+    case 'password-generator':
+    case 'pass-gen':
+    case 'password':
+      return 'password-gen';
 
     case 'resume-builder':
     case 'ats-resume-builder':
@@ -94,10 +95,35 @@ export function normalizeRoute(raw: string): string {
     case 'cv-builder':
       return 'resume-builder';
 
+    case 'age-calculator':
+    case 'age-calc':
+    case 'age':
+      return 'age-calculator';
+
+    case 'unit-converter':
+    case 'unit-convert':
+    case 'converter':
+      return 'unit-converter';
+
+    // Supporting utilities
+    case 'image-compress':
+    case 'image-compressor':
+      return 'image-compress';
+
+    case 'youtube-thumb':
+    case 'youtube-thumbnail':
+      return 'youtube-thumb';
+
+    case 'paraphraser':
+    case 'ai-paraphraser':
+      return 'paraphraser';
+
+    case 'detector':
+    case 'ai-detector':
+      return 'detector';
+
     case 'humanize-ai-text':
     case 'humanize-ai':
-    case 'ai-humanizer':
-    case 'humanize':
       return 'humanize-ai-text';
 
     case 'tools':
@@ -190,14 +216,19 @@ export default function App() {
       newPath = '/tools';
     } else if (
       [
-        'pdf-tools',
+        'amazon-eu-vat',
+        'background-remover',
+        'pdf-merge',
+        'image-to-pdf',
+        'qr-generator',
+        'password-gen',
+        'resume-builder',
+        'age-calculator',
+        'unit-converter',
         'image-compress',
         'youtube-thumb',
-        'amazon-vat',
-        'bg-remover',
         'paraphraser',
         'detector',
-        'resume-builder',
         'humanize-ai-text',
       ].includes(resolved)
     ) {
@@ -227,34 +258,39 @@ export default function App() {
       case 'tools':
         return <HomePage onSelectTool={navigateTo} onNavigate={navigateTo} />;
 
-      // 8 Core Tools & Aliases
-      case 'pdf-tools':
-        return <PdfTools />;
+      // 9 Core Pro Tools
+      case 'amazon-eu-vat':
+        return <AmazonEuVatTool />;
+      case 'background-remover':
+        return <BackgroundRemoverTool />;
+      case 'pdf-merge':
+        return <PdfMergerTool />;
+      case 'image-to-pdf':
+        return <ImageToPdfTool />;
+      case 'qr-generator':
+        return <QrGeneratorTool />;
+      case 'password-gen':
+        return <PasswordGenTool />;
+      case 'resume-builder':
+        return <ResumeBuilderSimpleTool />;
+      case 'age-calculator':
+        return <AgeCalculatorTool />;
+      case 'unit-converter':
+        return <UnitConverterTool />;
+
+      // Supporting Tools
       case 'image-compress':
-      case 'image-compressor':
         return <ImageCompressor />;
       case 'youtube-thumb':
-      case 'youtube-thumbnail':
         return <YouTubeThumb />;
-      case 'amazon-vat':
-        return <AmazonVat />;
-      case 'bg-remover':
-      case 'background-remover':
-        return <BgRemover />;
       case 'paraphraser':
         return <Paraphraser />;
       case 'detector':
-      case 'ai-detector':
         return <Detector />;
-      case 'resume-builder':
-      case 'ats-resume-builder':
-        return <ResumeBuilder />;
       case 'humanize-ai-text':
-      case 'humanize-ai':
-      case 'ai-humanizer':
         return <HumanizeAI />;
 
-      // Legal & Informational Pages
+      // Legal & Mandatory Pages (300+ words each)
       case 'about':
         return <AboutPage />;
       case 'privacy':
@@ -277,7 +313,7 @@ export default function App() {
             </p>
             <button
               onClick={() => navigateTo('home')}
-              className="px-6 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold cursor-pointer shadow-md shadow-emerald-600/20"
+              className="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold cursor-pointer shadow-md shadow-blue-600/20"
             >
               Return to All Tools
             </button>

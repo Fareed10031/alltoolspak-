@@ -1,12 +1,21 @@
 import { ComponentType } from 'react';
-import { PdfTools } from '@/components/tools/PdfTools';
+
+// 9 New Core Pro Tools
+import { AmazonEuVatTool } from '@/components/tools/AmazonEuVatTool';
+import { BackgroundRemoverTool } from '@/components/tools/BackgroundRemoverTool';
+import { PdfMergerTool } from '@/components/tools/PdfMergerTool';
+import { ImageToPdfTool } from '@/components/tools/ImageToPdfTool';
+import { QrGeneratorTool } from '@/components/tools/QrGeneratorTool';
+import { PasswordGenTool } from '@/components/tools/PasswordGenTool';
+import { ResumeBuilderSimpleTool } from '@/components/tools/ResumeBuilderSimpleTool';
+import { AgeCalculatorTool } from '@/components/tools/AgeCalculatorTool';
+import { UnitConverterTool } from '@/components/tools/UnitConverterTool';
+
+// Supporting Tools
 import { ImageCompressor } from '@/components/tools/ImageCompressor';
 import { YouTubeThumb } from '@/components/tools/YouTubeThumb';
-import { AmazonVat } from '@/components/tools/AmazonVat';
-import { BgRemover } from '@/components/tools/BgRemover';
 import { Paraphraser } from '@/components/tools/Paraphraser';
 import { Detector } from '@/components/tools/Detector';
-import { ResumeBuilder } from '@/components/tools/ResumeBuilder';
 import { HumanizeAI } from '@/components/tools/HumanizeAI';
 
 export interface ToolItem {
@@ -19,18 +28,93 @@ export interface ToolItem {
 }
 
 export const tools: ToolItem[] = [
+  // 9 Core Pro Tools
+  {
+    id: 'amazon-eu-vat',
+    name: 'Amazon EU VAT Calculator',
+    description: 'Calculate destination EU VAT rates, net turnover amounts, and generate bulk PDF invoices and ZIP packages for Amazon sellers.',
+    component: AmazonEuVatTool,
+    category: 'E-Commerce & Finance',
+    badge: 'EU OSS Ready',
+  },
+  {
+    id: 'background-remover',
+    name: 'AI Background Remover',
+    description: 'Automatic background removal powered by client-side neural vision. Export crisp transparent cutouts with zero watermarks.',
+    component: BackgroundRemoverTool,
+    category: 'AI & Creative',
+    badge: 'Neural Vision',
+  },
+  {
+    id: 'pdf-merge',
+    name: 'PDF Merger',
+    description: 'Merge multiple PDFs into one single file in seconds, 100% offline.',
+    component: PdfMergerTool,
+    category: 'Document Utilities',
+    badge: 'PDF Tool',
+  },
+  {
+    id: 'image-to-pdf',
+    name: 'Image to PDF',
+    description: 'Convert JPG/PNG images to high quality PDF, no quality loss.',
+    component: ImageToPdfTool,
+    category: 'Convert',
+    badge: 'Vector PDF',
+  },
+  {
+    id: 'qr-generator',
+    name: 'QR Code Generator',
+    description: 'Create QR codes for links, text, or contact info instantly.',
+    component: QrGeneratorTool,
+    category: 'Generator',
+    badge: '1024px PNG',
+  },
+  {
+    id: 'password-gen',
+    name: 'Password Generator',
+    description: 'Generate strong secure passwords instantly with custom length.',
+    component: PasswordGenTool,
+    category: 'Security',
+    badge: 'Cryptographic',
+  },
+  {
+    id: 'resume-builder',
+    name: 'Resume Builder',
+    description: 'Build professional resume and download as real PDF with your name.',
+    component: ResumeBuilderSimpleTool,
+    category: 'Career & Productive',
+    badge: 'Real Vector PDF',
+  },
+  {
+    id: 'age-calculator',
+    name: 'Age Calculator',
+    description: 'Calculate exact age from date of birth in years, months, days.',
+    component: AgeCalculatorTool,
+    category: 'Calculators',
+    badge: 'Milestone PDF',
+  },
+  {
+    id: 'unit-converter',
+    name: 'Unit Converter',
+    description: 'Convert length, weight, temperature & more instantly.',
+    component: UnitConverterTool,
+    category: 'Calculators',
+    badge: 'Precision PDF',
+  },
+
+  // Backward-compatible aliases & supporting utilities
   {
     id: 'pdf-tools',
-    name: 'PDF Suite & Merger',
-    description: 'Merge multiple PDF documents, compress file sizes, and extract plain text 100% locally in your browser memory.',
-    component: PdfTools,
+    name: 'PDF Merger',
+    description: 'Merge multiple PDF documents 100% locally in your browser memory.',
+    component: PdfMergerTool,
     category: 'Document Utilities',
     badge: 'Zero Uploads',
   },
   {
     id: 'image-compressor',
     name: 'Image Compressor & Resizer',
-    description: 'Compress JPG, PNG, and WebP images up to 85% with client-side canvas processing and live side-by-side preview.',
+    description: 'Compress JPG, PNG, and WebP images up to 85% with client-side canvas processing.',
     component: ImageCompressor,
     category: 'Media Tools',
     badge: 'Fast & Private',
@@ -38,7 +122,7 @@ export const tools: ToolItem[] = [
   {
     id: 'image-compress',
     name: 'Image Compressor & Resizer',
-    description: 'Compress JPG, PNG, and WebP images up to 85% with client-side canvas processing and live side-by-side preview.',
+    description: 'Compress JPG, PNG, and WebP images up to 85% with client-side canvas processing.',
     component: ImageCompressor,
     category: 'Media Tools',
     badge: 'Fast & Private',
@@ -46,15 +130,7 @@ export const tools: ToolItem[] = [
   {
     id: 'youtube-thumb',
     name: 'YouTube Thumbnail Grabber',
-    description: 'Extract MaxRes 1080p, HQ, and SD video thumbnails directly from Google CDN with one-click direct Blob downloading.',
-    component: YouTubeThumb,
-    category: 'Media Tools',
-    badge: '1080p Ultra HD',
-  },
-  {
-    id: 'youtube-thumbnail',
-    name: 'YouTube Thumbnail Grabber',
-    description: 'Extract MaxRes 1080p, HQ, and SD video thumbnails directly from Google CDN with one-click direct Blob downloading.',
+    description: 'Extract MaxRes 1080p, HQ, and SD video thumbnails directly from Google CDN.',
     component: YouTubeThumb,
     category: 'Media Tools',
     badge: '1080p Ultra HD',
@@ -62,89 +138,49 @@ export const tools: ToolItem[] = [
   {
     id: 'amazon-vat',
     name: 'Amazon EU VAT Calculator',
-    description: 'Calculate destination VAT rates, net turnover amounts, and generate bulk PDF invoices and ZIP packages for Amazon EU sellers.',
-    component: AmazonVat,
+    description: 'Calculate destination EU VAT rates, net turnover amounts, and generate bulk PDF invoices.',
+    component: AmazonEuVatTool,
     category: 'E-Commerce & Finance',
     badge: 'EU OSS Ready',
   },
   {
     id: 'bg-remover',
     name: 'AI Background Remover',
-    description: 'Instant neural network background cutout with transparent PNG export and studio color backdrops.',
-    component: BgRemover,
-    category: 'AI Tools',
-    badge: 'Neural Vision',
-  },
-  {
-    id: 'background-remover',
-    name: 'AI Background Remover',
-    description: 'Instant neural network background cutout with transparent PNG export and studio color backdrops.',
-    component: BgRemover,
-    category: 'AI Tools',
+    description: 'Automatic background removal powered by client-side neural vision.',
+    component: BackgroundRemoverTool,
+    category: 'AI & Creative',
     badge: 'Neural Vision',
   },
   {
     id: 'paraphraser',
     name: 'AI Text Paraphraser',
-    description: 'Contextual semantic text rewriter with Standard, Fluency, and Humanize modes with instant 1-click clipboard copying.',
+    description: 'Rewrite sentences, articles, and essays in Standard, Fluency, and Humanize modes.',
     component: Paraphraser,
-    category: 'AI Tools',
+    category: 'AI & Writing',
     badge: 'Contextual AI',
   },
   {
     id: 'detector',
     name: 'AI Content Detector',
-    description: 'Evaluate text perplexity, burstiness, and identify robotic syntax with an interactive circular probability gauge.',
+    description: 'Inspect text for machine generation using perplexity analysis and burstiness metrics.',
     component: Detector,
-    category: 'AI Tools',
+    category: 'AI & Writing',
     badge: 'Perplexity Gauge',
-  },
-  {
-    id: 'ai-detector',
-    name: 'AI Content Detector',
-    description: 'Evaluate text perplexity, burstiness, and identify robotic syntax with an interactive circular probability gauge.',
-    component: Detector,
-    category: 'AI Tools',
-    badge: 'Perplexity Gauge',
-  },
-  {
-    id: 'resume-builder',
-    name: 'ATS Resume Builder',
-    description: 'Single-column high-scoring ATS resume generator with Google XYZ formula action verb optimizer and vector PDF export.',
-    component: ResumeBuilder,
-    category: 'Career & Productive',
-    badge: '95+ ATS Score',
   },
   {
     id: 'ats-resume-builder',
-    name: 'ATS Resume Builder',
-    description: 'Single-column high-scoring ATS resume generator with Google XYZ formula action verb optimizer and vector PDF export.',
-    component: ResumeBuilder,
+    name: 'Resume Builder',
+    description: 'Build professional resume and download as real PDF with your name.',
+    component: ResumeBuilderSimpleTool,
     category: 'Career & Productive',
-    badge: '95+ ATS Score',
+    badge: 'Real Vector PDF',
   },
   {
     id: 'humanize-ai-text',
-    name: 'Humanize AI Text - Undetectable AI Rewriter Free',
-    description: 'Free Undetectable AI Rewriter. Convert robotic AI writing into natural, fluent, human-like content that passes AI detectors.',
-    component: HumanizeAI,
-    category: 'AI Tools',
-    badge: 'NEW VIRAL',
-  },
-  {
-    id: 'humanize-ai',
     name: 'Humanize AI Text',
-    description: 'Free Undetectable AI Rewriter. Convert robotic AI writing into natural, fluent, human-like content that passes AI detectors.',
+    description: 'Transform robotic AI content into authentic, conversational human text.',
     component: HumanizeAI,
-    category: 'AI Tools',
-    badge: 'NEW VIRAL',
-  },
-  {
-    id: 'ai-humanizer',
-    name: 'Humanize AI Text',
-    description: 'Free Undetectable AI Rewriter. Convert robotic AI writing into natural, fluent, human-like content that passes AI detectors.',
-    component: HumanizeAI,
-    category: 'AI Tools',
-    badge: 'NEW VIRAL',
+    category: 'AI & Writing',
+    badge: 'Undetectable',
   },
 ];

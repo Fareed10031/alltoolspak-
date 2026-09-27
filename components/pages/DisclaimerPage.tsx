@@ -1,13 +1,12 @@
 import React from 'react';
 import { AlertTriangle, ExternalLink, ShieldCheck, HelpCircle } from 'lucide-react';
-import { AdSlot } from '@/components/AdSlot';
 
 export function DisclaimerPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-6">
-        <a href="/" className="hover:underline hover:text-emerald-600">Home</a>
+        <a href="/" className="hover:underline hover:text-blue-600">Home</a>
         <span>/</span>
         <span className="text-slate-800 dark:text-slate-200 font-medium">Disclaimer &amp; Tax Notice</span>
       </nav>
@@ -22,11 +21,9 @@ export function DisclaimerPage() {
           Disclaimer &amp; Financial Notice
         </h1>
         <p className="text-xs text-slate-500 dark:text-slate-400">
-          Last Updated: September 24, 2026 &bull; alltoolspk.com
+          Last Updated: September 2026 &bull; alltoolspk.com
         </p>
       </div>
-
-      <AdSlot label="Disclaimer Top Ad" />
 
       {/* Critical Red Callout Box */}
       <div className="p-6 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/80 mb-8 space-y-3">
@@ -38,36 +35,26 @@ export function DisclaimerPage() {
           The information, formulas, calculations, and software tools provided on alltoolspk.com (including but not limited to the Amazon EU VAT Calculator) are intended strictly for educational, informational, and computational convenience purposes. <strong>They do not constitute formal tax, legal, or accounting advice.</strong>
         </p>
         <p className="text-xs text-red-700 dark:text-red-300 leading-relaxed">
-          European Union cross-border Value Added Tax (VAT) regulations, distance selling thresholds, and One-Stop Shop (OSS) filings must be officially verified at{' '}
-          <a
-            href="https://ec.europa.eu/taxation_customs/vies/"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="underline font-bold inline-flex items-center gap-1 hover:text-red-900 dark:hover:text-white"
-          >
-            <span>ec.europa.eu/taxation</span>
-            <ExternalLink className="w-3 h-3" />
-          </a>{' '}
-          or through a certified European chartered tax advisor.
+          Cross-border e-commerce tax regulations in the European Union (One-Stop Shop OSS) and third-party countries are subject to periodic legislative amendments and administrative interpretations. Always consult with a certified tax consultant, chartered accountant, or legal counsel before submitting statutory VAT returns.
         </p>
       </div>
 
       <div className="space-y-6 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
         <section className="space-y-2">
           <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-            1. Amazon EU VAT Calculations &amp; Currency Conversion
+            1. No Professional-Client Relationship
           </h2>
           <p>
-            While our engine applies standard statutory VAT rates across destination EU member states (e.g. Germany 19%, France 20%, Italy 22%, Spain 21%), specific product categories may qualify for reduced or super-reduced rates (such as books, children&apos;s apparel, or medical devices). alltoolspk.com assumes standard rates unless customized. You remain exclusively responsible for the legal accuracy of your tax returns submitted to fiscal authorities.
+            Your access to or transmission of information through alltoolspk.com does not establish an attorney-client, accountant-client, or fiduciary relationship between you and alltoolspk.com or its operators.
           </p>
         </section>
 
         <section className="space-y-2">
           <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-            2. Artificial Intelligence (AI) Content &amp; Detection Output
+            2. Heuristic and Probabilistic Processing
           </h2>
           <p>
-            Our AI Paraphraser, AI Content Detector, and ATS Resume Builder utilize probabilistic language modeling heuristics. AI-generated text may contain inaccuracies, hallucinations, or stylistic nuances that require human review. Detection probability percentages represent mathematical likelihood based on perplexity and burstiness; they should never be treated as definitive or legal proof of authorship.
+            Our utilities utilize deterministic and probabilistic heuristics. Output files, calculations, and conversions represent mathematical processing based on input data; they should be reviewed and verified by qualified professionals before formal submission.
           </p>
         </section>
 
@@ -80,8 +67,8 @@ export function DisclaimerPage() {
           </p>
         </section>
       </div>
-
-      <AdSlot label="Disclaimer Bottom Ad" />
     </div>
   );
 }
+
+export default DisclaimerPage;

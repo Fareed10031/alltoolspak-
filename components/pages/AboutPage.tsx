@@ -13,7 +13,6 @@ import {
   Phone,
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { AdSlot } from '@/components/AdSlot';
 
 export function AboutPage() {
   return (
@@ -38,8 +37,6 @@ export function AboutPage() {
           Engineered in Peshawar, Pakistan with an uncompromising commitment to client-side data privacy and zero paywalls.
         </p>
       </div>
-
-      <AdSlot label="About Top Ad" />
 
       {/* Author Card */}
       <Card className="shadow-lg border-slate-200 dark:border-slate-800 mb-10 overflow-hidden">
@@ -181,8 +178,6 @@ export function AboutPage() {
           </div>
         </div>
       </div>
-
-      <AdSlot label="About Bottom Ad" />
     </div>
   );
 }

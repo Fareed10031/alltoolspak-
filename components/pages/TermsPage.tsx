@@ -1,22 +1,21 @@
 import React from 'react';
-import { FileText, CheckCircle2, ShieldAlert } from 'lucide-react';
-import { AdSlot } from '@/components/AdSlot';
+import { FileText } from 'lucide-react';
 
 export function TermsPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-6">
-        <a href="/" className="hover:underline hover:text-emerald-600">Home</a>
+        <a href="/" className="hover:underline hover:text-blue-600">Home</a>
         <span>/</span>
         <span className="text-slate-800 dark:text-slate-200 font-medium">Terms of Service</span>
       </nav>
 
       {/* Header */}
       <div className="space-y-3 mb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900/60">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900/60">
           <FileText className="w-3.5 h-3.5" />
-          <span>User Agreement &bull; Effective Sept 24, 2026</span>
+          <span>User Agreement &bull; Effective Sept 2026</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
           Terms of Service
@@ -25,8 +24,6 @@ export function TermsPage() {
           Please review the binding conditions governing your access to alltoolspk.com utilities.
         </p>
       </div>
-
-      <AdSlot label="Terms Top Ad" />
 
       <div className="space-y-6 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
         <section className="space-y-2">
@@ -39,7 +36,7 @@ export function TermsPage() {
         <section className="space-y-2">
           <h2 className="text-lg font-bold text-slate-900 dark:text-white">2. Permitted &amp; Acceptable Use</h2>
           <p>
-            alltoolspk.com grants you a revocable, non-exclusive, non-transferable, free license to use our 8 online tools for personal, educational, research, and legitimate commercial business purposes. You agree not to:
+            alltoolspk.com grants you a revocable, non-exclusive, non-transferable, free license to use our online productivity tools for personal, educational, research, and legitimate commercial business purposes. You agree not to:
           </p>
           <ul className="list-disc pl-5 space-y-1 text-xs text-slate-600 dark:text-slate-400">
             <li>Attempt to reverse engineer, disassemble, or interfere with security sandboxes.</li>
@@ -80,21 +77,21 @@ export function TermsPage() {
             <p>Peshawar, Khyber Pakhtunkhwa, Pakistan</p>
             <p>
               Email:{' '}
-              <a href="mailto:fareedk1266@gmail.com" className="text-emerald-600 underline font-semibold">
+              <a href="mailto:fareedk1266@gmail.com" className="text-blue-600 underline font-semibold">
                 fareedk1266@gmail.com
               </a>
             </p>
             <p>
               Phone / WhatsApp:{' '}
-              <a href="https://wa.me/923404526741" className="text-emerald-600 underline font-semibold" target="_blank" rel="noreferrer noopener">
+              <a href="https://wa.me/923404526741" className="text-blue-600 underline font-semibold" target="_blank" rel="noreferrer noopener">
                 +92 340 4526741
               </a>
             </p>
           </div>
         </section>
       </div>
-
-      <AdSlot label="Terms Bottom Ad" />
     </div>
   );
 }
+
+export default TermsPage;

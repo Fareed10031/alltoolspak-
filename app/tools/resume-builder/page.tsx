@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ResumeBuilder } from '@/components/tools/ResumeBuilder';
+import { ResumeBuilderSimpleTool } from '@/components/tools/ResumeBuilderSimpleTool';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
@@ -30,7 +30,7 @@ export default function ResumeBuilderPage() {
       />
       <main className="flex-1 py-8 sm:py-12 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
-          <ResumeBuilder />
+          <ResumeBuilderSimpleTool />
         </div>
       </main>
       <Footer onNavigate={navigateTo} onSelectTool={navigateTo} />
