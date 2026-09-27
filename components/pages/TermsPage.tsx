@@ -77,8 +77,8 @@ export function TermsPage() {
             <p>Peshawar, Khyber Pakhtunkhwa, Pakistan</p>
             <p>
               Email:{' '}
-              <a href="mailto:fareedk1266@gmail.com" className="text-blue-600 underline font-semibold">
-                fareedk1266@gmail.com
+              <a href="mailto:contact@alltoolspk.com" className="text-blue-600 underline font-semibold">
+                contact@alltoolspk.com
               </a>
             </p>
             <p>

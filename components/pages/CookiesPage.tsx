@@ -91,8 +91,8 @@ export function CookiesPage() {
           </p>
           <p className="text-xs text-slate-500 dark:text-slate-400">
             For questions regarding cookie governance or technical data handling, email Fareed Ullah at{' '}
-            <a href="mailto:fareedk1266@gmail.com" className="text-emerald-600 underline font-semibold">
-              fareedk1266@gmail.com
+            <a href="mailto:contact@alltoolspk.com" className="text-emerald-600 underline font-semibold">
+              contact@alltoolspk.com
             </a>{' '}
             or WhatsApp{' '}
             <a href="https://wa.me/923404526741" className="text-emerald-600 underline font-semibold" target="_blank" rel="noreferrer noopener">

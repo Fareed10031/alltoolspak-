@@ -22,7 +22,7 @@ export function PrivacyPage() {
           Privacy Policy &amp; Data Protection
         </h1>
         <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-          Last Updated: September 24, 2026 &bull; Asia/Karachi Standard Time &bull; Contact: fareedk1266@gmail.com
+          Last Updated: September 24, 2026 &bull; Asia/Karachi Standard Time &bull; Contact: contact@alltoolspk.com
         </p>
       </div>
 
@@ -130,8 +130,8 @@ export function PrivacyPage() {
             <p>Peshawar, Khyber Pakhtunkhwa, Pakistan</p>
             <p>
               Official Inquiries Email:{' '}
-              <a href="mailto:fareedk1266@gmail.com" className="text-emerald-600 underline font-semibold">
-                fareedk1266@gmail.com
+              <a href="mailto:contact@alltoolspk.com" className="text-emerald-600 underline font-semibold">
+                contact@alltoolspk.com
               </a>
             </p>
             <p>

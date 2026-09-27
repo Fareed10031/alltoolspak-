@@ -100,14 +100,6 @@ export function AboutPage() {
                 </a>
 
                 <a
-                  href="mailto:fareedk1266@gmail.com"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                >
-                  <Mail className="w-3.5 h-3.5" />
-                  <span>fareedk1266@gmail.com</span>
-                </a>
-
-                <a
                   href="https://wa.me/923404526741"
                   target="_blank"
                   rel="noreferrer noopener"
