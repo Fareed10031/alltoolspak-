@@ -12,6 +12,7 @@ import { AgeCalculatorTool } from '@/components/tools/AgeCalculatorTool';
 import { UnitConverterTool } from '@/components/tools/UnitConverterTool';
 
 // Supporting Tools
+import { ReziClonePro } from '@/components/tools/ReziClonePro';
 import { AmazonVat } from '@/components/tools/AmazonVat';
 import { ImageCompressor } from '@/components/tools/ImageCompressor';
 import { YouTubeThumb } from '@/components/tools/YouTubeThumb';
@@ -178,11 +179,19 @@ export const tools: ToolItem[] = [
   },
   {
     id: 'ats-resume-builder',
-    name: 'Resume Builder',
-    description: 'Build professional resume and download as real PDF with your name.',
-    component: ResumeBuilderSimpleTool,
+    name: 'ATS Resume Builder & Jobscan',
+    description: 'Rezi-style ATS resume builder with real-time job description keyword scanner, ATS score gauge, and DOCX/PDF export.',
+    component: ReziClonePro,
     category: 'Career & Productive',
-    badge: 'Real Vector PDF',
+    badge: 'Rezi Pro Logic',
+  },
+  {
+    id: 'resume-builder',
+    name: 'ATS Resume Builder & Jobscan',
+    description: 'Rezi-style ATS resume builder with real-time job description keyword scanner, ATS score gauge, and DOCX/PDF export.',
+    component: ReziClonePro,
+    category: 'Career & Productive',
+    badge: 'Rezi Pro Logic',
   },
   {
     id: 'humanize-ai-text',
