@@ -6,9 +6,11 @@ import { CookieBanner } from '@/components/CookieBanner';
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
-  title: 'alltoolspk.com - 9-in-1 FREE Online Tools | 100% Client-Side Privacy',
-  description:
-    'Free production-grade web tools: PDF Suite, Image Compressor, YouTube Thumbnail Grabber, Amazon EU VAT Calculator, AI Background Remover, Paraphraser, Detector, ATS Resume Builder & AI Humanizer. Zero paywalls, RAM-only processing.',
+  title: 'All Tools PK - Free Online Tools',
+  description: 'All Tools PK provides free online tools for everyone.',
+  verification: {
+    google: 'n4DI-NIEzgWwTABe2MkNVUkqVC8569OB-wX2uJ1nIRg',
+  },
   keywords: [
     'free online tools',
     'pdf merge online',
