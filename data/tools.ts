@@ -12,6 +12,7 @@ import { AgeCalculatorTool } from '@/components/tools/AgeCalculatorTool';
 import { UnitConverterTool } from '@/components/tools/UnitConverterTool';
 
 // Supporting Tools
+import { AmazonVat } from '@/components/tools/AmazonVat';
 import { ImageCompressor } from '@/components/tools/ImageCompressor';
 import { YouTubeThumb } from '@/components/tools/YouTubeThumb';
 import { Paraphraser } from '@/components/tools/Paraphraser';
@@ -137,11 +138,19 @@ export const tools: ToolItem[] = [
   },
   {
     id: 'amazon-vat',
-    name: 'Amazon EU VAT Calculator',
-    description: 'Calculate destination EU VAT rates, net turnover amounts, and generate bulk PDF invoices.',
-    component: AmazonEuVatTool,
+    name: 'Amazon VAT Calculator',
+    description: 'Calculate VAT rates for 195 countries including Pakistan 18% GST, net amounts, and generate bulk PDF invoices.',
+    component: AmazonVat,
     category: 'E-Commerce & Finance',
-    badge: 'EU OSS Ready',
+    badge: '195 Countries',
+  },
+  {
+    id: 'amazon-vat-calculator',
+    name: 'Amazon VAT Calculator',
+    description: 'Calculate VAT rates for 195 countries including Pakistan 18% GST, UK 20%, Germany 19% + custom rate.',
+    component: AmazonVat,
+    category: 'E-Commerce & Finance',
+    badge: '195 Countries',
   },
   {
     id: 'bg-remover',
