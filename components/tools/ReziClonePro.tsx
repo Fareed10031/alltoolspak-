@@ -10,12 +10,10 @@ import {
   AlertCircle,
   FileCheck,
   Search,
-  Briefcase,
-  GraduationCap,
-  Award,
   Layers,
   HelpCircle,
-  ArrowRight,
+  AlertTriangle,
+  RotateCcw,
 } from 'lucide-react';
 import jsPDF from 'jspdf';
 import { Button } from '@/components/ui/button';
@@ -23,18 +21,41 @@ import { Button } from '@/components/ui/button';
 export function ReziClonePro() {
   const [jd, setJd] = useState('');
   const [data, setData] = useState({
-    fullName: '',
-    jobTitle: '',
-    email: '',
-    phone: '',
-    city: '',
-    summary: '',
-    exp: '',
-    edu: '',
-    skills: '',
+    name: 'Fareed Ullah',
+    title: 'Operations Manager',
+    email: 'fareedk1266@gmail.com',
+    phone: '+92 300 1234567',
+    city: 'Peshawar, Pakistan',
+    summary:
+      'Results-driven Operations Manager with 5+ years of proven expertise optimizing supply chain logistics, cross-functional team workflows, and enterprise resource allocation to achieve 28% operational cost reduction.',
+    exp:
+      'Operations Manager at Apex Logistics (2021 - Present)\n• Spearheaded warehouse automation & inventory tracking systems, reducing dispatch latency by 35%.\n• Managed cross-functional team of 24 specialists, maintaining 99.4% on-time delivery KPI across 140,000+ parcels.\n• Renegotiated vendor vendor contracts yielding $180k annual cost savings.',
+    edu: 'B.S. in Business Administration & Management • University of Peshawar (2020)',
+    skills:
+      'Operations Management, Supply Chain Optimization, Inventory Control, KPI Dashboards, Vendor Negotiation, Cross-Functional Leadership, Workflow Automation',
   });
 
-  // FEATURE 1: Job Description Keyword Extraction (Rezi / Jobscan Logic)
+  const [error, setError] = useState('');
+
+  // Strict ATS Validation Rule (V3 100% ATS LOCK)
+  const validate = (field: string, value: string): boolean => {
+    if (value.toLowerCase().includes('etc')) {
+      setError('etc. likhna mana hai - poori skill likho (Avoid "etc" - write complete skill names)');
+      return false;
+    }
+    if (field === 'exp' && value.trim().length > 0 && value.trim().length < 80) {
+      setError('Experience me kam se kam 2 lines aur number (e.g. 25%, $50k) likho');
+      return false;
+    }
+    if (field === 'summary' && value.trim().length > 0 && value.trim().length < 50) {
+      setError('Professional summary must be at least 50 characters for ATS compliance');
+      return false;
+    }
+    setError('');
+    return true;
+  };
+
+  // Keyword Extraction Engine (Rezi & Jobscan Logic)
   const extractKeywords = () => {
     if (!jd.trim()) return [];
     const stopWords = new Set([
@@ -48,26 +69,41 @@ export function ReziClonePro() {
   };
 
   const keywords = extractKeywords();
-  const resumeText = (data.skills + ' ' + data.summary + ' ' + data.exp).toLowerCase();
+  const resumeText = `${data.skills} ${data.summary} ${data.exp}`.toLowerCase();
   const matched = keywords.filter((k) => resumeText.includes(k.toLowerCase()));
   const missing = keywords.filter((k) => !resumeText.includes(k.toLowerCase()));
 
-  // FEATURE 2: Real DOCX / DOC Download Engine
+  // ATS Score Calculation (V3 EXACT FORMULA)
+  // (name: 15) + (email with @: 15) + (phone: 15) + (summary > 50 chars: 20) + (exp > 80 chars: 20) + (skills >= 5 items: 15)
+  const skillCount = data.skills
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean).length;
+
+  const baseScore =
+    (data.name.trim() ? 15 : 0) +
+    (data.email.includes('@') ? 15 : 0) +
+    (data.phone.trim() ? 15 : 0) +
+    (data.summary.trim().length >= 50 ? 20 : 0) +
+    (data.exp.trim().length >= 80 ? 20 : 0) +
+    (skillCount >= 5 ? 15 : 0);
+
+  // Score capped at 100
+  const score = Math.min(100, baseScore);
+
+  // FEATURE 2: Real DOCX / DOC Download Engine (100% ATS Single Column)
   const downloadDocx = () => {
     const content = `
-${data.fullName || 'YOUR NAME'}
-${data.jobTitle || 'TARGET JOB TITLE'} | ${data.phone || 'PHONE'} | ${data.email || 'EMAIL'} | ${data.city || 'LOCATION'}
+${data.name || 'FAREED ULLAH'}
+${data.title || 'JOB TITLE'} | ${data.city || 'LOCATION'} | ${data.phone || 'PHONE'} | ${data.email || 'EMAIL'}
 
 PROFESSIONAL SUMMARY
 ${data.summary || 'Summary statement...'}
 
-WORK EXPERIENCE
-${data.exp || 'Work history and achievements...'}
+PROFESSIONAL EXPERIENCE
+${data.exp || 'Work history and achievements with dates & metrics...'}
 
-EDUCATION
-${data.edu || 'Degree, University, Graduation Year...'}
-
-SKILLS & CORE COMPETENCIES
+${data.edu ? `EDUCATION\n${data.edu}\n\n` : ''}SKILLS
 ${data.skills || 'Technical skills and core keywords...'}
     `.trim();
 
@@ -75,8 +111,8 @@ ${data.skills || 'Technical skills and core keywords...'}
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    const filename = data.fullName.trim()
-      ? `${data.fullName.trim().replace(/\s+/g, '_')}_ATS_Resume.doc`
+    const filename = data.name.trim()
+      ? `${data.name.trim().replace(/\s+/g, '_')}_ATS_Resume.doc`
       : 'Resume_ATS.doc';
     a.download = filename;
     document.body.appendChild(a);
@@ -85,7 +121,7 @@ ${data.skills || 'Technical skills and core keywords...'}
     URL.revokeObjectURL(url);
   };
 
-  // FEATURE 3: Real Vector ATS-Engine PDF Download (jspdf with zero font corruption)
+  // FEATURE 3: Real Vector ATS-Engine PDF Download (jspdf zero-pixelation, pure vector)
   const downloadPdf = () => {
     const doc = new jsPDF({
       orientation: 'portrait',
@@ -93,118 +129,121 @@ ${data.skills || 'Technical skills and core keywords...'}
       format: 'a4',
     });
 
-    const name = (data.fullName || 'YOUR NAME').toUpperCase();
-    const title = data.jobTitle || 'Target Position';
-    const contactParts = [data.phone, data.email, data.city].filter(Boolean);
-    const contactLine = [title, ...contactParts].join('  •  ');
+    const name = (data.name || 'FAREED ULLAH').toUpperCase();
+    const contactParts = [data.title, data.city, data.phone, data.email].filter(Boolean);
+    const contactLine = contactParts.join('  |  ');
 
     let y = 48;
 
     // Header Name
-    doc.setTextColor(15, 23, 42); // slate-900
+    doc.setTextColor(0, 0, 0);
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(20);
-    doc.text(name, 40, y);
+    doc.setFontSize(18);
+    doc.text(name, 297.5, y, { align: 'center' });
     y += 18;
 
     // Contact line
     if (contactLine) {
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(9.5);
-      doc.setTextColor(71, 85, 105); // slate-600
-      doc.text(contactLine, 40, y);
-      y += 12;
+      doc.setTextColor(50, 50, 50);
+      doc.text(contactLine, 297.5, y, { align: 'center' });
+      y += 14;
     }
 
-    // Horizontal Rule
-    doc.setDrawColor(203, 213, 225);
-    doc.setLineWidth(1);
-    doc.line(40, y, 555, y);
-    y += 20;
-
+    // Section Renderer
     const renderSection = (sectionTitle: string, textContent: string) => {
       if (!textContent.trim()) return;
 
+      y += 8;
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(11);
-      doc.setTextColor(15, 23, 42);
-      doc.text(sectionTitle.toUpperCase(), 40, y);
+      doc.setFontSize(10.5);
+      doc.setTextColor(0, 0, 0);
+      doc.text(sectionTitle.toUpperCase(), 45, y);
       y += 4;
 
-      doc.setDrawColor(37, 99, 235); // blue-600 accent
-      doc.setLineWidth(1.5);
-      doc.line(40, y, 555, y);
+      doc.setDrawColor(0, 0, 0);
+      doc.setLineWidth(1);
+      doc.line(45, y, 550, y);
       y += 14;
 
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(9.5);
-      doc.setTextColor(51, 65, 85);
+      doc.setTextColor(30, 30, 30);
 
-      const lines = doc.splitTextToSize(textContent.trim(), 515);
-      doc.text(lines, 40, y);
-      y += lines.length * 13 + 16;
+      const lines = doc.splitTextToSize(textContent.trim(), 505);
+      doc.text(lines, 45, y);
+      y += lines.length * 13 + 6;
     };
 
-    renderSection('Professional Summary', data.summary);
-    renderSection('Work Experience', data.exp);
-    renderSection('Education & Credentials', data.edu);
-    renderSection('Technical Skills & Competencies', data.skills);
+    renderSection('PROFESSIONAL SUMMARY', data.summary);
+    renderSection('PROFESSIONAL EXPERIENCE', data.exp);
+    if (data.edu.trim()) renderSection('EDUCATION', data.edu);
+    renderSection('SKILLS', data.skills);
 
-    const filename = data.fullName.trim()
-      ? `${data.fullName.trim().replace(/\s+/g, '_')}_ATS_Resume.pdf`
-      : 'Resume_ATS.pdf';
+    const filename = data.name.trim()
+      ? `${data.name.trim().replace(/\s+/g, '_')}_100_ATS.pdf`
+      : 'Resume_100_ATS.pdf';
 
     doc.save(filename);
   };
 
-  // ATS Score Calculation
-  const atsScore = Math.min(
-    100,
-    (data.fullName ? 10 : 0) +
-      (data.email ? 10 : 0) +
-      (data.phone ? 10 : 0) +
-      (data.summary.length > 30 ? 15 : 0) +
-      (data.exp.length > 80 ? 25 : 0) +
-      (data.skills ? 20 : 0) +
-      matched.length * 2
-  );
+  const handlePrint = () => {
+    window.print();
+  };
 
   const loadSampleData = () => {
     setJd(
-      'Senior Amazon VA & PPC Specialist needed for high-growth e-commerce brand. Must have demonstrated expertise in Amazon PPC campaigns, Product Hunting with Helium 10, Listing Optimization, Keyword Research, Inventory Forecasting, and A/B split testing.'
+      'Operations Manager needed for high-growth enterprise logistics. Requirements: Supply chain management, ERP implementation, KPI monitoring, vendor negotiation, warehouse automation, inventory accuracy, and leadership of 20+ operations staff.'
     );
     setData({
-      fullName: 'Muhammad Ahmad',
-      jobTitle: 'Amazon FBA & PPC Specialist',
-      email: 'ahmad.fba@example.com',
+      name: 'Fareed Ullah',
+      title: 'Operations Manager',
+      email: 'fareedk1266@gmail.com',
       phone: '+92 300 1234567',
-      city: 'Lahore, Pakistan',
+      city: 'Peshawar, Pakistan',
       summary:
-        'Results-oriented Amazon FBA Specialist with 4+ years managing multi-million dollar e-commerce storefronts. Expert in PPC campaigns, Helium 10 product hunting, listing optimization, and supplier negotiation to drive 35%+ YoY revenue growth.',
+        'Results-driven Operations Manager with 5+ years of proven expertise optimizing supply chain logistics, cross-functional team workflows, and enterprise resource allocation to achieve 28% operational cost reduction.',
       exp:
-        'Senior Amazon Specialist at Global Commerce Ltd (2022 - Present)\n• Managed $85k/month advertising budget with average TACOS kept under 12% across 4 private label brands.\n• Implemented listing optimization strategies improving organic keyword ranking from page 4 to top 3.\n• Spearheaded product hunting and launched 6 successful SKUs generating $1.2M in annual gross sales.',
-      edu: 'B.S. in Computer Science & Information Systems • FAST NUCES (2021)',
+        'Operations Manager at Apex Logistics (2021 - Present)\n• Spearheaded warehouse automation & inventory tracking systems, reducing dispatch latency by 35%.\n• Managed cross-functional team of 24 specialists, maintaining 99.4% on-time delivery KPI across 140,000+ parcels.\n• Renegotiated vendor contracts yielding $180k annual cost savings.',
+      edu: 'B.S. in Business Administration & Management • University of Peshawar (2020)',
       skills:
-        'Amazon PPC, Helium 10, Product Hunting, Listing Optimization, Keyword Research, Inventory Management, A/B Testing, Seller Central, Data Analysis',
+        'Operations Management, Supply Chain Optimization, Inventory Control, KPI Dashboards, Vendor Negotiation, Cross-Functional Leadership, Workflow Automation',
     });
+    setError('');
   };
 
   const handleAddKeywordToSkills = (kw: string) => {
     if (!data.skills.toLowerCase().includes(kw.toLowerCase())) {
-      setData((prev) => ({
-        ...prev,
-        skills: prev.skills ? `${prev.skills}, ${kw}` : kw,
-      }));
+      const updated = data.skills ? `${data.skills}, ${kw}` : kw;
+      setData((prev) => ({ ...prev, skills: updated }));
+      validate('skills', updated);
     }
+  };
+
+  const resetForm = () => {
+    setData({
+      name: '',
+      title: '',
+      email: '',
+      phone: '',
+      city: 'Peshawar, Pakistan',
+      summary: '',
+      exp: '',
+      edu: '',
+      skills: '',
+    });
+    setJd('');
+    setError('');
   };
 
   // Structured Data Schema
   const schemaApp = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'ATS Resume Builder & Jobscan Optimizer',
+    name: '100% ATS Resume Builder Final V3',
     description:
-      'Rezi-style ATS resume builder with real-time job description keyword matcher, ATS score gauge, and DOCX/PDF export.',
+      '100% ATS Resume Builder with Rezi validation lock, strict keyword density audit, and instant DOCX/PDF export.',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'All',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
@@ -217,101 +256,146 @@ ${data.skills || 'Technical skills and core keywords...'}
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaApp) }}
       />
 
-      {/* Header Info */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xs">
+      {/* Header Info Banner */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xs">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 mb-2">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Rezi &amp; Jobscan Pro Logic • 100% Client-Side Privacy</span>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 mb-2">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              <span>FINAL V3 • 100% ATS LOCK • alltoolspk.com</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              Rezi Clone Pro – ATS Resume Builder &amp; Keyword Matcher
+              100% ATS Resume Builder (Rezi &amp; Jobscan Pro)
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
-              Extract high-value keywords from target job descriptions, optimize ATS scoring, and export clean DOCX &amp; PDF files.
+              Guaranteed machine-parseable single-column layout. Real-time ATS score lock, strict validation, and instant export.
             </p>
           </div>
 
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={loadSampleData}
-            className="text-xs font-bold rounded-xl cursor-pointer shrink-0"
-          >
-            Load Sample Data
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={loadSampleData}
+              className="text-xs font-bold rounded-xl cursor-pointer"
+            >
+              Load Sample
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={resetForm}
+              className="text-xs font-medium rounded-xl cursor-pointer text-slate-500"
+            >
+              <RotateCcw className="w-3.5 h-3.5 mr-1" /> Clear
+            </Button>
+          </div>
         </div>
 
-        {/* FEATURE 1: JOB DESCRIPTION INPUT - REZI FEATURE */}
-        <div className="mt-6 p-5 rounded-2xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 space-y-3">
+        {/* ATS Score & Validation Status Bar (V3 Exact Specification) */}
+        <div
+          className={`mt-6 p-4 rounded-xl border transition-all ${
+            score >= 80
+              ? 'bg-[#e6ffed] dark:bg-emerald-950/40 border-[#b7eb8f] dark:border-emerald-800 text-emerald-950 dark:text-emerald-200'
+              : 'bg-[#fff4e5] dark:bg-amber-950/40 border-[#ffd591] dark:border-amber-800 text-amber-950 dark:text-amber-200'
+          }`}
+        >
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span className="font-extrabold text-sm sm:text-base">
+                ATS Score: {score}%
+              </span>
+              {score >= 90 && (
+                <span className="px-2 py-0.5 rounded text-xs font-bold bg-emerald-600 text-white shadow-xs">
+                  ✅ REZI PASS (100% ATS)
+                </span>
+              )}
+              {score >= 80 && score < 90 && (
+                <span className="px-2 py-0.5 rounded text-xs font-bold bg-emerald-500 text-white">
+                  ✅ JOBSCAN PASS
+                </span>
+              )}
+            </div>
+
+            {error && (
+              <span className="text-xs font-bold text-red-600 dark:text-red-400 flex items-center gap-1">
+                <AlertTriangle className="w-3.5 h-3.5" /> {error}
+              </span>
+            )}
+          </div>
+
+          {/* Score progress bar */}
+          <div className="h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full mt-3 overflow-hidden">
+            <div
+              className="h-full bg-slate-950 dark:bg-white transition-all duration-300"
+              style={{ width: `${score}%` }}
+            />
+          </div>
+
+          <div className="mt-2.5 grid grid-cols-2 sm:grid-cols-6 gap-2 text-[11px] font-semibold text-slate-600 dark:text-slate-300">
+            <span className={data.name ? 'text-emerald-700 dark:text-emerald-400' : 'text-slate-400'}>
+              ✓ Name (15%)
+            </span>
+            <span className={data.email.includes('@') ? 'text-emerald-700 dark:text-emerald-400' : 'text-slate-400'}>
+              ✓ Email @ (15%)
+            </span>
+            <span className={data.phone ? 'text-emerald-700 dark:text-emerald-400' : 'text-slate-400'}>
+              ✓ Phone (15%)
+            </span>
+            <span className={data.summary.trim().length >= 50 ? 'text-emerald-700 dark:text-emerald-400' : 'text-slate-400'}>
+              ✓ Summary &gt; 50 (20%)
+            </span>
+            <span className={data.exp.trim().length >= 80 ? 'text-emerald-700 dark:text-emerald-400' : 'text-slate-400'}>
+              ✓ Exp &gt; 80 (20%)
+            </span>
+            <span className={skillCount >= 5 ? 'text-emerald-700 dark:text-emerald-400' : 'text-slate-400'}>
+              ✓ Skills &ge; 5 (15%)
+            </span>
+          </div>
+        </div>
+
+        {/* Job Description Keyword Scanner (Rezi Logic) */}
+        <div className="mt-5 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs sm:text-sm font-bold text-blue-950 dark:text-blue-200 flex items-center gap-2">
-              <Search className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              Step 1: Paste Job Description (Rezi Keyword Scanner)
+            <h3 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+              <Search className="w-4 h-4 text-blue-600" />
+              Target Job Description Scanner (Rezi Keyword Audit)
             </h3>
             {keywords.length > 0 && (
-              <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-blue-200/60 dark:bg-blue-900 text-blue-900 dark:text-blue-200">
-                {keywords.length} Target Keywords
+              <span className="text-[11px] font-medium text-slate-500">
+                {matched.length} of {keywords.length} matched
               </span>
             )}
           </div>
           <textarea
             value={jd}
             onChange={(e) => setJd(e.target.value)}
-            placeholder="Paste target Job Description here... e.g. Looking for PPC, Product Hunting, Listing Optimization, Helium 10, Inventory Management..."
-            className="w-full h-24 p-3 bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-800 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500 shadow-inner"
+            placeholder="Paste Target Job Description (e.g. Operation Manager, Supply Chain, ERP, Vendor Negotiation)..."
+            className="w-full h-20 p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500"
           />
 
           {jd.trim() && (
-            <div className="space-y-2 pt-2 border-t border-blue-200/60 dark:border-blue-900/60 text-xs">
+            <div className="space-y-2 pt-1 text-xs">
               <div className="flex flex-wrap items-center gap-1.5">
-                <span className="font-bold text-slate-700 dark:text-slate-300">
-                  Target Keywords ({keywords.length}):
-                </span>
+                <span className="font-bold text-slate-700 dark:text-slate-300">Found:</span>
                 {keywords.map((kw) => (
                   <span
                     key={kw}
-                    className="px-2 py-0.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded text-[11px] font-medium"
+                    className="px-2 py-0.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded text-[11px]"
                   >
                     {kw}
                   </span>
                 ))}
               </div>
 
-              <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                <span className="font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  Matched in Resume ({matched.length}):
-                </span>
-                {matched.length > 0 ? (
-                  matched.map((m) => (
-                    <span
-                      key={m}
-                      className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-bold rounded text-[11px]"
-                    >
-                      ✓ {m}
-                    </span>
-                  ))
-                ) : (
-                  <span className="text-amber-600 dark:text-amber-400 font-semibold text-[11px]">
-                    No keyword matched yet. Click missing keywords below to add to Skills!
-                  </span>
-                )}
-              </div>
-
               {missing.length > 0 && (
-                <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                  <span className="font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1">
-                    <AlertCircle className="w-3.5 h-3.5" />
-                    Missing (Click to add to skills):
-                  </span>
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="font-bold text-amber-600 dark:text-amber-400">Click to add missing:</span>
                   {missing.map((ms) => (
                     <button
                       key={ms}
                       onClick={() => handleAddKeywordToSkills(ms)}
-                      className="px-2 py-0.5 bg-amber-100 hover:bg-amber-200 dark:bg-amber-950/60 dark:hover:bg-amber-900 text-amber-900 dark:text-amber-200 rounded text-[11px] font-medium cursor-pointer transition-colors"
-                      title="Click to insert into Skills"
+                      className="px-2 py-0.5 bg-amber-100 dark:bg-amber-950/60 hover:bg-amber-200 text-amber-900 dark:text-amber-200 rounded text-[11px] font-medium cursor-pointer transition-colors"
                     >
                       + {ms}
                     </button>
@@ -321,194 +405,217 @@ ${data.skills || 'Technical skills and core keywords...'}
             </div>
           )}
         </div>
-
-        {/* ATS Score Meter */}
-        <div className="mt-5 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
-          <div className="flex items-center justify-between text-xs sm:text-sm font-bold">
-            <span className="text-slate-800 dark:text-slate-200">
-              ATS Compliance Score:{' '}
-              <span
-                className={
-                  atsScore >= 80
-                    ? 'text-emerald-600 dark:text-emerald-400'
-                    : 'text-amber-600 dark:text-amber-400'
-                }
-              >
-                {atsScore}%
-              </span>
-            </span>
-            <span
-              className={
-                atsScore >= 80
-                  ? 'text-emerald-600 dark:text-emerald-400'
-                  : 'text-amber-600 dark:text-amber-400'
-              }
-            >
-              {atsScore >= 80 ? '✅ JOBSCAN PASS' : '⚠️ Add Experience & Keywords'}
-            </span>
-          </div>
-          <div className="w-full h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-            <div
-              className={`h-full transition-all duration-500 rounded-full ${
-                atsScore >= 80 ? 'bg-emerald-500' : 'bg-amber-500'
-              }`}
-              style={{ width: `${atsScore}%` }}
-            />
-          </div>
-          <p className="text-[11px] text-slate-500 dark:text-slate-400">
-            Formula: Contact (30%) + Summary length (15%) + Quantifiable Experience (25%) + Skills (20%) + Target Keyword Matches (up to 32%).
-          </p>
-        </div>
       </div>
 
       {/* Editor & Live Preview Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-        {/* Editor Column */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-xs space-y-4">
-          <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 border-b border-slate-100 dark:border-slate-800 pb-3 flex items-center gap-2">
-            <Layers className="w-4 h-4 text-blue-600" />
-            Resume Content Fields
-          </h3>
+        {/* Editor Inputs (V3 Strict Validation) */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-xs space-y-3.5">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+            <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-2">
+              <Layers className="w-4 h-4 text-blue-600" />
+              ATS Resume Fields
+            </h3>
+            <span className="text-[11px] text-slate-500 font-medium">100% Machine Readable</span>
+          </div>
 
-          <div className="space-y-3">
+          <div>
+            <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
+              Full Name *
+            </label>
+            <input
+              type="text"
+              placeholder="Full Name (e.g. FAREED ULLAH)"
+              value={data.name}
+              onChange={(e) => {
+                setData({ ...data, name: e.target.value });
+                validate('name', e.target.value);
+              }}
+              className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
+              Job Title *
+            </label>
+            <input
+              type="text"
+              placeholder="Job Title - e.g. Operation Manager"
+              value={data.title}
+              onChange={(e) => {
+                setData({ ...data, title: e.target.value });
+                validate('title', e.target.value);
+              }}
+              className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
-                Full Name *
+                Email *
+              </label>
+              <input
+                type="email"
+                placeholder="Email (must contain @)"
+                value={data.email}
+                onChange={(e) => {
+                  setData({ ...data, email: e.target.value });
+                  validate('email', e.target.value);
+                }}
+                className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
+                Phone *
               </label>
               <input
                 type="text"
-                placeholder="Full Name (e.g. Alex Morgan)"
-                value={data.fullName}
-                onChange={(e) => setData({ ...data, fullName: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
-                Target Job Title *
-              </label>
-              <input
-                type="text"
-                placeholder="Target Job Title (e.g. Amazon PPC Specialist)"
-                value={data.jobTitle}
-                onChange={(e) => setData({ ...data, jobTitle: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  placeholder="Email"
-                  value={data.email}
-                  onChange={(e) => setData({ ...data, email: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
-                  Phone *
-                </label>
-                <input
-                  type="text"
-                  placeholder="Phone"
-                  value={data.phone}
-                  onChange={(e) => setData({ ...data, phone: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
-                City, Country
-              </label>
-              <input
-                type="text"
-                placeholder="City, Country (e.g. New York, USA or Lahore, Pakistan)"
-                value={data.city}
-                onChange={(e) => setData({ ...data, city: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
-                Professional Summary
-              </label>
-              <textarea
-                rows={3}
-                placeholder="Professional Summary (Highlight years of experience & core domain)..."
-                value={data.summary}
-                onChange={(e) => setData({ ...data, summary: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
-                Work Experience (Use Numbers &amp; Metrics)
-              </label>
-              <textarea
-                rows={4}
-                placeholder="Work Experience with numbers (e.g. Increased sales by 30%, Managed $50k ad budget)..."
-                value={data.exp}
-                onChange={(e) => setData({ ...data, exp: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500 font-mono text-xs"
-              />
-            </div>
-
-            <div>
-              <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
-                Education
-              </label>
-              <textarea
-                rows={2}
-                placeholder="Degree, Major, Institution, Graduation Year"
-                value={data.edu}
-                onChange={(e) => setData({ ...data, edu: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
-                Skills &amp; Keywords (Comma separated)
-              </label>
-              <textarea
-                rows={2}
-                placeholder="Skills (comma separated, e.g. PPC, Listing Optimization, Helium 10)..."
-                value={data.skills}
-                onChange={(e) => setData({ ...data, skills: e.target.value })}
+                placeholder="Phone +92..."
+                value={data.phone}
+                onChange={(e) => {
+                  setData({ ...data, phone: e.target.value });
+                  validate('phone', e.target.value);
+                }}
                 className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
+
+          <div>
+            <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
+              City, Country
+            </label>
+            <input
+              type="text"
+              placeholder="City, Country"
+              value={data.city}
+              onChange={(e) => {
+                setData({ ...data, city: e.target.value });
+                validate('city', e.target.value);
+              }}
+              className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase">
+                Professional Summary * (min 50 chars)
+              </label>
+              <span
+                className={`text-[10px] font-bold ${
+                  data.summary.trim().length >= 50
+                    ? 'text-emerald-600 dark:text-emerald-400'
+                    : 'text-amber-600 dark:text-amber-400'
+                }`}
+              >
+                {data.summary.trim().length}/50 chars
+              </span>
+            </div>
+            <textarea
+              rows={3}
+              placeholder="Professional Summary - min 50 chars..."
+              value={data.summary}
+              onChange={(e) => {
+                validate('summary', e.target.value);
+                setData({ ...data, summary: e.target.value });
+              }}
+              className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase">
+                Work Experience * (Must include Date + Numbers)
+              </label>
+              <span
+                className={`text-[10px] font-bold ${
+                  data.exp.trim().length >= 80
+                    ? 'text-emerald-600 dark:text-emerald-400'
+                    : 'text-amber-600 dark:text-amber-400'
+                }`}
+              >
+                {data.exp.trim().length}/80 chars
+              </span>
+            </div>
+            <textarea
+              rows={4}
+              placeholder="Work Experience - Must include Date + Numbers (e.g. Increased efficiency by 25%, managed 24 team members)..."
+              value={data.exp}
+              onChange={(e) => {
+                validate('exp', e.target.value);
+                setData({ ...data, exp: e.target.value });
+              }}
+              className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500 font-mono text-xs"
+            />
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase">
+                Skills * (Comma separated, min 5 skills, no &quot;etc.&quot;)
+              </label>
+              <span
+                className={`text-[10px] font-bold ${
+                  skillCount >= 5
+                    ? 'text-emerald-600 dark:text-emerald-400'
+                    : 'text-amber-600 dark:text-amber-400'
+                }`}
+              >
+                {skillCount}/5 skills
+              </span>
+            </div>
+            <textarea
+              rows={2}
+              placeholder="Skills - comma separated, min 5 skills, no etc. (e.g. Operations, Logistics, ERP, Supply Chain, Leadership)"
+              value={data.skills}
+              onChange={(e) => {
+                validate('skills', e.target.value);
+                setData({ ...data, skills: e.target.value });
+              }}
+              className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">
+              Education (Optional)
+            </label>
+            <input
+              type="text"
+              placeholder="Degree • Institution • Graduation Year"
+              value={data.edu}
+              onChange={(e) => setData({ ...data, edu: e.target.value })}
+              className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
         </div>
 
-        {/* Live ATS Preview Column */}
+        {/* 100% ATS Single Column Live Document Preview */}
         <div className="space-y-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-xs">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-xs">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-2">
+              <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-2">
                 <FileCheck className="w-4 h-4 text-emerald-600" />
-                Live Single-Column ATS Preview
+                Single-Column ATS Preview
               </h3>
-              <span className="text-[11px] text-slate-400">100% Machine Readable</span>
+              <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">
+                100% ATS LOCK
+              </span>
             </div>
 
-            {/* A4 Document Canvas Preview */}
-            <div className="mt-4 p-6 sm:p-8 bg-white text-slate-900 border-2 border-slate-900 rounded-2xl shadow-sm min-h-[460px] font-sans">
-              <h2 className="text-xl sm:text-2xl font-black text-center tracking-tight text-slate-950 uppercase">
-                {data.fullName || 'YOUR FULL NAME'}
+            {/* A4 Strict ATS Document Container (Exactly matching V3 layout) */}
+            <div className="mt-4 p-6 sm:p-8 bg-white text-black border-[1.5px] border-black rounded-lg shadow-sm min-h-[440px] font-sans">
+              <h2 className="text-lg sm:text-xl font-bold text-center tracking-tight text-black uppercase m-0">
+                {data.name || 'FAREED ULLAH'}
               </h2>
-              <p className="text-center text-xs text-slate-600 mt-1 font-medium">
-                {[data.jobTitle || 'TARGET TITLE', data.email || 'email@example.com', data.phone || '+1 555-0192', data.city || 'Location']
+              <p className="text-center text-[11px] text-black mt-1 font-normal">
+                {[data.title, data.city, data.phone, data.email]
                   .filter(Boolean)
                   .join(' | ')}
               </p>
@@ -516,10 +623,10 @@ ${data.skills || 'Technical skills and core keywords...'}
               {/* Summary */}
               {data.summary && (
                 <div className="mt-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider border-b border-slate-900 pb-0.5 text-slate-950">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider border-b border-black pb-[3px] mt-[15px] text-black">
                     PROFESSIONAL SUMMARY
                   </h4>
-                  <p className="text-xs text-slate-700 mt-1.5 leading-relaxed">
+                  <p className="text-[12px] text-black mt-1 leading-relaxed">
                     {data.summary}
                   </p>
                 </div>
@@ -528,10 +635,10 @@ ${data.skills || 'Technical skills and core keywords...'}
               {/* Experience */}
               {data.exp && (
                 <div className="mt-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider border-b border-slate-900 pb-0.5 text-slate-950">
-                    WORK EXPERIENCE
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider border-b border-black pb-[3px] mt-[15px] text-black">
+                    PROFESSIONAL EXPERIENCE
                   </h4>
-                  <p className="text-xs text-slate-700 mt-1.5 leading-relaxed whitespace-pre-line">
+                  <p className="text-[12px] text-black mt-1 leading-relaxed whitespace-pre-line">
                     {data.exp}
                   </p>
                 </div>
@@ -540,10 +647,10 @@ ${data.skills || 'Technical skills and core keywords...'}
               {/* Education */}
               {data.edu && (
                 <div className="mt-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider border-b border-slate-900 pb-0.5 text-slate-950">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider border-b border-black pb-[3px] mt-[15px] text-black">
                     EDUCATION
                   </h4>
-                  <p className="text-xs text-slate-700 mt-1.5 leading-relaxed">
+                  <p className="text-[12px] text-black mt-1 leading-relaxed">
                     {data.edu}
                   </p>
                 </div>
@@ -552,10 +659,10 @@ ${data.skills || 'Technical skills and core keywords...'}
               {/* Skills */}
               {data.skills && (
                 <div className="mt-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider border-b border-slate-900 pb-0.5 text-slate-950">
-                    SKILLS &amp; CORE COMPETENCIES
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider border-b border-black pb-[3px] mt-[15px] text-black">
+                    SKILLS
                   </h4>
-                  <p className="text-xs text-slate-700 mt-1.5 leading-relaxed">
+                  <p className="text-[12px] text-black mt-1 leading-relaxed">
                     {data.skills}
                   </p>
                 </div>
@@ -565,42 +672,48 @@ ${data.skills || 'Technical skills and core keywords...'}
             {/* Action Buttons */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-5">
               <Button
-                onClick={downloadDocx}
-                className="h-11 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl cursor-pointer gap-2 shadow-sm"
+                onClick={handlePrint}
+                className="h-11 bg-black hover:bg-slate-800 text-white font-bold text-xs rounded-xl cursor-pointer gap-2 shadow-xs"
               >
-                <Download className="w-4 h-4" />
-                Download DOCX (100% ATS)
+                <Printer className="w-4 h-4" />
+                Download 100% ATS PDF
               </Button>
               <Button
                 onClick={downloadPdf}
-                className="h-11 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl cursor-pointer gap-2 shadow-sm"
-              >
-                <FileText className="w-4 h-4" />
-                Download Vector PDF
-              </Button>
-              <Button
                 variant="outline"
-                onClick={() => window.print()}
                 className="h-11 font-bold text-xs rounded-xl cursor-pointer gap-2 border-slate-300 dark:border-slate-700"
               >
-                <Printer className="w-4 h-4" />
-                Print Resume
+                <FileText className="w-4 h-4 text-blue-600" />
+                Vector PDF Engine
+              </Button>
+              <Button
+                onClick={downloadDocx}
+                variant="outline"
+                className="h-11 font-bold text-xs rounded-xl cursor-pointer gap-2 border-slate-300 dark:border-slate-700"
+              >
+                <Download className="w-4 h-4 text-emerald-600" />
+                Download DOCX
               </Button>
             </div>
           </div>
 
-          {/* AdSense SEO & Quality Guide */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 text-xs text-slate-600 dark:text-slate-300 space-y-3 leading-relaxed">
-            <h4 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-              <HelpCircle className="w-4 h-4 text-blue-600" />
-              Why ATS Systems Reject Graphic Resumes
+          {/* Guidelines Box */}
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 text-xs text-slate-600 dark:text-slate-300 space-y-2.5">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-1.5">
+              <HelpCircle className="w-3.5 h-3.5 text-blue-600" />
+              100% ATS Lock Rules (Workday, Greenhouse &amp; Taleo)
             </h4>
-            <p>
-              Applicant Tracking Systems (such as Workday, Greenhouse, Taleo, and Lever) strip away styling and convert incoming files into linear text strings. Two-column layouts, graphics, text boxes, and tables cause headers and body text to concatenate out of order.
-            </p>
-            <p>
-              <strong>The Rezi Formula:</strong> Single-column hierarchy, standard section headers (Summary, Experience, Education, Skills), quantifiable XYZ bullet points (&quot;Achieved [X] as measured by [Y] by doing [Z]&quot;), and exact keyword density extracted from the job posting.
-            </p>
+            <ul className="list-disc pl-4 space-y-1 text-slate-500 dark:text-slate-400">
+              <li>
+                <strong>No &quot;etc.&quot;:</strong> ATS engines drop resumes that use &quot;etc.&quot; instead of explicit keyword tags.
+              </li>
+              <li>
+                <strong>Metrics &amp; Dates:</strong> Every experience point should contain measurable impact (e.g. 25%, $180k, 24 members).
+              </li>
+              <li>
+                <strong>Single-Column Hierarchy:</strong> Tables, multi-columns, and complex icons cause OCR parsing corruption.
+              </li>
+            </ul>
           </div>
         </div>
       </div>
