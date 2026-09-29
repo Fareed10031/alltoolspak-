@@ -444,6 +444,22 @@ Compliant with EU Commission VAT OSS & Amazon Seller Central Invoice Requirement
           <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
           <span>✅ 100% Verified: Auto Currency ({country.currency}) | Article 146 | EU OSS Scheme | HS 8517.12.00</span>
         </p>
+
+        {/* COMPLIANCE SECTION */}
+        <div className="w-full mt-8 space-y-6 px-2">
+          <div className="bg-white rounded-[24px] border border-slate-200 p-6">
+            <h2 className="text-[16px] font-black tracking-wider">HOW TO USE THIS TOOL</h2>
+            <div className="space-y-3 mt-4">
+              <div className="bg-slate-50 rounded-2xl p-4"><h3 className="text-[#2563EB] font-bold">Step 1: Enter Your Data</h3><p className="text-slate-600 text-[14px]">Enter Buyer Name, Destination Country, Gross Amount in EUR. 100% client-side.</p></div>
+              <div className="bg-slate-50 rounded-2xl p-4"><h3 className="text-[#2563EB] font-bold">Step 2: Verify VAT</h3><p className="text-slate-600 text-[14px]">System auto-detects EU VAT rate under Directive 2006/112/EC.</p></div>
+              <div className="bg-slate-50 rounded-2xl p-4"><h3 className="text-[#2563EB] font-bold">Step 3: Download Invoice</h3><p className="text-slate-600 text-[14px]">Download Text or Print as PDF for Amazon FBA.</p></div>
+            </div>
+          </div>
+          <div className="bg-white rounded-[24px] border border-slate-200 p-6">
+            <h2 className="text-[22px] font-black">About Amazon EU VAT Calculator on AllToolsPK</h2>
+            <p className="text-slate-600 text-[15px]">Amazon EU VAT Calculator provides privacy-first client-side calculation for all 27 EU countries under EU OSS Scheme Directive 2006/112/EC. Auto-generates net turnover, VAT, invoices with OSS ID, HS Code 8517.12.00, Article 146. No data uploaded.</p>
+          </div>
+        </div>
       </div>
 
       {/* Print Document Render */}

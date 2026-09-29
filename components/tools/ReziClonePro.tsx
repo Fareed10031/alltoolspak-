@@ -715,6 +715,22 @@ ${data.skills || 'Technical skills and core keywords...'}
               </li>
             </ul>
           </div>
+
+          {/* COMPLIANCE SECTION */}
+          <div className="w-full mt-8 space-y-6 px-2">
+            <div className="bg-white rounded-[24px] border border-slate-200 p-6">
+              <h2 className="text-[16px] font-black tracking-wider text-slate-900">HOW TO USE THIS TOOL</h2>
+              <div className="space-y-3 mt-4">
+                <div className="bg-slate-50 rounded-2xl p-4"><h3 className="text-[#2563EB] font-bold">Step 1: Enter Your Data</h3><p className="text-slate-600 text-[14px]">Fill in your professional summary, experience metrics, education, and skills. 100% client-side in your browser.</p></div>
+                <div className="bg-slate-50 rounded-2xl p-4"><h3 className="text-[#2563EB] font-bold">Step 2: Inspect Live Preview</h3><p className="text-slate-600 text-[14px]">Preview the single-column ATS layout engineered for Workday, Greenhouse, and Taleo algorithms.</p></div>
+                <div className="bg-slate-50 rounded-2xl p-4"><h3 className="text-[#2563EB] font-bold">Step 3: Download Instantly</h3><p className="text-slate-600 text-[14px]">Export as pure TXT, Vector PDF, or Microsoft DOCX. Completely private with zero server uploads.</p></div>
+              </div>
+            </div>
+            <div className="bg-white rounded-[24px] border border-slate-200 p-6">
+              <h2 className="text-[22px] font-black text-slate-900">About ATS Resume Builder on AllToolsPK</h2>
+              <p className="text-slate-600 text-[15px]">ATS Resume Builder provides applicant tracking system (ATS) compliant resume creation engineered 100% on the client side. Formatted to pass Workday, Taleo, and Greenhouse OCR scanners with single-column hierarchy, active impact metrics, and zero watermark restrictions. No user data is ever saved or transmitted to remote servers.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
