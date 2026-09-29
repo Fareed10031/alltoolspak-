@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { ToolItem } from "@/lib/config";
 import { ShieldCheck, Zap, Lock, CheckCircle2 } from "lucide-react";
-import GlobalToolFooter from "@/components/GlobalToolFooter";
 
 export interface ProToolBaseProps {
   tool: ToolItem;
@@ -150,9 +149,6 @@ export default function ProToolBase({
           </div>
         </div>
       </div>
-
-      {/* Global Tool Compliance Footer (Required for Every Tool) */}
-      <GlobalToolFooter toolName={tool.name} />
 
       {/* 250+ Words SEO Article Section Under Every Tool Page (AdSense Mandatory) */}
       <section className="mt-10 bg-white dark:bg-slate-900 rounded-[28px] p-6 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-sm text-slate-700 dark:text-slate-300">

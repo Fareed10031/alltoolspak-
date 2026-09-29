@@ -5,7 +5,6 @@ import { ReziClonePro } from '@/components/tools/ReziClonePro';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
-import GlobalToolFooter from '@/components/GlobalToolFooter';
 
 export default function ResumeBuilderPage() {
   const navigateTo = (page: string) => {
@@ -32,9 +31,6 @@ export default function ResumeBuilderPage() {
       <main className="flex-1 py-8 sm:py-12 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <ReziClonePro />
-          <div className="max-w-4xl mx-auto">
-            <GlobalToolFooter toolName="ATS Resume Builder" />
-          </div>
         </div>
       </main>
       <Footer onNavigate={navigateTo} onSelectTool={navigateTo} />
