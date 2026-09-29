@@ -14,6 +14,9 @@ import {
   Ruler,
   Scale,
   ArrowLeftRight,
+  KeyRound,
+  ShieldCheck,
+  Lock,
 } from 'lucide-react';
 
 export const SITE_NAME = "AllToolsPK";
@@ -111,6 +114,21 @@ export const TOOLS: ToolItem[] = [
     desc: "Generate strong secure passwords instantly with custom length.",
     tag: "Security",
     colorIndex: 5,
+    color: "bg-gradient-to-br from-cyan-600 to-teal-600",
+    icon: (
+      <div
+        className="w-full h-full flex items-center justify-center relative text-white"
+        aria-label="Password Generator Secure Icon"
+        title="Password Generator - Generate strong secure passwords"
+      >
+        <ShieldCheck className="w-10 h-10 text-white/90 absolute" strokeWidth={1.8} />
+        <div className="relative z-10 flex flex-col items-center">
+          <Lock className="w-4 h-4 text-white mb-[-2px]" fill="white" />
+          <KeyRound className="w-5 h-5 text-white" />
+        </div>
+        <div className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-white rounded-full animate-pulse shadow-xs" />
+      </div>
+    ),
   },
   {
     slug: "resume-builder",
