@@ -354,6 +354,35 @@ NET TAKE-HOME PAY:
           </div>
         </div>
       </div>
+
+      {/* --- ADSENSE SEO CONTENT - PASTE THIS AT BOTTOM --- */}
+      <div className="mt-12 p-6 bg-white dark:bg-slate-800/90 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 text-left">
+        <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">How to Use USA Paycheck Calculator 2026?</h2>
+        <ol className="list-decimal ml-5 space-y-2 text-slate-700 dark:text-slate-300">
+          <li>Enter your Annual Gross Salary (e.g. $40,000).</li>
+          <li>Select Filing Status - Single, Married Jointly, Head of Household. Standard deduction 2026 will auto-apply.</li>
+          <li>Enter your State Tax Rate - 0% for TX/FL, 5-9.3% for other states.</li>
+          <li>Enter 401(k) contribution % to see pre-tax savings.</li>
+          <li>Your Take-Home, Federal Tax, FICA, and Biweekly Paycheck will calculate 100% client-side.</li>
+        </ol>
+
+        <h2 className="text-2xl font-bold mt-8 mb-4 text-slate-900 dark:text-white">About USA Paycheck & Take-Home Pay 2026</h2>
+        <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+          Our USA Paycheck Calculator 2026 uses verified 2026 IRS tax brackets, Standard Deduction (Single $16,100, MFJ $32,200, HoH $24,150), 
+          Social Security wage cap $184,500, and Medicare 1.45% to give you exact annual and biweekly take-home pay. All calculations are 100% private 
+          and done in your browser - no data is sent to our server. This tool helps US employees in all 50 states to plan salary, 401k, and state taxes.
+        </p>
+
+        <h3 className="text-xl font-bold mt-6 mb-3 text-slate-900 dark:text-white">Formula Used:</h3>
+        <p className="bg-slate-100 dark:bg-slate-900/80 p-3 rounded-lg font-mono text-sm text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800">
+          Taxable Income = (Gross - 401k) - Standard Deduction<br/>
+          Net Pay = Gross - 401k - Federal Tax - State Tax - FICA
+        </p>
+
+        <h2 className="text-2xl font-bold mt-8 mb-4 text-slate-900 dark:text-white">FAQs</h2>
+        <p className="text-slate-700 dark:text-slate-300"><b className="text-slate-900 dark:text-white">Q: Is this 2026 IRS data accurate?</b><br/>A: Yes, we use inflation-adjusted 2026 IRS brackets and SS cap $184,500.</p>
+        <p className="mt-3 text-slate-700 dark:text-slate-300"><b className="text-slate-900 dark:text-white">Q: Does it support 401k?</b><br/>A: Yes, enter any % and it will show pre-tax savings and reduce taxable income.</p>
+      </div>
     </div>
   );
 }
