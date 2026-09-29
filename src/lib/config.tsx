@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wand2, User, Files, FileCheck } from 'lucide-react';
+import { Wand2, User, Files, FileCheck, ImageIcon, ArrowRight, FileText, QrCode } from 'lucide-react';
 
 export const SITE_NAME = "AllToolsPK";
 
@@ -59,6 +59,18 @@ export const TOOLS: ToolItem[] = [
     desc: "Convert JPG/PNG images to high quality PDF, no quality loss.",
     tag: "Convert",
     colorIndex: 3,
+    color: "bg-gradient-to-br from-emerald-600 to-emerald-400",
+    icon: (
+      <div
+        className="w-full h-full flex items-center justify-center gap-1 text-white"
+        aria-label="Image to PDF Tool Icon"
+        title="Image to PDF Tool Icon"
+      >
+        <ImageIcon className="w-5 h-5 text-white" />
+        <ArrowRight className="w-3.5 h-3.5 text-white/80 shrink-0" />
+        <FileText className="w-5 h-5 text-white" />
+      </div>
+    ),
   },
   {
     slug: "qr-generator",
@@ -66,6 +78,17 @@ export const TOOLS: ToolItem[] = [
     desc: "Create QR codes for links, text, or contact info instantly.",
     tag: "Generator",
     colorIndex: 4,
+    color: "bg-gradient-to-br from-red-700 to-rose-500",
+    icon: (
+      <div
+        className="w-full h-full flex items-center justify-center relative text-white"
+        aria-label="QR Code Generator Tool Icon"
+        title="QR Code Generator Tool Icon"
+      >
+        <QrCode className="w-8 h-8 text-white" />
+        <span className="w-2 h-2 rounded-full bg-amber-300 absolute top-1.5 right-1.5 shadow-sm animate-pulse" />
+      </div>
+    ),
   },
   {
     slug: "password-gen",
