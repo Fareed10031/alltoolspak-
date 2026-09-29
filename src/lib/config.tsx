@@ -1,5 +1,20 @@
 import React from 'react';
-import { Wand2, User, Files, FileCheck, ImageIcon, ArrowRight, FileText, QrCode } from 'lucide-react';
+import {
+  Wand2,
+  User,
+  Files,
+  FileCheck,
+  ImageIcon,
+  ArrowRight,
+  FileText,
+  QrCode,
+  Calendar,
+  Cake,
+  Clock,
+  Ruler,
+  Scale,
+  ArrowLeftRight,
+} from 'lucide-react';
 
 export const SITE_NAME = "AllToolsPK";
 
@@ -125,6 +140,20 @@ export const TOOLS: ToolItem[] = [
     desc: "Calculate exact age from date of birth in years, months, days.",
     tag: "Calc",
     colorIndex: 7,
+    color: "bg-gradient-to-br from-violet-700 to-purple-500",
+    icon: (
+      <div
+        className="w-full h-full flex items-center justify-center relative text-white"
+        aria-label="Age Calculator Icon"
+        title="Age Calculator - Calculate exact age"
+      >
+        <div className="relative flex items-center justify-center">
+          <Calendar className="w-8 h-8 text-white" />
+          <Cake className="w-4 h-4 text-white absolute -bottom-1 -right-1 bg-white/20 rounded-full p-0.5" />
+          <Clock className="w-3 h-3 text-white/90 absolute -top-1 -left-1" />
+        </div>
+      </div>
+    ),
   },
   {
     slug: "unit-converter",
@@ -132,6 +161,20 @@ export const TOOLS: ToolItem[] = [
     desc: "Convert length, weight, temperature & more instantly.",
     tag: "Convert",
     colorIndex: 8,
+    color: "bg-gradient-to-br from-orange-500 to-amber-400",
+    icon: (
+      <div
+        className="w-full h-full flex items-center justify-center relative text-white"
+        aria-label="Unit Converter Icon"
+        title="Unit Converter - Length Weight Temperature"
+      >
+        <div className="relative flex items-center justify-center">
+          <Scale className="w-8 h-8 text-white" />
+          <ArrowLeftRight className="w-4 h-4 text-white/90 absolute -top-1 -right-1" />
+          <Ruler className="w-3.5 h-3.5 text-white/80 absolute -bottom-1 -left-1" />
+        </div>
+      </div>
+    ),
   },
 ];
 
