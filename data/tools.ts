@@ -81,11 +81,11 @@ export const tools: ToolItem[] = [
   },
   {
     id: 'resume-builder',
-    name: 'Resume Builder',
-    description: 'Build professional resume and download as real PDF with your name.',
-    component: ResumeBuilderSimpleTool,
+    name: 'ATS Resume Builder',
+    description: 'Build ATS-friendly resume that passes Applicant Tracking System. 100% compliant format, download as real PDF with your name.',
+    component: ReziClonePro,
     category: 'Career & Productive',
-    badge: 'Real Vector PDF',
+    badge: 'ATS • 100% Pass',
   },
   {
     id: 'age-calculator',

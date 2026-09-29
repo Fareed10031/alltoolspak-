@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const SITE_NAME = "AllToolsPK";
 
 export interface ToolItem {
@@ -6,6 +8,12 @@ export interface ToolItem {
   desc: string;
   tag: string;
   colorIndex: number;
+  shortName?: string;
+  badge?: string;
+  badgeColor?: string;
+  color?: string;
+  icon?: React.ReactNode;
+  seoTitle?: string;
 }
 
 export const TOOLS: ToolItem[] = [
@@ -53,8 +61,23 @@ export const TOOLS: ToolItem[] = [
   },
   {
     slug: "resume-builder",
-    name: "Resume Builder",
-    desc: "Build professional resume and download as real PDF with your name.",
+    name: "ATS Resume Builder",
+    shortName: "ATS Resume",
+    badge: "ATS • 100% Pass",
+    badgeColor: "bg-green-100 text-green-700 border border-green-200",
+    color: "bg-gradient-to-br from-[#0A84FF] to-[#0050D5]",
+    icon: (
+      <div className="w-full h-full flex flex-col items-center justify-center text-white">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <polyline points="9 15 11 17 15 13" />
+        </svg>
+        <span className="text-[14px] font-black tracking-[1px] mt-1">ATS</span>
+      </div>
+    ),
+    desc: "Build ATS-friendly resume that passes Applicant Tracking System. 100% compliant format, download as real PDF with your name.",
+    seoTitle: "Free ATS Resume Builder - 100% ATS Compliant",
     tag: "Builder",
     colorIndex: 6,
   },

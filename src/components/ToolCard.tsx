@@ -14,8 +14,14 @@ export interface ToolCardProps {
 }
 
 export function ToolCard({ tool, color, onClick }: ToolCardProps) {
-  // Initial letter of tool name
+  // Initial letter of tool name fallback
   const initial = tool.name ? tool.name[0].toUpperCase() : 'A';
+  const badgeLabel = tool.badge || tool.tag;
+  const badgeClass =
+    tool.badgeColor ||
+    'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/60 dark:border-slate-700/60';
+
+  const iconBg = tool.color || color.bg;
 
   return (
     <div
@@ -23,15 +29,15 @@ export function ToolCard({ tool, color, onClick }: ToolCardProps) {
       className="group relative bg-white dark:bg-slate-900 rounded-[24px] p-6 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-blue-400/80 transition-all duration-300 flex flex-col justify-between cursor-pointer hover:-translate-y-1"
     >
       <div>
-        {/* Top Row: 56x56 icon box with color bg and bold letter + tag pill */}
+        {/* Top Row: 56x56 icon box with color bg and bold letter/custom icon + tag pill */}
         <div className="flex items-center justify-between">
           <div
-            className={`w-14 h-14 rounded-2xl ${color.bg} flex items-center justify-center text-white font-extrabold text-2xl shadow-md group-hover:scale-105 transition-transform`}
+            className={`w-14 h-14 rounded-2xl ${iconBg} flex items-center justify-center text-white font-extrabold text-2xl shadow-md group-hover:scale-105 transition-transform overflow-hidden`}
           >
-            {initial}
+            {tool.icon ? tool.icon : initial}
           </div>
-          <span className="text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/60 dark:border-slate-700/60">
-            {tool.tag}
+          <span className={`text-xs font-semibold px-3 py-1 rounded-full ${badgeClass}`}>
+            {badgeLabel}
           </span>
         </div>
 
