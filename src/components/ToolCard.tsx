@@ -34,7 +34,54 @@ export function ToolCard({ tool, color, onClick }: ToolCardProps) {
           <div
             className={`w-14 h-14 rounded-2xl ${iconBg} flex items-center justify-center text-white font-extrabold text-2xl shadow-md group-hover:scale-105 transition-transform overflow-hidden`}
           >
-            {tool.icon ? tool.icon : initial}
+            {(() => {
+              // 100% SAFE: Only targets Amazon EU VAT, rest of app untouched
+              if (
+                tool.slug === 'amazon-eu-vat' ||
+                tool.name === 'Amazon EU VAT Calculator' ||
+                (tool as any).id === 'amazon-eu-vat-calculator'
+              ) {
+                return (
+                  <div className="w-full h-full flex flex-col items-center justify-center text-white">
+                    <svg
+                      width="36"
+                      height="36"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="white"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="9" cy="21" r="1" fill="white" stroke="none" />
+                      <circle cx="20" cy="21" r="1" fill="white" stroke="none" />
+                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                      <text
+                        x="7.5"
+                        y="14"
+                        fill="white"
+                        stroke="none"
+                        fontSize="5.5"
+                        fontWeight="900"
+                        fontFamily="Arial, sans-serif"
+                      >
+                        % VAT
+                      </text>
+                    </svg>
+                    <div className="flex items-center gap-1 mt-1">
+                      <span className="text-yellow-300 text-[10px]">★</span>
+                      <span className="text-[9px] font-black tracking-widest">EU</span>
+                      <span className="text-yellow-300 text-[10px]">★</span>
+                    </div>
+                  </div>
+                );
+              }
+              // For all other tools (including ATS), keep original logic - NO DAMAGE
+              if (tool.icon) {
+                return tool.icon;
+              }
+              return initial;
+            })()}
           </div>
           <span className={`text-xs font-semibold px-3 py-1 rounded-full ${badgeClass}`}>
             {badgeLabel}
