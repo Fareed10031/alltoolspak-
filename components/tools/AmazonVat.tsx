@@ -21,6 +21,7 @@ import { AdSlot } from '@/components/AdSlot';
 import { AIDisclosure } from '@/components/AIDisclosure';
 import { validateRequiredFields, guardDownload } from '@/lib/toolValidation';
 import { vatCountries, VatCountry } from '@/lib/vatCountries';
+import { AmazonVatInvoiceGenerator } from '@/components/tools/AmazonVatInvoiceGenerator';
 
 interface VatOrder {
   orderId: string;
@@ -42,8 +43,8 @@ const findVatRate = (countryInput: string): number => {
 };
 
 export function AmazonVat() {
-  // Tab Mode: 'instant' vs 'batch'
-  const [activeTab, setActiveTab] = useState<'instant' | 'batch'>('instant');
+  // Tab Mode: 'instant' vs 'batch' vs 'commercial-invoice'
+  const [activeTab, setActiveTab] = useState<'instant' | 'batch' | 'commercial-invoice'>('commercial-invoice');
 
   // ==================== INSTANT SINGLE CALCULATOR STATE ====================
   const [search, setSearch] = useState('');
@@ -427,7 +428,17 @@ export function AmazonVat() {
         </p>
 
         {/* Tab Buttons */}
-        <div className="flex items-center gap-2 mt-6 p-1.5 bg-slate-100 dark:bg-slate-800 rounded-2xl w-fit">
+        <div className="flex flex-wrap items-center gap-2 mt-6 p-1.5 bg-slate-100 dark:bg-slate-800 rounded-2xl w-fit">
+          <button
+            onClick={() => setActiveTab('commercial-invoice')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              activeTab === 'commercial-invoice'
+                ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+            }`}
+          >
+            📜 Commercial Invoice (Amazon OSS / Export)
+          </button>
           <button
             onClick={() => setActiveTab('instant')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
@@ -452,7 +463,9 @@ export function AmazonVat() {
       </div>
 
       {/* Main Interactive Tool Area */}
-      {activeTab === 'instant' ? (
+      {activeTab === 'commercial-invoice' ? (
+        <AmazonVatInvoiceGenerator />
+      ) : activeTab === 'instant' ? (
         <Card className="shadow-sm border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden">
           <CardContent className="p-6 sm:p-8 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
