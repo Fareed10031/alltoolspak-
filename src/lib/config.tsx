@@ -1,4 +1,5 @@
 import React from 'react';
+import { Wand2, User, Files, FileCheck } from 'lucide-react';
 
 export const SITE_NAME = "AllToolsPK";
 
@@ -30,6 +31,13 @@ export const TOOLS: ToolItem[] = [
     desc: "Automatic background removal powered by client-side neural vision. Export crisp transparent cutouts with zero watermarks.",
     tag: "Neural Vision",
     colorIndex: 1,
+    color: "bg-gradient-to-br from-violet-600 to-indigo-600",
+    icon: (
+      <div className="w-full h-full flex items-center justify-center relative text-white">
+        <User className="w-7 h-7 text-white/90" />
+        <Wand2 className="w-4 h-4 text-white absolute -top-0.5 -right-0.5 drop-shadow-sm" />
+      </div>
+    ),
   },
   {
     slug: "pdf-merge",
@@ -37,6 +45,13 @@ export const TOOLS: ToolItem[] = [
     desc: "Merge multiple PDFs into one single file in seconds, 100% offline.",
     tag: "PDF Tool",
     colorIndex: 2,
+    color: "bg-gradient-to-br from-orange-400 to-red-500",
+    icon: (
+      <div className="w-full h-full flex items-center justify-center relative text-white">
+        <Files className="w-6 h-6 text-white/90" />
+        <FileCheck className="w-4 h-4 text-white absolute -bottom-0.5 -right-0.5 drop-shadow-sm" />
+      </div>
+    ),
   },
   {
     slug: "image-to-pdf",
