@@ -5,6 +5,7 @@ import { AmazonEuVatTool } from '@/components/tools/AmazonEuVatTool';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
+import ToolComplianceFooter from '@/components/ToolComplianceFooter';
 
 export default function AmazonEuVatPage() {
   const navigateTo = (page: string) => {
@@ -31,6 +32,9 @@ export default function AmazonEuVatPage() {
       <main className="flex-1 py-8 sm:py-12 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <AmazonEuVatTool />
+          <div className="max-w-2xl mx-auto">
+            <ToolComplianceFooter toolName="Amazon EU VAT Calculator" />
+          </div>
         </div>
       </main>
       <Footer onNavigate={navigateTo} onSelectTool={navigateTo} />
