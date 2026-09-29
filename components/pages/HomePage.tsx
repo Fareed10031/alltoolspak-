@@ -68,7 +68,7 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search 9+ free tools (e.g. PDF, VAT, QR, Resume)..."
+              placeholder="Search free tools (e.g. Paycheck, PDF, VAT, QR, Resume)..."
               className="w-full h-14 pl-12 pr-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm sm:text-base text-slate-900 dark:text-white"
             />
             {searchQuery && (

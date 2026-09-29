@@ -10,6 +10,7 @@ import { PasswordGenTool } from '@/components/tools/PasswordGenTool';
 import { ResumeBuilderSimpleTool } from '@/components/tools/ResumeBuilderSimpleTool';
 import { AgeCalculatorTool } from '@/components/tools/AgeCalculatorTool';
 import { UnitConverterTool } from '@/components/tools/UnitConverterTool';
+import { USAPaycheckCalculator2026 } from '@/components/tools/USAPaycheckCalculator2026';
 
 // Supporting Tools
 import { ReziClonePro } from '@/components/tools/ReziClonePro';
@@ -102,6 +103,14 @@ export const tools: ToolItem[] = [
     component: UnitConverterTool,
     category: 'Calculators',
     badge: 'Precision PDF',
+  },
+  {
+    id: 'usa-paycheck-calculator',
+    name: 'USA Paycheck Calculator 2026',
+    description: 'Calculate take-home pay after Federal, State, 401(k), and FICA taxes with verified 2026 IRS brackets.',
+    component: USAPaycheckCalculator2026,
+    category: 'Finance & Calculators',
+    badge: '2026 IRS Ready',
   },
 
   // Backward-compatible aliases & supporting utilities

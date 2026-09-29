@@ -194,6 +194,27 @@ export const TOOLS: ToolItem[] = [
       </div>
     ),
   },
+  {
+    slug: "usa-paycheck-calculator",
+    name: "USA Paycheck Calculator 2026",
+    shortName: "Paycheck Calc",
+    badge: "2026 IRS Brackets",
+    badgeColor: "bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800",
+    color: "bg-gradient-to-br from-emerald-600 via-teal-600 to-blue-600",
+    icon: (
+      <div
+        className="w-full h-full flex items-center justify-center text-2xl select-none"
+        aria-label="USA Paycheck Calculator 2026 Icon"
+        title="USA Paycheck Calculator 2026 - Take-Home Pay After Federal, State & FICA Taxes"
+      >
+        💵
+      </div>
+    ),
+    desc: "Calculate take-home pay after Federal, State, 401(k), and FICA taxes based on verified 2026 IRS standard deductions and tax brackets.",
+    seoTitle: "USA Paycheck Calculator 2026 - Take-Home Pay After Taxes",
+    tag: "Calc",
+    colorIndex: 3,
+  },
 ];
 
 export const COLORS = [

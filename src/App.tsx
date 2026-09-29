@@ -21,6 +21,7 @@ import { PasswordGenTool } from '@/components/tools/PasswordGenTool';
 import { ResumeBuilderSimpleTool } from '@/components/tools/ResumeBuilderSimpleTool';
 import { AgeCalculatorTool } from '@/components/tools/AgeCalculatorTool';
 import { UnitConverterTool } from '@/components/tools/UnitConverterTool';
+import { USAPaycheckCalculator2026 } from '@/components/tools/USAPaycheckCalculator2026';
 
 // Companion / Legacy Tools
 import { ImageCompressor } from '@/components/tools/ImageCompressor';
@@ -104,6 +105,12 @@ export function normalizeRoute(raw: string): string {
     case 'unit-convert':
     case 'converter':
       return 'unit-converter';
+
+    case 'usa-paycheck-calculator':
+    case 'paycheck-calculator':
+    case 'paycheck':
+    case 'tax-calculator':
+      return 'usa-paycheck-calculator';
 
     // Supporting utilities
     case 'image-compress':
@@ -225,6 +232,7 @@ export default function App() {
         'resume-builder',
         'age-calculator',
         'unit-converter',
+        'usa-paycheck-calculator',
         'image-compress',
         'youtube-thumb',
         'paraphraser',
@@ -277,6 +285,8 @@ export default function App() {
         return <AgeCalculatorTool />;
       case 'unit-converter':
         return <UnitConverterTool />;
+      case 'usa-paycheck-calculator':
+        return <USAPaycheckCalculator2026 />;
 
       // Supporting Tools
       case 'image-compress':
