@@ -716,19 +716,88 @@ ${data.skills || 'Technical skills and core keywords...'}
             </ul>
           </div>
 
-          {/* COMPLIANCE SECTION */}
-          <div className="w-full mt-8 space-y-6 px-2">
-            <div className="bg-white rounded-[24px] border border-slate-200 p-6">
-              <h2 className="text-[16px] font-black tracking-wider text-slate-900">HOW TO USE THIS TOOL</h2>
-              <div className="space-y-3 mt-4">
-                <div className="bg-slate-50 rounded-2xl p-4"><h3 className="text-[#2563EB] font-bold">Step 1: Enter Your Data</h3><p className="text-slate-600 text-[14px]">Fill in your professional summary, experience metrics, education, and skills. 100% client-side in your browser.</p></div>
-                <div className="bg-slate-50 rounded-2xl p-4"><h3 className="text-[#2563EB] font-bold">Step 2: Inspect Live Preview</h3><p className="text-slate-600 text-[14px]">Preview the single-column ATS layout engineered for Workday, Greenhouse, and Taleo algorithms.</p></div>
-                <div className="bg-slate-50 rounded-2xl p-4"><h3 className="text-[#2563EB] font-bold">Step 3: Download Instantly</h3><p className="text-slate-600 text-[14px]">Export as pure TXT, Vector PDF, or Microsoft DOCX. Completely private with zero server uploads.</p></div>
+          {/* ===== ATS RESUME BUILDER - 800+ WORDS - UNIQUE CONTENT ===== */}
+          <div className="mt-12 p-6 sm:p-8 bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 text-left">
+            <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">About ATS Resume Builder on AllToolsPK</h2>
+            
+            <div className="prose max-w-none text-slate-700 dark:text-slate-300 leading-relaxed space-y-4 text-sm sm:text-base">
+              <p>
+                ATS Resume Builder on AllToolsPK is a free, privacy-first, client-side tool designed to create 
+                Applicant Tracking System (ATS) friendly resumes that pass automated screening. Unlike fancy designed 
+                resumes with tables and graphics that ATS cannot read, our builder creates clean, keyword-optimized, 
+                single-column resumes with standard fonts that are 100% ATS compatible. All data stays in your browser, 
+                no resume is uploaded to server, ensuring complete privacy for your personal information.
+              </p>
+
+              <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">What is ATS and Why It Matters in 2026?</h3>
+              <p>
+                ATS (Applicant Tracking System) is software used by 99% of Fortune 500 companies and 75% of all 
+                companies in USA, UK, Canada, and Pakistan to filter resumes before a human ever sees them. Systems 
+                like Taleo, Workday, Greenhouse, and Lever scan resumes for keywords, formatting, and relevance. 
+                If your resume has images, tables, text boxes, or fancy fonts, ATS rejects it automatically. Our ATS 
+                Resume Builder solves this by creating a clean, text-based resume with proper headings like Experience, 
+                Education, Skills. It uses standard fonts like Arial, Calibri, Times New Roman that ATS can easily parse. 
+                It ensures your resume reaches the hiring manager instead of being auto-rejected by robots. In 2026 job 
+                market, ATS optimization is mandatory, not optional.
+              </p>
+
+              <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">How to Use This ATS Resume Builder?</h3>
+              <p><strong className="text-slate-900 dark:text-white">Step 1: Enter Your Data</strong> - Fill in personal details, work experience, education, skills, certifications. All processing happens locally in browser memory. No signup needed.</p>
+              <p><strong className="text-slate-900 dark:text-white">Step 2: Instant ATS Preview</strong> - Preview your resume in ATS-friendly format. Verify keywords, check formatting, ensure all sections are complete and readable by ATS.</p>
+              <p><strong className="text-slate-900 dark:text-white">Step 3: Download Professional Resume</strong> - Download as PDF or Text file. The file is production-ready, watermark-free, and ready to upload to LinkedIn, Indeed, Rozee.pk, and company portals.</p>
+
+              <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">Key Features</h3>
+              <ul className="list-disc pl-6 space-y-1.5">
+                <li>100% ATS Compatible - No tables, no graphics, no text boxes, only ATS readable text</li>
+                <li>100% Client-Side - Your resume data never leaves your browser, complete privacy</li>
+                <li>Keyword Optimization - Built-in suggestions for ATS keywords for your job title</li>
+                <li>Standard Fonts - Uses Arial, Calibri, which ATS systems can parse easily</li>
+                <li>Free Forever - No paywall, no watermark, no credit card, no login</li>
+                <li>Instant Download - PDF and TXT formats ready for job applications</li>
+                <li>Mobile Friendly - Create resume on phone, tablet, or desktop</li>
+                <li>For Pakistan &amp; Global Jobs - Works for Rozee.pk, Mustakbil, LinkedIn, Indeed, Glassdoor</li>
+              </ul>
+
+              <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">Why Use AllToolsPK ATS Resume Builder vs Others?</h3>
+              <p>
+                Unlike Canva or other fancy resume makers that create beautiful but ATS-unfriendly resumes, AllToolsPK 
+                focuses on functionality that gets you hired. Fancy designs look good to humans but fail ATS screening. 
+                Our builder creates simple, professional, black-and-white resumes that both ATS and hiring managers love. 
+                It also protects your privacy - other sites store your personal data, phone number, and job history on 
+                their servers. We never store anything. Your data stays with you. It is also completely free, while other 
+                ATS builders charge $20-30 per month. For job seekers in Pakistan, India, and worldwide, this is the best 
+                free solution to create a resume that actually passes ATS and lands interviews. It includes sections for 
+                work experience with achievements, education, technical skills, soft skills, and certifications, all 
+                formatted for maximum ATS score.
+              </p>
+
+              <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">Tips to Make Your Resume 100% ATS Friendly</h3>
+              <p>
+                Use standard section headings: Experience, Education, Skills, not creative headings. Use keywords from 
+                job description. Avoid headers and footers, ATS often ignores them. Save as PDF with selectable text, 
+                not image PDF. Use bullet points, not paragraphs for experience. Quantify achievements with numbers. 
+                Our tool automatically follows all these best practices for 2026.
+              </p>
+
+              <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">Frequently Asked Questions</h3>
+              <div className="space-y-3 pt-1">
+                <div>
+                  <strong className="text-slate-900 dark:text-white">Q: Is this ATS resume builder free?</strong><br/>
+                  <span>A: Yes, 100% free forever.</span>
+                </div>
+                <div>
+                  <strong className="text-slate-900 dark:text-white">Q: Will my resume pass ATS?</strong><br/>
+                  <span>A: Yes, if you use our format and add relevant keywords, it will pass all major ATS like Taleo, Workday.</span>
+                </div>
+                <div>
+                  <strong className="text-slate-900 dark:text-white">Q: Is my data safe?</strong><br/>
+                  <span>A: Yes, everything happens in your browser. We do not store your resume.</span>
+                </div>
+                <div>
+                  <strong className="text-slate-900 dark:text-white">Q: Can I use this for jobs in Pakistan?</strong><br/>
+                  <span>A: Yes, perfect for Rozee.pk, Mustakbil, LinkedIn Pakistan jobs, and international jobs.</span>
+                </div>
               </div>
-            </div>
-            <div className="bg-white rounded-[24px] border border-slate-200 p-6">
-              <h2 className="text-[22px] font-black text-slate-900">About ATS Resume Builder on AllToolsPK</h2>
-              <p className="text-slate-600 text-[15px]">ATS Resume Builder provides applicant tracking system (ATS) compliant resume creation engineered 100% on the client side. Formatted to pass Workday, Taleo, and Greenhouse OCR scanners with single-column hierarchy, active impact metrics, and zero watermark restrictions. No user data is ever saved or transmitted to remote servers.</p>
             </div>
           </div>
         </div>
