@@ -281,6 +281,88 @@ export function ImageToPdfTool() {
           )}
         </div>
       )}
+      seoContent={
+        /* ===== IMAGE TO PDF - 800+ WORDS - UNIQUE & ADSENSE READY ===== */
+        <div className="p-2 sm:p-4 text-left">
+          <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">About Image to PDF Converter on AllToolsPK</h2>
+          
+          <div className="prose max-w-none text-slate-700 dark:text-slate-300 leading-relaxed space-y-4 text-sm sm:text-base">
+            <p>
+              Image to PDF Converter on AllToolsPK is a free, privacy-first, client-side tool that converts 
+              JPG, PNG, and WebP images into high-quality PDF documents with no quality loss. Combine multiple 
+              images into a single multi-page PDF instantly without uploading files to any server. Unlike other 
+              converters that send your scanned documents and photos to cloud servers, our tool runs 100% in your 
+              browser using HTML5 Canvas and jsPDF technology. Your images never leave your device, ensuring 
+              complete privacy for receipts, invoices, ID cards, and personal photos.
+            </p>
+
+            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">What is Image to PDF Converter?</h3>
+            <p>
+              Image to PDF Converter transforms your images into professional PDF files. For example, if you have 
+              10 photos of receipts, class notes, or scanned CNIC and documents captured with your phone camera, 
+              you can combine them into one organized PDF file for sharing, printing, or archiving. Students can 
+              convert assignment photos into PDF for submission, businesses can convert scanned invoices and 
+              receipts into PDF for accounting, job seekers can convert certificates into one PDF portfolio. Our 
+              converter supports JPG, JPEG, PNG, and WebP formats, maintaining high resolution, sharp text, and 
+              true color reproduction. You can customize page orientation, adjust page margins, and compile 
+              unlimited photos into an uncompressed, publication-grade document in seconds.
+            </p>
+
+            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">How to Use This Image to PDF Tool?</h3>
+            <p><strong className="text-slate-900 dark:text-white">Step 1: Select Images</strong> - Click to upload or drag and drop single or multiple JPG, PNG, or WebP images from your phone, tablet, or PC. All files remain in local browser RAM.</p>
+            <p><strong className="text-slate-900 dark:text-white">Step 2: Configure Page Options</strong> - Choose your target page orientation (Auto, Portrait, or Landscape) and preferred margin styling (None, Compact, or Normal).</p>
+            <p><strong className="text-slate-900 dark:text-white">Step 3: Convert &amp; Download</strong> - Click Download PDF to compile the images into a clean, searchable vector PDF document instantly with zero watermarks or signup requirements.</p>
+
+            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">Key Features of Our Image to PDF Converter</h3>
+            <ul className="list-disc pl-6 space-y-1.5">
+              <li>100% Client-Side Processing - Your images never touch an external server, guaranteeing total confidentiality</li>
+              <li>Multi-Image Batch Compilation - Merge dozens of photos into a single multi-page PDF document simultaneously</li>
+              <li>Universal Image Support - Seamlessly accepts standard JPG, JPEG, PNG, and next-generation WebP graphic formats</li>
+              <li>Zero Quality Degradation - Preserves full camera sensor resolution, document clarity, and fine printed text</li>
+              <li>Intelligent Auto-Orientation - Automatically adjusts each page layout to match horizontal or vertical photos</li>
+              <li>Free Forever with No Watermarks - No paywalls, no monthly subscription fees, and no branding stamps</li>
+              <li>Mobile-Optimized Interface - Smoothly convert smartphone camera photos on Android, iPhone, iPad, and desktop</li>
+              <li>Offline Usability - Once loaded in your browser, perform conversions anywhere without active internet connectivity</li>
+            </ul>
+
+            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">Why Choose AllToolsPK Over Cloud-Based PDF Converters?</h3>
+            <p>
+              Most online image converters upload your files across the internet to remote cloud storage. For sensitive assets like national identity cards (CNIC), passports, medical records, property papers, and tax forms, cloud uploads present significant data privacy risks. Additionally, commercial services often impose arbitrary limitations—such as capping uploads at 3 images or downgrading PDF quality unless you purchase an expensive monthly tier. AllToolsPK executes every stage of the image conversion locally within your browser sandbox. By eliminating server roundtrips, conversions are instantaneous, 100% private, and completely free forever.
+            </p>
+
+            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">Common Everyday Use Cases</h3>
+            <p>
+              <strong>Academic Submissions:</strong> Photograph handwritten homework sheets, assignments, or textbook excerpts and merge them into one organized PDF for online portals.<br/>
+              <strong>Accounting &amp; Tax Expenses:</strong> Bundle physical expense receipts, grocery bills, and fuel slips into an orderly monthly PDF statement for bookkeeping.<br/>
+              <strong>Job Applications &amp; Visas:</strong> Combine degree certificates, recommendation letters, passport scans, and ID photos into a unified application package.
+            </p>
+
+            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">Frequently Asked Questions</h3>
+            <div className="space-y-3 pt-1">
+              <div>
+                <strong className="text-slate-900 dark:text-white">Q: Is this Image to PDF converter completely free?</strong><br/>
+                <span>A: Yes, 100% free with unlimited image conversions, no watermarks, and no hidden fees.</span>
+              </div>
+              <div>
+                <strong className="text-slate-900 dark:text-white">Q: Are my confidential pictures safe?</strong><br/>
+                <span>A: Absolutely. Your images are processed solely in your device memory (RAM) and never uploaded to our servers.</span>
+              </div>
+              <div>
+                <strong className="text-slate-900 dark:text-white">Q: How many images can I merge into one PDF?</strong><br/>
+                <span>A: You can combine dozens of images into a single PDF document, limited only by your device memory.</span>
+              </div>
+              <div>
+                <strong className="text-slate-900 dark:text-white">Q: Will the converter blur small text on scanned papers?</strong><br/>
+                <span>A: No. High-resolution photos are embedded directly into standard ISO PDF containers to keep fine text sharp and readable.</span>
+              </div>
+            </div>
+
+            <p className="mt-6 text-sm text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800 pt-4">
+              Disclaimer: This utility compiles images directly within client-side browser memory. Ensure you hold necessary distribution rights for documents processed. AllToolsPK does not monitor, collect, or store user files.
+            </p>
+          </div>
+        </div>
+      }
       generateFile={generateImagePdf}
     />
   );
