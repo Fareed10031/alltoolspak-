@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://alltoolspak.vercel.app/sitemap.xml
+Sitemap: https://alltoolspk.com/sitemap.xml
