@@ -41,6 +41,8 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
         'resume-builder',
         'ats-resume-builder',
         'humanize-ai-text',
+        'mortgage-calculator',
+        'mortgage-calculator-usa',
       ].includes(page)
     ) {
       window.location.href = `/tools/${page}`;

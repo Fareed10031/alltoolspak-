@@ -12,7 +12,7 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTag, setActiveTag] = useState('All');
 
-  const tags = ['All', 'PDF Tool', 'Neural Vision', 'Convert', 'Generator', 'Security', 'Builder', 'Calc', 'EU OSS Ready'];
+  const tags = ['All', 'Finance', 'PDF Tool', 'Neural Vision', 'Convert', 'Generator', 'Security', 'Builder', 'Calc', 'EU OSS Ready'];
 
   const filteredTools = useMemo(() => {
     return TOOLS.filter((tool) => {

@@ -29,6 +29,9 @@ export interface ToolItem {
   component: ComponentType<any>;
   category: string;
   badge: string;
+  slug?: string;
+  icon?: string;
+  path?: string;
 }
 
 export const tools: ToolItem[] = [
@@ -115,10 +118,13 @@ export const tools: ToolItem[] = [
   },
   {
     id: 'mortgage-calculator',
-    name: 'USA Mortgage Calculator 2026',
-    description: 'Calculate true monthly payments including Principal, Interest, PMI, Property Taxes, Insurance & HOA fees.',
+    name: 'Mortgage Calculator USA',
+    slug: 'mortgage-calculator',
+    description: 'Calculate true monthly payment with PMI, Property Tax, Insurance & HOA - USA 2026',
+    icon: 'Home',
+    category: 'Finance',
+    path: '/tools/mortgage-calculator',
     component: MortgageCalculator,
-    category: 'Finance & Calculators',
     badge: 'PMI & Tax Ready',
   },
 

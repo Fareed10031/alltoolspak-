@@ -22,6 +22,7 @@ import { ResumeBuilderSimpleTool } from '@/components/tools/ResumeBuilderSimpleT
 import { AgeCalculatorTool } from '@/components/tools/AgeCalculatorTool';
 import { UnitConverterTool } from '@/components/tools/UnitConverterTool';
 import { USAPaycheckCalculator2026 } from '@/components/tools/USAPaycheckCalculator2026';
+import MortgageCalculator from '@/components/tools/MortgageCalculator';
 
 // Companion / Legacy Tools
 import { ImageCompressor } from '@/components/tools/ImageCompressor';
@@ -111,6 +112,12 @@ export function normalizeRoute(raw: string): string {
     case 'paycheck':
     case 'tax-calculator':
       return 'usa-paycheck-calculator';
+
+    case 'mortgage-calculator':
+    case 'mortgage-calculator-usa':
+    case 'mortgage':
+    case 'mortgage-calc':
+      return 'mortgage-calculator';
 
     // Supporting utilities
     case 'image-compress':
@@ -233,6 +240,7 @@ export default function App() {
         'age-calculator',
         'unit-converter',
         'usa-paycheck-calculator',
+        'mortgage-calculator',
         'image-compress',
         'youtube-thumb',
         'paraphraser',
@@ -287,6 +295,8 @@ export default function App() {
         return <UnitConverterTool />;
       case 'usa-paycheck-calculator':
         return <USAPaycheckCalculator2026 />;
+      case 'mortgage-calculator':
+        return <MortgageCalculator />;
 
       // Supporting Tools
       case 'image-compress':

@@ -34,6 +34,9 @@ export interface ToolItem {
   color?: string;
   icon?: React.ReactNode;
   seoTitle?: string;
+  path?: string;
+  category?: string;
+  description?: string;
 }
 
 export const TOOLS: ToolItem[] = [
@@ -217,23 +220,26 @@ export const TOOLS: ToolItem[] = [
     colorIndex: 3,
   },
   {
+    name: "Mortgage Calculator USA",
     slug: "mortgage-calculator",
-    name: "USA Mortgage Calculator 2026",
+    desc: "Calculate true monthly payment with PMI, Property Tax, Insurance & HOA - USA 2026",
+    description: "Calculate true monthly payment with PMI, Property Tax, Insurance & HOA - USA 2026",
+    icon: (
+      <div
+        className="w-full h-full flex items-center justify-center text-white"
+        aria-label="Mortgage Calculator USA Icon"
+        title="Mortgage Calculator USA - USA 2026"
+      >
+        <Home className="w-7 h-7 text-white" />
+      </div>
+    ),
+    category: "Finance",
+    path: "/tools/mortgage-calculator",
     shortName: "Mortgage Calc",
     badge: "PMI & Tax Ready",
     badgeColor: "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800",
     color: "bg-gradient-to-br from-blue-700 via-indigo-600 to-slate-900",
-    icon: (
-      <div
-        className="w-full h-full flex items-center justify-center text-2xl select-none"
-        aria-label="USA Mortgage Calculator 2026 Icon"
-        title="USA Mortgage Calculator with PMI, Taxes & HOA"
-      >
-        🏠
-      </div>
-    ),
-    desc: "Calculate true monthly mortgage payment including Principal, Interest, PMI, Property Taxes, Homeowners Insurance & HOA fees.",
-    seoTitle: "USA Mortgage Calculator with PMI, Taxes & HOA (2026)",
+    seoTitle: "Mortgage Calculator USA with PMI, Property Tax, Insurance & HOA (2026)",
     tag: "Finance",
     colorIndex: 0,
   },
