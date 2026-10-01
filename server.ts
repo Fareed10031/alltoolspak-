@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
@@ -108,6 +109,88 @@ app.post('/api/ai', async (req: Request, res: Response) => {
   } catch (err: any) {
     console.error('API Error:', err);
     return res.status(500).json({ error: err.message || 'Internal server error' });
+  }
+});
+
+// Dynamic /sitemap.xml route handler matching app/sitemap.xml/route.ts
+app.get('/sitemap.xml', (_req: Request, res: Response) => {
+  try {
+    const baseUrl = 'https://alltoolspk.com';
+    const currentDate = new Date().toISOString().split('T')[0];
+
+    const staticPages = [
+      { path: '', changefreq: 'daily', priority: '1.0' },
+      { path: '/tools', changefreq: 'daily', priority: '0.95' },
+      { path: '/about', changefreq: 'monthly', priority: '0.8' },
+      { path: '/contact', changefreq: 'monthly', priority: '0.8' },
+      { path: '/privacy', changefreq: 'monthly', priority: '0.8' },
+      { path: '/terms', changefreq: 'monthly', priority: '0.8' },
+      { path: '/disclaimer', changefreq: 'monthly', priority: '0.8' },
+      { path: '/cookies', changefreq: 'monthly', priority: '0.8' },
+    ];
+
+    const detectedToolPaths: string[] = [];
+    const toolsDir = path.join(process.cwd(), 'app', 'tools');
+    if (fs.existsSync(toolsDir)) {
+      const entries = fs.readdirSync(toolsDir, { withFileTypes: true });
+      entries
+        .filter((entry) => entry.isDirectory())
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .forEach((entry) => {
+          const folderName = entry.name;
+          if (
+            folderName.startsWith('(') ||
+            folderName.startsWith('_') ||
+            folderName.startsWith('[') ||
+            folderName.startsWith('.')
+          ) {
+            return;
+          }
+
+          const pagePathTsx = path.join(toolsDir, folderName, 'page.tsx');
+          const pagePathJsx = path.join(toolsDir, folderName, 'page.jsx');
+          const pagePathJs = path.join(toolsDir, folderName, 'page.js');
+
+          if (
+            fs.existsSync(pagePathTsx) ||
+            fs.existsSync(pagePathJsx) ||
+            fs.existsSync(pagePathJs)
+          ) {
+            detectedToolPaths.push(`/tools/${folderName}`);
+          }
+        });
+    }
+
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${staticPages
+  .map(
+    (page) => `  <url>
+    <loc>${baseUrl}${page.path}</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority}</priority>
+  </url>`
+  )
+  .join('\n')}
+${detectedToolPaths
+  .map(
+    (toolPath) => `  <url>
+    <loc>${baseUrl}${toolPath}</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>`
+  )
+  .join('\n')}
+</urlset>`;
+
+    res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=43200');
+    return res.send(xml);
+  } catch (error) {
+    console.error('Error generating sitemap:', error);
+    return res.status(500).send('Error generating sitemap');
   }
 });
 

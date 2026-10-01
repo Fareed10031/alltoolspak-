@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
       },
     ],
-    sitemap: 'https://alltoolspak.vercel.app/sitemap.xml',
+    sitemap: 'https://alltoolspk.com/sitemap.xml',
   }
 }
