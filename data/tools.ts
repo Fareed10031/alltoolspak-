@@ -11,6 +11,7 @@ import { ResumeBuilderSimpleTool } from '@/components/tools/ResumeBuilderSimpleT
 import { AgeCalculatorTool } from '@/components/tools/AgeCalculatorTool';
 import { UnitConverterTool } from '@/components/tools/UnitConverterTool';
 import { USAPaycheckCalculator2026 } from '@/components/tools/USAPaycheckCalculator2026';
+import MortgageCalculator from '@/components/tools/MortgageCalculator';
 
 // Supporting Tools
 import { ReziClonePro } from '@/components/tools/ReziClonePro';
@@ -111,6 +112,14 @@ export const tools: ToolItem[] = [
     component: USAPaycheckCalculator2026,
     category: 'Finance & Calculators',
     badge: '2026 IRS Ready',
+  },
+  {
+    id: 'mortgage-calculator',
+    name: 'USA Mortgage Calculator 2026',
+    description: 'Calculate true monthly payments including Principal, Interest, PMI, Property Taxes, Insurance & HOA fees.',
+    component: MortgageCalculator,
+    category: 'Finance & Calculators',
+    badge: 'PMI & Tax Ready',
   },
 
   // Backward-compatible aliases & supporting utilities

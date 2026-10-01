@@ -17,6 +17,7 @@ import {
   KeyRound,
   ShieldCheck,
   Lock,
+  Home,
 } from 'lucide-react';
 
 export const SITE_NAME = "AllToolsPK";
@@ -214,6 +215,27 @@ export const TOOLS: ToolItem[] = [
     seoTitle: "USA Paycheck Calculator 2026 - Take-Home Pay After Taxes",
     tag: "Calc",
     colorIndex: 3,
+  },
+  {
+    slug: "mortgage-calculator",
+    name: "USA Mortgage Calculator 2026",
+    shortName: "Mortgage Calc",
+    badge: "PMI & Tax Ready",
+    badgeColor: "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800",
+    color: "bg-gradient-to-br from-blue-700 via-indigo-600 to-slate-900",
+    icon: (
+      <div
+        className="w-full h-full flex items-center justify-center text-2xl select-none"
+        aria-label="USA Mortgage Calculator 2026 Icon"
+        title="USA Mortgage Calculator with PMI, Taxes & HOA"
+      >
+        🏠
+      </div>
+    ),
+    desc: "Calculate true monthly mortgage payment including Principal, Interest, PMI, Property Taxes, Homeowners Insurance & HOA fees.",
+    seoTitle: "USA Mortgage Calculator with PMI, Taxes & HOA (2026)",
+    tag: "Finance",
+    colorIndex: 0,
   },
 ];
 
