@@ -12,6 +12,7 @@ import { AgeCalculatorTool } from '@/components/tools/AgeCalculatorTool';
 import { UnitConverterTool } from '@/components/tools/UnitConverterTool';
 import { USAPaycheckCalculator2026 } from '@/components/tools/USAPaycheckCalculator2026';
 import MortgageCalculator from '@/components/tools/MortgageCalculator';
+import GlobalSalaryCalculator from '@/components/tools/GlobalSalaryCalculator';
 
 // Supporting Tools
 import { ReziClonePro } from '@/components/tools/ReziClonePro';
@@ -126,6 +127,17 @@ export const tools: ToolItem[] = [
     path: '/tools/mortgage-calculator',
     component: MortgageCalculator,
     badge: 'PMI & Tax Ready',
+  },
+  {
+    id: 'global-salary-calculator',
+    name: 'Global Salary Calculator - 192 Countries After Tax Calculator 2026',
+    slug: 'global-salary-calculator',
+    description: 'Calculate take-home pay, tax deductions, hourly & monthly wages across 192 countries for 2026.',
+    icon: 'Globe',
+    category: 'Finance',
+    path: '/global-salary-calculator/united-states',
+    component: GlobalSalaryCalculator,
+    badge: '192 Countries',
   },
 
   // Backward-compatible aliases & supporting utilities

@@ -18,6 +18,7 @@ import {
   ShieldCheck,
   Lock,
   Home,
+  Globe,
 } from 'lucide-react';
 
 export const SITE_NAME = "AllToolsPK";
@@ -242,6 +243,30 @@ export const TOOLS: ToolItem[] = [
     seoTitle: "Mortgage Calculator USA with PMI, Property Tax, Insurance & HOA (2026)",
     tag: "Finance",
     colorIndex: 0,
+  },
+  {
+    name: "Global Salary Calculator",
+    slug: "global-salary-calculator",
+    desc: "Calculate take-home pay, tax deductions, hourly & monthly wages across 192 countries for 2026.",
+    description: "Calculate take-home pay, tax deductions, hourly & monthly wages across 192 countries for 2026.",
+    icon: (
+      <div
+        className="w-full h-full flex items-center justify-center text-white"
+        aria-label="Global Salary Calculator Icon"
+        title="Global Salary Calculator - 192 Countries After Tax Calculator 2026"
+      >
+        <Globe className="w-7 h-7 text-white" />
+      </div>
+    ),
+    category: "Finance",
+    path: "/global-salary-calculator/united-states",
+    shortName: "Global Salary",
+    badge: "192 Countries",
+    badgeColor: "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800",
+    color: "bg-gradient-to-br from-blue-600 via-indigo-600 to-emerald-600",
+    seoTitle: "Global Salary Calculator - After Tax Hourly Monthly Yearly Calculator 192 Countries",
+    tag: "Finance",
+    colorIndex: 1,
   },
 ];
 
