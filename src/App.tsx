@@ -24,6 +24,7 @@ import { UnitConverterTool } from '@/components/tools/UnitConverterTool';
 import { USAPaycheckCalculator2026 } from '@/components/tools/USAPaycheckCalculator2026';
 import MortgageCalculator from '@/components/tools/MortgageCalculator';
 import GlobalSalaryCalculator from '@/components/tools/GlobalSalaryCalculator';
+import { PdfToWordTool } from '@/components/tools/PdfToWordTool';
 
 // Companion / Legacy Tools
 import { ImageCompressor } from '@/components/tools/ImageCompressor';
@@ -125,6 +126,12 @@ export function normalizeRoute(raw: string): string {
     case 'salary-calculator':
     case 'world-salary':
       return 'global-salary-calculator';
+
+    case 'pdf-to-word':
+    case 'pdf-to-word-converter':
+    case 'pdf2word':
+    case 'pdftoword':
+      return 'pdf-to-word';
 
     // Supporting utilities
     case 'image-compress':
@@ -249,6 +256,7 @@ export default function App() {
         'usa-paycheck-calculator',
         'mortgage-calculator',
         'global-salary-calculator',
+        'pdf-to-word',
         'image-compress',
         'youtube-thumb',
         'paraphraser',
@@ -307,6 +315,8 @@ export default function App() {
         return <MortgageCalculator />;
       case 'global-salary-calculator':
         return <GlobalSalaryCalculator />;
+      case 'pdf-to-word':
+        return <PdfToWordTool />;
 
       // Supporting Tools
       case 'image-compress':

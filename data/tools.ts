@@ -13,6 +13,7 @@ import { UnitConverterTool } from '@/components/tools/UnitConverterTool';
 import { USAPaycheckCalculator2026 } from '@/components/tools/USAPaycheckCalculator2026';
 import MortgageCalculator from '@/components/tools/MortgageCalculator';
 import GlobalSalaryCalculator from '@/components/tools/GlobalSalaryCalculator';
+import { PdfToWordTool } from '@/components/tools/PdfToWordTool';
 
 // Supporting Tools
 import { ReziClonePro } from '@/components/tools/ReziClonePro';
@@ -138,6 +139,17 @@ export const tools: ToolItem[] = [
     path: '/global-salary-calculator/united-states',
     component: GlobalSalaryCalculator,
     badge: '192 Countries',
+  },
+  {
+    id: 'pdf-to-word',
+    name: 'PDF to Word Converter',
+    slug: 'pdf-to-word',
+    description: 'Convert PDF to Word in 5 seconds. 100% free, private, no watermark, works on mobile.',
+    icon: 'FileText',
+    category: 'Document Utilities',
+    path: '/tools/pdf-to-word',
+    component: PdfToWordTool,
+    badge: '100% Client-Side',
   },
 
   // Backward-compatible aliases & supporting utilities

@@ -268,6 +268,30 @@ export const TOOLS: ToolItem[] = [
     tag: "Finance",
     colorIndex: 1,
   },
+  {
+    name: "PDF to Word Converter",
+    slug: "pdf-to-word",
+    desc: "Convert PDF to Word in 5 seconds. 100% free, private, no watermark, works on mobile.",
+    description: "Convert PDF to Word in 5 seconds. 100% free, private, no watermark, works on mobile.",
+    icon: (
+      <div
+        className="w-full h-full flex items-center justify-center text-white"
+        aria-label="PDF to Word Converter Icon"
+        title="PDF to Word Converter - Free, No Watermark, Secure (2026)"
+      >
+        <FileText className="w-7 h-7 text-white" />
+      </div>
+    ),
+    category: "Document Utilities",
+    path: "/tools/pdf-to-word",
+    shortName: "PDF to Word",
+    badge: "100% Client-Side",
+    badgeColor: "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800",
+    color: "bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800",
+    seoTitle: "PDF to Word Converter - Free, No Watermark, Secure (2026)",
+    tag: "Convert",
+    colorIndex: 0,
+  },
 ];
 
 export const COLORS = [
