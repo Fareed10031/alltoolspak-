@@ -25,6 +25,7 @@ import { USAPaycheckCalculator2026 } from '@/components/tools/USAPaycheckCalcula
 import MortgageCalculator from '@/components/tools/MortgageCalculator';
 import GlobalSalaryCalculator from '@/components/tools/GlobalSalaryCalculator';
 import { PdfToWordTool } from '@/components/tools/PdfToWordTool';
+import { ArticleReader } from '@/components/tools/ArticleReader';
 
 // Companion / Legacy Tools
 import { ImageCompressor } from '@/components/tools/ImageCompressor';
@@ -317,6 +318,8 @@ export default function App() {
         return <GlobalSalaryCalculator />;
       case 'pdf-to-word':
         return <PdfToWordTool />;
+      case 'article-reader':
+        return <ArticleReader />;
 
       // Supporting Tools
       case 'image-compress':

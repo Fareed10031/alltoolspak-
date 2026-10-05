@@ -14,6 +14,7 @@ import { USAPaycheckCalculator2026 } from '@/components/tools/USAPaycheckCalcula
 import MortgageCalculator from '@/components/tools/MortgageCalculator';
 import GlobalSalaryCalculator from '@/components/tools/GlobalSalaryCalculator';
 import { PdfToWordTool } from '@/components/tools/PdfToWordTool';
+import { ArticleReader } from '@/components/tools/ArticleReader';
 
 // Supporting Tools
 import { ReziClonePro } from '@/components/tools/ReziClonePro';
@@ -150,6 +151,17 @@ export const tools: ToolItem[] = [
     path: '/tools/pdf-to-word',
     component: PdfToWordTool,
     badge: '100% Client-Side',
+  },
+  {
+    id: 'article-reader',
+    name: 'Article Reader Mode',
+    slug: 'article-reader',
+    description: 'Read online articles in a clean, clutter-free, and accessible reader mode.',
+    icon: 'BookOpen',
+    category: 'Productivity & Reading',
+    path: '/tools/article-reader',
+    component: ArticleReader,
+    badge: 'Reader View',
   },
 
   // Backward-compatible aliases & supporting utilities
