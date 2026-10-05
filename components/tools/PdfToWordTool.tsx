@@ -3,26 +3,25 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 export function PdfToWordTool() {
-  const [ready, setReady] = useState(false);
+  const [docxReady, setDocxReady] = useState(false);
   const [fillPercent, setFillPercent] = useState(0);
-  const [txtStatus, setTxtStatus] = useState('');
-  const [isDone, setIsDone] = useState(false);
+  const [txText, setTxText] = useState('');
+  const [isOk, setIsOk] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState('');
-  const [outFileName, setOutFileName] = useState('');
-  const [isHoveredDrop, setIsHoveredDrop] = useState(false);
+  const [downloadFileName, setDownloadFileName] = useState('');
+  const [isDragOver, setIsDragOver] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Check if already loaded
+    // If libraries already exist
     if ((window as any).docx && (window as any).pdfjsLib) {
       (window as any).pdfjsLib.GlobalWorkerOptions.workerSrc =
         'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-      setReady(true);
+      setDocxReady(true);
       return;
     }
 
-    // Step 1: Load PDF.js
     const loadPdfJs = () => {
       if ((window as any).pdfjsLib) {
         (window as any).pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -40,220 +39,214 @@ export function PdfToWordTool() {
         return;
       }
 
-      const pdfScript = document.createElement('script');
-      pdfScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-      pdfScript.onload = () => {
+      const sPdf = document.createElement('script');
+      sPdf.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      sPdf.onload = () => {
         (window as any).pdfjsLib.GlobalWorkerOptions.workerSrc =
           'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
         loadDocx();
       };
-      document.head.appendChild(pdfScript);
+      document.head.appendChild(sPdf);
     };
 
-    // Step 2: Load tested working DOCX CDN: unpkg.com/docx@7.8.2/build/index.js
     const loadDocx = () => {
       if ((window as any).docx) {
-        setReady(true);
+        setDocxReady(true);
         return;
       }
       const existingDocx = document.querySelector('script[src*="docx@7.8.2"]');
       if (existingDocx) {
-        existingDocx.addEventListener('load', () => setReady(true));
+        existingDocx.addEventListener('load', () => setDocxReady(true));
         return;
       }
 
-      const docxScript = document.createElement('script');
-      docxScript.src = 'https://unpkg.com/docx@7.8.2/build/index.js';
-      docxScript.onload = () => {
-        setReady(true);
+      const s = document.createElement('script');
+      s.src = 'https://unpkg.com/docx@7.8.2/build/index.js';
+      s.onload = () => {
+        setDocxReady(true);
       };
-      document.head.appendChild(docxScript);
+      document.head.appendChild(s);
     };
 
     loadPdfJs();
   }, []);
 
-  const start = async (file: File) => {
-    if (!ready) {
-      alert('Please wait 3 sec, engine is loading...');
+  const go = async (f: File) => {
+    if (!docxReady) {
+      alert('Wait 2 sec engine loading');
       return;
     }
-    if (file.size > 50 * 1024 * 1024) {
+    if (f.size > 50 * 1024 * 1024) {
       alert('Max 50MB');
       return;
     }
 
-    setIsDone(false);
+    setIsOk(false);
     setFillPercent(10);
-    setTxtStatus('Reading...10%');
+    setTxText('Reading...');
 
     try {
       const pdfjsLib = (window as any).pdfjsLib;
       pdfjsLib.GlobalWorkerOptions.workerSrc =
         'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-      const buf = await file.arrayBuffer();
+      const buf = await f.arrayBuffer();
       const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
-      let all = '';
+      let paragraphs: string[] = [];
 
       for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
-        const c = await page.getTextContent();
-        all += c.items.map((s: any) => s.str).join(' ') + '\n\n';
-        const p = 10 + Math.round((i / pdf.numPages) * 70);
-        setFillPercent(p);
-        setTxtStatus(`Page ${i}/${pdf.numPages} - ${p}%`);
+        const content = await page.getTextContent();
+        let line = '';
+        content.items.forEach((item: any) => {
+          line += item.str + ' ';
+          if (item.hasEOL) {
+            paragraphs.push(line);
+            line = '';
+          }
+        });
+        if (line) paragraphs.push(line);
+        paragraphs.push(''); // page break
+        setFillPercent(10 + Math.round((i / pdf.numPages) * 80));
+        setTxText(`Reading page ${i}/${pdf.numPages}`);
       }
 
-      if (all.trim().length < 5) {
-        throw new Error('Scanned PDF - no text found');
+      // Remove empty start
+      paragraphs = paragraphs.filter((p) => p.trim() !== '');
+      if (paragraphs.length === 0) {
+        throw new Error('This CV is image/scan PDF. No text found to extract.');
       }
-
-      setTxtStatus('Creating Word...90%');
-      setFillPercent(90);
 
       const docx = (window as any).docx;
-      const chunks = all.match(/(.{1,2000})/gs) || [all];
-
       const doc = new docx.Document({
         sections: [
           {
-            children: chunks.map((t: string) => new docx.Paragraph(t)),
+            children: paragraphs.map(
+              (t: string) =>
+                new docx.Paragraph({
+                  children: [new docx.TextRun({ text: t, size: 22 })],
+                  spacing: { after: 100 },
+                })
+            ),
           },
         ],
       });
 
       const blob = await docx.Packer.toBlob(doc);
       const url = URL.createObjectURL(blob);
-      const fileName = file.name.replace(/\.pdf$/i, '.docx');
-
       setDownloadUrl(url);
-      setOutFileName(fileName);
+      setDownloadFileName(f.name.replace(/\.pdf$/i, '.docx'));
+      setIsOk(true);
       setFillPercent(100);
-      setTxtStatus('100% Done!');
-      setIsDone(true);
-    } catch (err: any) {
-      alert('Error: ' + err.message);
+      setTxText(`Done 100% - All ${paragraphs.length} lines extracted`);
+    } catch (e: any) {
+      alert('Error: ' + e.message);
       setFillPercent(0);
-      setTxtStatus('');
+      setTxText('');
     }
   };
 
   return (
-    <div style={{ fontFamily: 'system-ui,sans-serif', maxWidth: 900, margin: 'auto', padding: 20 }}>
-      <h1 style={{ textAlign: 'center', fontSize: 32, fontWeight: 800 }}>
-        PDF to Word Converter - Free, Fast & Secure
-      </h1>
-
+    <div style={{ fontFamily: 'sans-serif', maxWidth: 900, margin: 'auto', padding: 20 }}>
+      <h2 style={{ textAlign: 'center', fontSize: 28, fontWeight: 700 }}>
+        PDF to Word - Fixed for CV / Resume
+      </h2>
       <p
-        id="engineStatus"
+        id="st"
         style={{
           textAlign: 'center',
-          color: ready ? '#10B981' : '#2563EB',
+          color: docxReady ? '#10B981' : '#2563EB',
           fontWeight: 'bold',
           marginTop: 8,
           marginBottom: 16,
         }}
       >
-        {ready ? '✅ Engine Ready - Select PDF Now' : '⏳ Loading Engine... Please wait 3 sec'}
+        {docxReady ? '✅ Ready - Now Select PDF' : '⏳ Loading Engine... 3 sec'}
       </p>
 
       <div
+        className="box"
         id="drop"
         onDragOver={(e) => {
           e.preventDefault();
-          setIsHoveredDrop(true);
+          setIsDragOver(true);
         }}
-        onDragLeave={() => setIsHoveredDrop(false)}
+        onDragLeave={() => setIsDragOver(false)}
         onDrop={(e) => {
           e.preventDefault();
-          setIsHoveredDrop(false);
-          if (e.dataTransfer.files[0]) start(e.dataTransfer.files[0]);
-        }}
-        onClick={() => {
-          if (ready && fileInputRef.current) {
-            fileInputRef.current.click();
-          }
+          setIsDragOver(false);
+          if (e.dataTransfer.files[0]) go(e.dataTransfer.files[0]);
         }}
         style={{
           border: '3px dashed #2563EB',
           borderRadius: 16,
           padding: 40,
           textAlign: 'center',
-          background: isHoveredDrop ? '#EFF4FF' : '#F8FAFF',
-          cursor: ready ? 'pointer' : 'default',
+          background: isDragOver ? '#EFF4FF' : '#F8FAFF',
         }}
       >
         <input
           type="file"
-          id="file"
+          id="f"
           ref={fileInputRef}
           accept="application/pdf"
           hidden
           onChange={(e) => {
             if (e.target.files && e.target.files[0]) {
-              start(e.target.files[0]);
+              go(e.target.files[0]);
             }
           }}
         />
-        <div style={{ fontSize: 50 }}>📄 → 📝</div>
-        <h3 style={{ marginTop: 10 }}>Drag & Drop PDF Here</h3>
+        <div style={{ fontSize: 40 }}>📄 → 📝</div>
+        <h3 style={{ marginTop: 10 }}>Select Your CV / Resume PDF</h3>
         <button
           className="btn"
-          id="pickBtn"
+          id="btn"
           type="button"
-          disabled={!ready}
-          onClick={(e) => {
-            e.stopPropagation();
-            fileInputRef.current?.click();
-          }}
+          disabled={!docxReady}
+          onClick={() => fileInputRef.current?.click()}
           style={{
-            background: ready ? '#2563EB' : '#9CA3AF',
+            background: docxReady ? '#2563EB' : '#9CA3AF',
             color: '#fff',
             padding: '12px 24px',
             border: 'none',
             borderRadius: 8,
             fontSize: 16,
-            cursor: ready ? 'pointer' : 'not-allowed',
+            cursor: docxReady ? 'pointer' : 'not-allowed',
             marginTop: 12,
           }}
         >
-          {ready ? 'Select PDF File' : 'Loading Engine...'}
+          {docxReady ? 'Select PDF' : 'Loading...'}
         </button>
-        <p style={{ fontSize: 12, color: '#666', marginTop: 10 }}>
-          Max 50MB • 100% Private • No Watermark
-        </p>
 
-        {fillPercent > 0 && (
+        <div
+          className="bar"
+          style={{
+            height: 10,
+            background: '#eee',
+            borderRadius: 10,
+            marginTop: 15,
+            overflow: 'hidden',
+          }}
+        >
           <div
+            id="fill"
             style={{
-              height: 10,
-              background: '#eee',
-              borderRadius: 10,
-              overflow: 'hidden',
-              marginTop: 15,
+              height: '100%',
+              width: `${fillPercent}%`,
+              background: '#2563EB',
+              transition: '0.3s',
             }}
-          >
-            <div
-              id="fill"
-              style={{
-                height: '100%',
-                width: `${fillPercent}%`,
-                background: '#2563EB',
-                transition: '0.3s',
-              }}
-            />
-          </div>
-        )}
-
-        <p id="txt" style={{ textAlign: 'center', marginTop: 8, fontWeight: 500, color: '#374151' }}>
-          {txtStatus}
+          />
+        </div>
+        <p id="tx" style={{ marginTop: 10, fontSize: 14, color: '#374151', fontWeight: 500 }}>
+          {txText}
         </p>
       </div>
 
-      {isDone && (
+      {isOk && (
         <div
-          id="done"
+          id="ok"
           style={{
             display: 'block',
             textAlign: 'center',
@@ -264,11 +257,11 @@ export function PdfToWordTool() {
             border: '1px solid #A7F3D0',
           }}
         >
-          <h3 style={{ color: '#065F46' }}>✅ Done!</h3>
+          <h3 style={{ color: '#065F46' }}>✅ CV Converted!</h3>
           <a
             id="dl"
+            download={downloadFileName || 'converted.docx'}
             href={downloadUrl}
-            download={outFileName || 'converted.docx'}
             style={{
               display: 'inline-block',
               marginTop: 10,
@@ -280,43 +273,13 @@ export function PdfToWordTool() {
               fontWeight: 600,
             }}
           >
-            Download Word File
+            Download Word
           </a>
+          <p style={{ fontSize: 11, color: '#666', marginTop: 10 }}>
+            If some design missing, your PDF is image-based. We extract all readable text.
+          </p>
         </div>
       )}
-
-      {/* SEO & Guide Section */}
-      <div style={{ marginTop: 40, lineHeight: 1.8, color: '#374151' }}>
-        <h2 style={{ fontSize: 24, fontWeight: 700, marginBottom: 12 }}>
-          How to Convert PDF to Word - Ultimate Guide 2026
-        </h2>
-        <p>
-          Our PDF to Word converter runs completely inside your browser memory using client-side Web
-          APIs. Unlike traditional tools that upload your documents to external servers, your files
-          never leave your computer or phone. This guarantees complete confidentiality for legal
-          contracts, financial records, resumes, and study materials.
-        </p>
-        <p style={{ marginTop: 10 }}>
-          <strong>Key Advantages:</strong>
-        </p>
-        <ul style={{ paddingLeft: 20, marginTop: 6 }}>
-          <li>
-            <strong>100% Client-Side Privacy:</strong> Zero cloud uploads, safe for sensitive personal
-            and business documents.
-          </li>
-          <li>
-            <strong>Free Forever:</strong> No paywalls, no email signups, and absolutely no watermarks.
-          </li>
-          <li>
-            <strong>Fast & Responsive:</strong> Converts multi-page documents in just seconds without
-            server queue delays.
-          </li>
-          <li>
-            <strong>Broad Compatibility:</strong> Generated .docx files can be opened and edited
-            seamlessly in Microsoft Word, Google Docs, Apple Pages, and LibreOffice.
-          </li>
-        </ul>
-      </div>
     </div>
   );
 }
