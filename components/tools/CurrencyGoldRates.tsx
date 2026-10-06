@@ -457,7 +457,17 @@ export function CurrencyGoldRates() {
                   min="0"
                   step="any"
                   value={fromAmount}
-                  onChange={(e) => setFromAmount(e.target.value === '' ? '' : Number(e.target.value))}
+                  onChange={(e) => {
+                    const raw = e.target.value;
+                    if (raw === '') {
+                      setFromAmount('');
+                    } else {
+                      const parsed = Number(raw);
+                      if (!isNaN(parsed) && isFinite(parsed)) {
+                        setFromAmount(Math.max(0, parsed));
+                      }
+                    }
+                  }}
                   placeholder="e.g. 500"
                   className="w-full text-2xl font-black px-4 py-3.5 rounded-2xl bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 transition-all"
                 />
