@@ -15,6 +15,7 @@ import MortgageCalculator from '@/components/tools/MortgageCalculator';
 import GlobalSalaryCalculator from '@/components/tools/GlobalSalaryCalculator';
 import { PdfToWordTool } from '@/components/tools/PdfToWordTool';
 import { ArticleReader } from '@/components/tools/ArticleReader';
+import { CurrencyGoldRates } from '@/components/tools/CurrencyGoldRates';
 
 // Supporting Tools
 import { ReziClonePro } from '@/components/tools/ReziClonePro';
@@ -26,7 +27,7 @@ import { Detector } from '@/components/tools/Detector';
 import { HumanizeAI } from '@/components/tools/HumanizeAI';
 
 export interface ToolItem {
-  id: string;
+  id: string | number;
   name: string;
   description: string;
   component: ComponentType<any>;
@@ -35,6 +36,8 @@ export interface ToolItem {
   slug?: string;
   icon?: string;
   path?: string;
+  href?: string;
+  color?: string;
 }
 
 export const tools: ToolItem[] = [
@@ -162,6 +165,19 @@ export const tools: ToolItem[] = [
     path: '/tools/article-reader',
     component: ArticleReader,
     badge: 'Reader View',
+  },
+  {
+    id: 14,
+    name: 'Live Currency & Gold Rates - 150+ Countries',
+    href: '/currency-gold-rates',
+    path: '/currency-gold-rates',
+    slug: 'currency-gold-rates',
+    badge: 'LIVE 100% CORRECT',
+    icon: 'Crown + Dollar',
+    color: 'from-yellow-500 to-green-600',
+    description: 'USD to PKR Today + Gold Per Tola - Live',
+    category: 'Finance & Markets',
+    component: CurrencyGoldRates,
   },
 
   // Backward-compatible aliases & supporting utilities

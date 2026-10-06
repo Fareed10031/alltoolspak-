@@ -26,6 +26,7 @@ import MortgageCalculator from '@/components/tools/MortgageCalculator';
 import GlobalSalaryCalculator from '@/components/tools/GlobalSalaryCalculator';
 import { PdfToWordTool } from '@/components/tools/PdfToWordTool';
 import { ArticleReader } from '@/components/tools/ArticleReader';
+import { CurrencyGoldRates } from '@/components/tools/CurrencyGoldRates';
 
 // Companion / Legacy Tools
 import { ImageCompressor } from '@/components/tools/ImageCompressor';
@@ -133,6 +134,13 @@ export function normalizeRoute(raw: string): string {
     case 'pdf2word':
     case 'pdftoword':
       return 'pdf-to-word';
+
+    case 'currency-gold-rates':
+    case 'currency-gold':
+    case 'gold-rates':
+    case 'currency-rates':
+    case 'usd-to-pkr':
+      return 'currency-gold-rates';
 
     // Supporting utilities
     case 'image-compress':
@@ -243,6 +251,8 @@ export default function App() {
       newPath = '/';
     } else if (resolved === 'tools') {
       newPath = '/tools';
+    } else if (resolved === 'currency-gold-rates') {
+      newPath = '/currency-gold-rates';
     } else if (
       [
         'amazon-eu-vat',
@@ -258,6 +268,7 @@ export default function App() {
         'mortgage-calculator',
         'global-salary-calculator',
         'pdf-to-word',
+        'article-reader',
         'image-compress',
         'youtube-thumb',
         'paraphraser',
@@ -320,6 +331,8 @@ export default function App() {
         return <PdfToWordTool />;
       case 'article-reader':
         return <ArticleReader />;
+      case 'currency-gold-rates':
+        return <CurrencyGoldRates />;
 
       // Supporting Tools
       case 'image-compress':

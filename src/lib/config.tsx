@@ -19,6 +19,10 @@ import {
   Lock,
   Home,
   Globe,
+  Coins,
+  DollarSign,
+  Crown,
+  BookOpen,
 } from 'lucide-react';
 
 export const SITE_NAME = "AllToolsPK";
@@ -291,6 +295,55 @@ export const TOOLS: ToolItem[] = [
     seoTitle: "PDF to Word Converter - Free, No Watermark, Secure (2026)",
     tag: "Convert",
     colorIndex: 0,
+  },
+  {
+    name: "Article Reader Mode",
+    slug: "article-reader",
+    desc: "Read online articles in a clean, clutter-free, and accessible reader mode.",
+    description: "Read online articles in a clean, clutter-free, and accessible reader mode.",
+    icon: (
+      <div
+        className="w-full h-full flex items-center justify-center text-white"
+        aria-label="Article Reader Mode Icon"
+        title="Article Reader Mode - Clean & Accessible"
+      >
+        <BookOpen className="w-7 h-7 text-white" />
+      </div>
+    ),
+    category: "Productivity & Reading",
+    path: "/tools/article-reader",
+    shortName: "Reader Mode",
+    badge: "Reader View",
+    badgeColor: "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800",
+    color: "bg-gradient-to-br from-indigo-600 via-blue-600 to-cyan-600",
+    seoTitle: "Article Reader Mode - Distraction-Free Reading",
+    tag: "Security",
+    colorIndex: 1,
+  },
+  {
+    name: "Live Currency & Gold Rates - 150+ Countries",
+    slug: "currency-gold-rates",
+    desc: "USD to PKR Today + Gold Per Tola - Live 100% correct rates across 150+ countries with 60s auto-refresh.",
+    description: "USD to PKR Today + Gold Per Tola - Live 100% correct rates across 150+ countries with 60s auto-refresh.",
+    icon: (
+      <div
+        className="w-full h-full flex flex-col items-center justify-center text-white relative"
+        aria-label="Crown + Dollar Live Currency and Gold Icon"
+        title="Live Currency & Gold Rates - 150+ Countries"
+      >
+        <Crown className="w-5 h-5 text-amber-300 drop-shadow-sm mb-[-2px]" />
+        <DollarSign className="w-6 h-6 text-white font-black" />
+      </div>
+    ),
+    category: "Finance & Markets",
+    path: "/currency-gold-rates",
+    shortName: "Currency & Gold",
+    badge: "LIVE 100% CORRECT",
+    badgeColor: "bg-gradient-to-r from-amber-500 to-emerald-600 text-white font-extrabold border-none shadow-sm",
+    color: "bg-gradient-to-br from-yellow-500 via-amber-600 to-green-600",
+    seoTitle: "Live USD to PKR Today - Gold Per Tola Live Rate Pakistan 2026",
+    tag: "Finance",
+    colorIndex: 2,
   },
 ];
 
