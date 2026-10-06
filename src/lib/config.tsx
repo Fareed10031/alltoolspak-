@@ -22,7 +22,6 @@ import {
   Coins,
   DollarSign,
   Crown,
-  BookOpen,
 } from 'lucide-react';
 
 export const SITE_NAME = "AllToolsPK";
@@ -295,30 +294,6 @@ export const TOOLS: ToolItem[] = [
     seoTitle: "PDF to Word Converter - Free, No Watermark, Secure (2026)",
     tag: "Convert",
     colorIndex: 0,
-  },
-  {
-    name: "Article Reader Mode",
-    slug: "article-reader",
-    desc: "Read online articles in a clean, clutter-free, and accessible reader mode.",
-    description: "Read online articles in a clean, clutter-free, and accessible reader mode.",
-    icon: (
-      <div
-        className="w-full h-full flex items-center justify-center text-white"
-        aria-label="Article Reader Mode Icon"
-        title="Article Reader Mode - Clean & Accessible"
-      >
-        <BookOpen className="w-7 h-7 text-white" />
-      </div>
-    ),
-    category: "Productivity & Reading",
-    path: "/tools/article-reader",
-    shortName: "Reader Mode",
-    badge: "Reader View",
-    badgeColor: "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800",
-    color: "bg-gradient-to-br from-indigo-600 via-blue-600 to-cyan-600",
-    seoTitle: "Article Reader Mode - Distraction-Free Reading",
-    tag: "Security",
-    colorIndex: 1,
   },
   {
     name: "Live Currency & Gold Rates - 150+ Countries",

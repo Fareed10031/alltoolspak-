@@ -31,11 +31,11 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
       <section className="pt-16 pb-12 sm:pt-24 sm:pb-16 text-center px-4 sm:px-6 max-w-5xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200/80 dark:border-blue-900/60 mb-6 shadow-xs">
           <Sparkles className="w-3.5 h-3.5" />
-          <span>14-in-1 Free Client-Side Productivity Suite</span>
+          <span>13-in-1 Free Client-Side Productivity Suite</span>
         </div>
 
         <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.08] mb-5">
-          14-in-1 Free Tools - Live Currency & Gold
+          13-in-1 Free Tools - Live Currency & Gold
         </h1>
 
         <p className="text-base sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed mb-10 font-normal">
