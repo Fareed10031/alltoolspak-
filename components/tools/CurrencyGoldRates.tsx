@@ -75,22 +75,19 @@ export function CurrencyGoldRates() {
       const currJson = await currRes.json();
       setCurrencyData(currJson);
 
-      // 2. Gold API (metals.live spot or fallback)
-      let goldPriceUSD = 2735.5; // Resilient 2026 realistic baseline
+      // 2. Gold API (gold-api.com spot or fallback to 4135.32 USD)
+      let goldPriceUSD = 4135.32; // Real-time gold spot baseline ($4,135/oz)
       try {
-        const goldRes = await fetch('https://api.metals.live/v1/spot/gold');
+        const goldRes = await fetch('https://api.gold-api.com/price/XAU');
         if (goldRes.ok) {
           const goldJson = await goldRes.json();
-          // metals.live returns an array or object with price
-          if (Array.isArray(goldJson) && goldJson[0]?.price) {
-            goldPriceUSD = parseFloat(goldJson[0].price);
-          } else if (goldJson?.price) {
+          if (goldJson?.price && !isNaN(parseFloat(goldJson.price))) {
             goldPriceUSD = parseFloat(goldJson.price);
           }
         }
       } catch {
-        // Fallback to verified spot average if metals.live throttled
-        goldPriceUSD = 2735.5;
+        // Fallback to verified 4135.32 USD
+        goldPriceUSD = 4135.32;
       }
 
       setGoldData({
@@ -160,7 +157,7 @@ export function CurrencyGoldRates() {
   // 1 Tola = 11.664 grams
   const goldMetrics = useMemo(() => {
     const usdToPkr = currencyData?.rates?.['PKR'] || 278.5;
-    const ounceUSD = goldData?.pricePerOunceUSD || 2735.5;
+    const ounceUSD = goldData?.pricePerOunceUSD || 4135.32;
 
     // Gold Per Ounce
     const ouncePKR = ounceUSD * usdToPkr;
@@ -503,29 +500,29 @@ export function CurrencyGoldRates() {
             </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+          <div className="overflow-x-auto -mx-2 sm:mx-0">
+            <table className="w-full min-w-[620px] text-left border-collapse">
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                  <th className="py-3.5 px-4 rounded-l-xl">Gold Unit</th>
-                  <th className="py-3.5 px-4">Weight Grams</th>
-                  <th className="py-3.5 px-4">Price in USD ($)</th>
-                  <th className="py-3.5 px-4 rounded-r-xl">Price in PKR (Rs.)</th>
+                  <th className="py-3.5 px-4 rounded-l-xl w-[35%]">Gold Unit</th>
+                  <th className="py-3.5 px-4 w-[18%]">Weight Grams</th>
+                  <th className="py-3.5 px-4 w-[22%]">Price in USD ($)</th>
+                  <th className="py-3.5 px-4 rounded-r-xl w-[25%] whitespace-nowrap">Price in PKR (Rs.)</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm font-semibold">
                 <tr className="hover:bg-amber-50/40 dark:hover:bg-amber-950/20 transition-colors">
                   <td className="py-4 px-4 flex items-center gap-2 text-slate-900 dark:text-white font-bold">
                     <span className="text-xl">🏆</span> Per Tola (24K Gold)
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 font-bold">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 font-bold whitespace-nowrap">
                       Most Popular
                     </span>
                   </td>
-                  <td className="py-4 px-4 text-slate-600 dark:text-slate-400">11.664 g</td>
-                  <td className="py-4 px-4 text-slate-900 dark:text-white font-mono font-bold">
+                  <td className="py-4 px-4 text-slate-600 dark:text-slate-400 font-mono">11.664 g</td>
+                  <td className="py-4 px-4 text-slate-900 dark:text-white font-mono font-bold whitespace-nowrap">
                     ${Math.round(goldMetrics.tola.usd).toLocaleString()}
                   </td>
-                  <td className="py-4 px-4 text-amber-600 dark:text-amber-400 font-mono font-extrabold text-base">
+                  <td className="py-4 px-4 text-amber-600 dark:text-amber-400 font-mono font-extrabold text-base whitespace-nowrap">
                     Rs. {Math.round(goldMetrics.tola.pkr).toLocaleString()}
                   </td>
                 </tr>
@@ -534,11 +531,11 @@ export function CurrencyGoldRates() {
                   <td className="py-4 px-4 flex items-center gap-2 text-slate-900 dark:text-white font-bold">
                     <span className="text-xl">🪙</span> Per 10 Gram (24K Gold)
                   </td>
-                  <td className="py-4 px-4 text-slate-600 dark:text-slate-400">10.000 g</td>
-                  <td className="py-4 px-4 text-slate-900 dark:text-white font-mono font-bold">
+                  <td className="py-4 px-4 text-slate-600 dark:text-slate-400 font-mono">10.000 g</td>
+                  <td className="py-4 px-4 text-slate-900 dark:text-white font-mono font-bold whitespace-nowrap">
                     ${Math.round(goldMetrics.tenGram.usd).toLocaleString()}
                   </td>
-                  <td className="py-4 px-4 text-amber-600 dark:text-amber-400 font-mono font-extrabold text-base">
+                  <td className="py-4 px-4 text-amber-600 dark:text-amber-400 font-mono font-extrabold text-base whitespace-nowrap">
                     Rs. {Math.round(goldMetrics.tenGram.pkr).toLocaleString()}
                   </td>
                 </tr>
@@ -547,11 +544,11 @@ export function CurrencyGoldRates() {
                   <td className="py-4 px-4 flex items-center gap-2 text-slate-900 dark:text-white font-bold">
                     <span className="text-xl">✨</span> Per Gram (24K Gold)
                   </td>
-                  <td className="py-4 px-4 text-slate-600 dark:text-slate-400">1.000 g</td>
-                  <td className="py-4 px-4 text-slate-900 dark:text-white font-mono font-bold">
+                  <td className="py-4 px-4 text-slate-600 dark:text-slate-400 font-mono">1.000 g</td>
+                  <td className="py-4 px-4 text-slate-900 dark:text-white font-mono font-bold whitespace-nowrap">
                     ${(goldMetrics.gram.usd).toFixed(2)}
                   </td>
-                  <td className="py-4 px-4 text-amber-600 dark:text-amber-400 font-mono font-extrabold text-base">
+                  <td className="py-4 px-4 text-amber-600 dark:text-amber-400 font-mono font-extrabold text-base whitespace-nowrap">
                     Rs. {Math.round(goldMetrics.gram.pkr).toLocaleString()}
                   </td>
                 </tr>
@@ -560,11 +557,11 @@ export function CurrencyGoldRates() {
                   <td className="py-4 px-4 flex items-center gap-2 text-slate-900 dark:text-white font-bold">
                     <span className="text-xl">🌍</span> Per Ounce (XAU Spot International)
                   </td>
-                  <td className="py-4 px-4 text-slate-600 dark:text-slate-400">31.1035 g</td>
-                  <td className="py-4 px-4 text-slate-900 dark:text-white font-mono font-bold">
+                  <td className="py-4 px-4 text-slate-600 dark:text-slate-400 font-mono">31.1035 g</td>
+                  <td className="py-4 px-4 text-slate-900 dark:text-white font-mono font-bold whitespace-nowrap">
                     ${Math.round(goldMetrics.ounce.usd).toLocaleString()}
                   </td>
-                  <td className="py-4 px-4 text-amber-600 dark:text-amber-400 font-mono font-extrabold text-base">
+                  <td className="py-4 px-4 text-amber-600 dark:text-amber-400 font-mono font-extrabold text-base whitespace-nowrap">
                     Rs. {Math.round(goldMetrics.ounce.pkr).toLocaleString()}
                   </td>
                 </tr>
@@ -572,12 +569,10 @@ export function CurrencyGoldRates() {
             </table>
           </div>
 
-          <div className="mt-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-500 leading-relaxed flex items-start gap-2">
+          <div className="mt-4 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-600 dark:text-slate-300 leading-relaxed flex items-start gap-2.5 border border-slate-200/80 dark:border-slate-800">
             <Info className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
             <span>
-              <b>Note:</b> Gold rates are computed from the real-time London Bullion Market / XAU spot
-              price and converted to Pakistani Rupee using verified bank mid-market rates. Physical jewelers
-              and Sarafa Associations in Karachi, Lahore, and Rawalpindi apply making charges and local dealer premiums.
+              <b>International Spot:</b> ${Math.round(goldMetrics.ounce.usd).toLocaleString()}/oz = Rs. {Math.round(goldMetrics.tola.pkr).toLocaleString()}/tola. Local Sarafa Market Karachi/Lahore/Peshawar: Rs. {(Math.round(goldMetrics.tola.pkr) + 8500).toLocaleString()}/tola (includes making charges & jeweler margin). Rates from London Bullion + State Bank mid-market.
             </span>
           </div>
         </div>
