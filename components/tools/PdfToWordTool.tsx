@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
+import { Pdf3XProFinal } from './Pdf3XProFinal';
 
 export function PdfToWordTool() {
+  const [activeTab, setActiveTab] = useState<'3x-pro' | 'classic'>('3x-pro');
   const [docxReady, setDocxReady] = useState(false);
   const [fillPercent, setFillPercent] = useState(0);
   const [txText, setTxText] = useState('');
@@ -172,6 +174,42 @@ export function PdfToWordTool() {
         color: '#1F2937',
       }}
     >
+      {/* 3X PRO MODE SWITCHER */}
+      <div className="flex justify-center mb-6">
+        <div className="inline-flex p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+          <button
+            type="button"
+            onClick={() => setActiveTab('3x-pro')}
+            className={`px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-2 ${
+              activeTab === '3x-pro'
+                ? 'bg-blue-600 text-white shadow-md'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900'
+            }`}
+          >
+            <span>🚀 PDF 3X Pro (3-in-1 Suite)</span>
+            <span className="bg-amber-400 text-black text-[10px] px-1.5 py-0.2 rounded font-black">NEW</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('classic')}
+            className={`px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              activeTab === 'classic'
+                ? 'bg-blue-600 text-white shadow-md'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900'
+            }`}
+          >
+            Classic PDF to Word
+          </button>
+        </div>
+      </div>
+
+      {activeTab === '3x-pro' ? (
+        <div className="mb-10">
+          <Pdf3XProFinal />
+        </div>
+      ) : null}
+
+      <div style={{ display: activeTab === 'classic' ? 'block' : 'none' }}>
       {/* Schema.org FAQPage JSON-LD */}
       <script
         type="application/ld+json"
@@ -459,6 +497,7 @@ export function PdfToWordTool() {
           Canva uses images for text. Our tool extracts selectable text only. Text-based PDFs give 100%
           lines.
         </div>
+      </div>
       </div>
     </div>
   );
