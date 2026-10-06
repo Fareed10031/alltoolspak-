@@ -41,6 +41,7 @@ export interface ToolItem {
   path?: string;
   category?: string;
   description?: string;
+  isFeatured?: boolean;
 }
 
 export const TOOLS: ToolItem[] = [
@@ -319,6 +320,7 @@ export const TOOLS: ToolItem[] = [
     seoTitle: "Live USD to PKR Today - Gold Per Tola Live Rate Pakistan 2026",
     tag: "Finance",
     colorIndex: 2,
+    isFeatured: true,
   },
 ];
 

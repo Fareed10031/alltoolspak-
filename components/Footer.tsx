@@ -63,6 +63,14 @@ export function Footer({ onNavigate }: FooterProps = {}) {
           >
             Contact
           </Link>
+          <span>&bull;</span>
+          <Link
+            href="/currency-gold-rates"
+            onClick={(e) => handleLinkClick(e, 'currency-gold-rates')}
+            className="text-emerald-600 dark:text-emerald-400 font-bold hover:underline transition-colors"
+          >
+            Dollar Rate Today | Gold Price Pakistan
+          </Link>
         </div>
 
         {/* Disclaimer & Copyright */}
