@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { PDF3XProOCR } from './PDF3XProOCR';
+import Page from '@/app/pdf-3x-pro/page';
 
 export function PdfToWordTool() {
   return (
@@ -34,7 +34,7 @@ export function PdfToWordTool() {
           }),
         }}
       />
-      <PDF3XProOCR />
+      <Page />
     </div>
   );
 }
