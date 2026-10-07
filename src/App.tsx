@@ -25,8 +25,7 @@ import { USAPaycheckCalculator2026 } from '@/components/tools/USAPaycheckCalcula
 import MortgageCalculator from '@/components/tools/MortgageCalculator';
 import GlobalSalaryCalculator from '@/components/tools/GlobalSalaryCalculator';
 import { PdfToWordTool } from '@/components/tools/PdfToWordTool';
-import { Pdf3XPro } from '@/components/tools/Pdf3XPro';
-import { Pdf3XProFinal } from '@/components/tools/Pdf3XProFinal';
+import { PDF3XProOCR } from '@/components/tools/PDF3XProOCR';
 import { CurrencyGoldRates } from '@/components/tools/CurrencyGoldRates';
 
 // Companion / Legacy Tools
@@ -335,7 +334,7 @@ export default function App() {
       case 'pdf-to-word':
         return <PdfToWordTool />;
       case 'pdf-3x-pro':
-        return <Pdf3XProFinal />;
+        return <PDF3XProOCR />;
       case 'currency-gold-rates':
         return <CurrencyGoldRates />;
 

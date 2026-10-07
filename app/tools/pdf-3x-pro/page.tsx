@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Pdf3XProFinal } from '@/components/tools/Pdf3XProFinal';
+import { PDF3XProOCR } from '@/components/tools/PDF3XProOCR';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 
@@ -28,7 +28,7 @@ export default function Pdf3XProPage() {
         }}
       />
       <main className="flex-1 py-4">
-        <Pdf3XProFinal />
+        <PDF3XProOCR />
       </main>
       <Footer onNavigate={navigateTo} onSelectTool={navigateTo} />
     </div>
