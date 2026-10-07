@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { Pdf3XProFinal } from './Pdf3XProFinal';
+import { Pdf3XProNative } from './Pdf3XProNative';
 
 export function PdfToWordTool() {
-  const [activeTab, setActiveTab] = useState<'3x-pro' | 'classic'>('3x-pro');
+  const [activeTab, setActiveTab] = useState<'3x-pro' | 'quick-engine' | 'classic'>('3x-pro');
   const [docxReady, setDocxReady] = useState(false);
   const [fillPercent, setFillPercent] = useState(0);
   const [txText, setTxText] = useState('');
@@ -186,8 +187,19 @@ export function PdfToWordTool() {
                 : 'text-slate-600 dark:text-slate-300 hover:text-slate-900'
             }`}
           >
-            <span>🚀 PDF 3X Pro (3-in-1 Suite)</span>
+            <span>🚀 PDF 3X Pro (Full Suite)</span>
             <span className="bg-amber-400 text-black text-[10px] px-1.5 py-0.2 rounded font-black">NEW</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('quick-engine')}
+            className={`px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              activeTab === 'quick-engine'
+                ? 'bg-blue-600 text-white shadow-md'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900'
+            }`}
+          >
+            ⚡ Quick 3-in-1 Engine
           </button>
           <button
             type="button"
@@ -206,6 +218,12 @@ export function PdfToWordTool() {
       {activeTab === '3x-pro' ? (
         <div className="mb-10">
           <Pdf3XProFinal />
+        </div>
+      ) : null}
+
+      {activeTab === 'quick-engine' ? (
+        <div className="mb-10">
+          <Pdf3XProNative />
         </div>
       ) : null}
 
