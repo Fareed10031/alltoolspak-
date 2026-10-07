@@ -58,19 +58,39 @@ export function Pdf3XProFinal() {
       pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
       const buf = await file.arrayBuffer();
       const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
-      const paras: any[] = [];
+      let fullText = "";
       for (let i = 1; i <= pdf.numPages; i++) {
+        setStatus(`Extracting page ${i} of ${pdf.numPages}...`);
         const page = await pdf.getPage(i);
         const c = await page.getTextContent();
-        paras.push(new docxLib.Paragraph({ children: [new docxLib.TextRun({ text: c.items.map((it: any) => it.str).join(" "), size: 22 })] }));
+        const pageText = c.items.map((it: any) => it.str).join(" ");
+        fullText += pageText + "\n\n";
       }
+
+      if (fullText.trim().length === 0) {
+        setStatus("❌ Scanned PDF detected. Text is not selectable.");
+        return;
+      }
+
+      setStatus("Building high-quality Word file...");
+
+      const paras = fullText
+        .split("\n")
+        .filter((l: string) => l.trim() !== "")
+        .map((line: string) =>
+          new docxLib.Paragraph({
+            children: [new docxLib.TextRun({ text: line, font: "Calibri", size: 22 })],
+            spacing: { after: 120 },
+          })
+        );
+
       const doc = new docxLib.Document({ sections: [{ children: paras }] });
       const blob = await docxLib.Packer.toBlob(doc);
       
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = file.name.replace(/\.pdf$/i, "") + ".docx";
+      a.download = file.name.replace(/\.pdf$/i, "") + "_Converted.docx";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
