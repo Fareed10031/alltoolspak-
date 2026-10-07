@@ -22,17 +22,24 @@ export function ToolCard({ tool, color, onClick }: ToolCardProps) {
     'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/60 dark:border-slate-700/60';
 
   const iconBg = tool.color || color.bg;
+  const isPdf3X = tool.slug === 'pdf-to-word';
 
   return (
     <div
       onClick={onClick}
-      className="group relative bg-white dark:bg-slate-900 rounded-[24px] p-6 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-blue-400/80 transition-all duration-300 flex flex-col justify-between cursor-pointer hover:-translate-y-1"
+      className={`group relative bg-white dark:bg-slate-900 rounded-[24px] p-6 border shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between cursor-pointer hover:-translate-y-1 ${
+        isPdf3X
+          ? 'border-2 border-blue-500/60 hover:border-purple-500 bg-gradient-to-b from-blue-50/20 via-white to-purple-50/20 dark:from-slate-900 dark:to-slate-900/90 shadow-blue-500/5'
+          : 'border-slate-200/90 dark:border-slate-800 hover:border-blue-400/80'
+      }`}
     >
       <div>
         {/* Top Row: 56x56 icon box with color bg and bold letter/custom icon + tag pill */}
         <div className="flex items-center justify-between">
           <div
-            className={`w-14 h-14 rounded-2xl ${iconBg} flex items-center justify-center text-white font-extrabold text-2xl shadow-md group-hover:scale-105 transition-transform overflow-hidden`}
+            className={`w-14 h-14 rounded-2xl ${
+              isPdf3X ? 'bg-transparent shadow-none' : `${iconBg} shadow-md`
+            } flex items-center justify-center text-white font-extrabold text-2xl group-hover:scale-105 transition-transform overflow-hidden`}
           >
             {(() => {
               // 100% SAFE: Only targets Amazon EU VAT, rest of app untouched
@@ -76,7 +83,7 @@ export function ToolCard({ tool, color, onClick }: ToolCardProps) {
                   </div>
                 );
               }
-              // For all other tools (including ATS), keep original logic - NO DAMAGE
+              // For all other tools, return tool.icon
               if (tool.icon) {
                 return tool.icon;
               }
@@ -89,14 +96,32 @@ export function ToolCard({ tool, color, onClick }: ToolCardProps) {
         </div>
 
         {/* Title */}
-        <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-4 group-hover:text-blue-600 transition-colors">
-          {tool.name}
+        <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-4 group-hover:text-blue-600 transition-colors flex items-center gap-2">
+          <span>{tool.name}</span>
+          {isPdf3X && (
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="3-in-1 Engine Online"></span>
+          )}
         </h3>
 
         {/* Description */}
         <p className="text-sm text-slate-600 dark:text-slate-400 mt-2 line-clamp-3 leading-relaxed">
           {tool.desc}
         </p>
+
+        {/* 3 Dots / Feature Tags for 3-in-1 Suite */}
+        {tool.features && tool.features.length > 0 && (
+          <div className="mt-3 flex flex-wrap items-center gap-1.5 pt-1">
+            {tool.features.map((feat, idx) => (
+              <span
+                key={feat}
+                className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-900/40"
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${idx === 0 ? 'bg-blue-600' : idx === 1 ? 'bg-emerald-500' : 'bg-purple-600'}`}></span>
+                {feat}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Bottom Action */}

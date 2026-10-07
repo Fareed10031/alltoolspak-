@@ -37,6 +37,14 @@ export interface ToolItem {
   path?: string;
   href?: string;
   color?: string;
+  fullTitle?: string;
+  shortDesc?: string;
+  tag?: string;
+  isNew?: boolean;
+  isPopular?: boolean;
+  features?: string[];
+  url?: string;
+  gradient?: string;
 }
 
 export const tools: ToolItem[] = [
@@ -144,15 +152,23 @@ export const tools: ToolItem[] = [
     badge: '192 Countries',
   },
   {
-    id: 'pdf-to-word',
-    name: 'PDF to Word Converter',
-    slug: 'pdf-to-word',
-    description: 'Convert PDF to Word in 5 seconds. 100% free, private, no watermark, works on mobile.',
-    icon: 'FileText',
-    category: 'Document Utilities',
-    path: '/tools/pdf-to-word',
+    id: "pdf-to-word",
+    slug: "pdf-to-word",
+    name: "PDF 3X Pro (3-in-1)",
+    fullTitle: "PDF 3X Pro - Convert | Compress | Create",
+    description: "PDF to Word, Compress PDF, Word to PDF - 3 Pro Tools in 1 Suite. 100% Private, Browser-Based, No Upload.",
+    shortDesc: "3 Tools in 1: Convert | Compress | Create",
+    badge: "NEW • 3-in-1 Suite",
+    tag: "100% Client-Side",
+    category: "PDF Tools",
+    isNew: true,
+    isPopular: true,
+    features: ["PDF to Word", "Compress PDF", "Word to PDF"],
+    url: "/pdf-to-word",
+    path: "/tools/pdf-to-word",
+    gradient: "from-blue-600 to-purple-600",
+    icon: "FileText",
     component: PdfToWordTool,
-    badge: '100% Client-Side',
   },
   {
     id: 13,

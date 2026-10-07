@@ -27,21 +27,29 @@ import {
 export const SITE_NAME = "AllToolsPK";
 
 export interface ToolItem {
+  id?: string | number;
   slug: string;
   name: string;
   desc: string;
   tag: string;
   colorIndex: number;
   shortName?: string;
+  fullTitle?: string;
+  shortDesc?: string;
   badge?: string;
   badgeColor?: string;
   color?: string;
+  gradient?: string;
   icon?: React.ReactNode;
   seoTitle?: string;
   path?: string;
+  url?: string;
   category?: string;
   description?: string;
   isFeatured?: boolean;
+  isNew?: boolean;
+  isPopular?: boolean;
+  features?: string[];
 }
 
 export const TOOLS: ToolItem[] = [
@@ -273,28 +281,43 @@ export const TOOLS: ToolItem[] = [
     colorIndex: 1,
   },
   {
-    name: "PDF to Word Converter",
+    id: "pdf-to-word",
     slug: "pdf-to-word",
-    desc: "Convert PDF to Word in 5 seconds. 100% free, private, no watermark, works on mobile.",
-    description: "Convert PDF to Word in 5 seconds. 100% free, private, no watermark, works on mobile.",
+    name: "PDF 3X Pro (3-in-1)",
+    fullTitle: "PDF 3X Pro - Convert | Compress | Create",
+    desc: "PDF to Word, Compress PDF, Word to PDF - 3 Pro Tools in 1 Suite. 100% Private, Browser-Based, No Upload.",
+    description: "PDF to Word, Compress PDF, Word to PDF - 3 Pro Tools in 1 Suite. 100% Private, Browser-Based, No Upload.",
+    shortDesc: "3 Tools in 1: Convert | Compress | Create",
     icon: (
-      <div
-        className="w-full h-full flex items-center justify-center text-white"
-        aria-label="PDF to Word Converter Icon"
-        title="PDF to Word Converter - Free, No Watermark, Secure (2026)"
-      >
-        <FileText className="w-7 h-7 text-white" />
+      <div className="relative w-[56px] h-[56px]">
+        <div className="absolute w-9 h-11 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg shadow-lg left-0 top-0 flex flex-col items-center justify-center">
+          <span className="text-[7px] font-black text-white leading-none">PDF→</span>
+          <span className="text-[7px] font-black text-white leading-none">WORD</span>
+        </div>
+        <div className="absolute w-9 h-11 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg shadow-lg left-3.5 top-1.5 flex flex-col items-center justify-center border border-white/20">
+          <span className="text-[7px] font-black text-white leading-none">COMPRESS</span>
+          <span className="text-[10px] text-white">⇔</span>
+        </div>
+        <div className="absolute w-9 h-11 bg-gradient-to-br from-purple-500 to-violet-700 rounded-lg shadow-lg left-7 top-3 flex flex-col items-center justify-center border border-white/20">
+          <span className="text-[7px] font-black text-white leading-none">WORD→</span>
+          <span className="text-[7px] font-black text-white leading-none">PDF</span>
+        </div>
       </div>
     ),
-    category: "Document Utilities",
+    category: "PDF Tools",
     path: "/tools/pdf-to-word",
-    shortName: "PDF to Word",
-    badge: "100% Client-Side",
-    badgeColor: "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800",
-    color: "bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800",
-    seoTitle: "PDF to Word Converter - Free, No Watermark, Secure (2026)",
-    tag: "Convert",
+    url: "/pdf-to-word",
+    shortName: "PDF 3X Pro",
+    badge: "NEW • 3-in-1 Suite",
+    badgeColor: "bg-gradient-to-r from-blue-600 via-emerald-600 to-purple-600 text-white font-extrabold border-none shadow-sm",
+    color: "bg-gradient-to-br from-blue-600 via-emerald-600 to-purple-600",
+    gradient: "from-blue-600 to-purple-600",
+    seoTitle: "PDF 3X Pro - Convert | Compress | Create - Free Client-Side 2026",
+    tag: "100% Client-Side",
     colorIndex: 0,
+    isNew: true,
+    isPopular: true,
+    features: ["PDF to Word", "Compress PDF", "Word to PDF"],
   },
   {
     name: "Live Currency & Gold Rates - 150+ Countries",
