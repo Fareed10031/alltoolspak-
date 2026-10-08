@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
+import Header from '@/components/Header';
 import MegaMenu from '@/components/MegaMenu';
 import BlackFooter from '@/components/BlackFooter';
-import { CookieBanner } from '@/components/CookieBanner';
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
@@ -33,7 +31,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   openGraph: {
-    title: 'alltoolspk.com - 8-in-1 FREE Web Tools',
+    title: 'alltoolspk.com - Free Web Tools',
     description: '100% Free & Client-Side: PDF Tools, Image Compressor, Amazon VAT, AI Background Remover & ATS Resume Builder.',
     url: 'https://alltoolspk.com',
     siteName: 'alltoolspk.com',
@@ -42,7 +40,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'alltoolspk.com - 8-in-1 Free Web Tools',
+    title: 'alltoolspk.com - Free Web Tools',
     description: 'Fast, client-side, zero-paywall utility suite built in Pakistan by Fareed Ullah.',
   },
 };

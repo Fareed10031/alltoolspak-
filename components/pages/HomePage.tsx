@@ -103,7 +103,7 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
 
       {/* TOOLS GRID */}
       <section key={`tools-grid-${TOOLS.length}`} className="mb-20">
-        <div key={`tools-count-${TOOLS.length}`} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 max-w-7xl mx-auto">
+        <div key={`tools-count-${TOOLS.length}`} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4 max-w-7xl mx-auto">
           {filteredTools.map((tool, i) => {
             const color = COLORS[i % COLORS.length];
             return (
@@ -198,7 +198,7 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
             </p>
 
             <p>
-              <strong>{SITE_NAME} (alltoolspk.com)</strong> was engineered to establish a new gold standard in digital utility platforms. Inspired by the world&apos;s most respected workflow applications—including Smallpdf, iLovePDF, TinyWow, and Canva—AllToolsPK unifies these essential operations within a single, beautifully organized, and 100% free web portal. Most importantly, AllToolsPK enforces an uncompromising <strong>client-side architecture</strong>.
+              <strong>{SITE_NAME} (alltoolspk.com)</strong> was engineered to establish a new gold standard in digital utility platforms. AllToolsPK unifies essential operations within a single, beautifully organized, and 100% free web portal. Most importantly, AllToolsPK enforces an uncompromising <strong>client-side architecture</strong>.
             </p>
 
             <h3 className="text-lg font-bold text-slate-900 dark:text-white pt-2">
