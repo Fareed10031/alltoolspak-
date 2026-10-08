@@ -15,70 +15,77 @@ export function Footer({ onNavigate }: FooterProps = {}) {
   };
 
   return (
-    <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-12 px-4 sm:px-6 text-center text-sm text-slate-500 dark:text-slate-400">
-      <div className="max-w-6xl mx-auto space-y-6">
-        {/* Brand identity */}
-        <div className="flex items-center justify-center gap-2">
-          <div className="grid grid-cols-2 gap-1 w-5 h-5 shrink-0 p-0.5 rounded bg-slate-100 dark:bg-slate-800">
-            <span className="rounded-xs bg-[#0055FF]" />
-            <span className="rounded-xs bg-[#00C48C]" />
-            <span className="rounded-xs bg-[#FF5A5F]" />
-            <span className="rounded-xs bg-[#FFAA00]" />
+    <footer className="bg-[#33333b] text-gray-300 mt-20">
+      <div className="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-4 gap-8">
+        <div>
+          <h4 className="text-white font-bold mb-4 tracking-widest text-sm uppercase">ILOVEPDF STYLE - LEGAL</h4>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <Link href="/security" onClick={(e) => handleLinkClick(e, 'security')} className="hover:text-white transition-colors">
+                Security
+              </Link>
+            </li>
+            <li>
+              <Link href="/privacy" onClick={(e) => handleLinkClick(e, 'privacy')} className="hover:text-white transition-colors">
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link href="/terms" onClick={(e) => handleLinkClick(e, 'terms')} className="hover:text-white transition-colors">
+                Terms and Conditions
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="text-white font-bold mb-4 tracking-widest text-sm uppercase">COMPANY</h4>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <Link href="/about" onClick={(e) => handleLinkClick(e, 'about')} className="hover:text-white transition-colors">
+                About Us
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" onClick={(e) => handleLinkClick(e, 'contact')} className="hover:text-white transition-colors">
+                Contact
+              </Link>
+            </li>
+            <li>
+              <Link href="/blog" onClick={(e) => handleLinkClick(e, 'blog')} className="hover:text-white transition-colors">
+                Blog
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="text-white font-bold mb-4 tracking-widest text-sm uppercase">PRODUCT</h4>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <Link href="/currency-gold-rates" onClick={(e) => handleLinkClick(e, 'currency-gold-rates')} className="hover:text-white transition-colors">
+                Dollar Rate Today
+              </Link>
+            </li>
+            <li>
+              <Link href="/currency-gold-rates" onClick={(e) => handleLinkClick(e, 'currency-gold-rates')} className="hover:text-white transition-colors">
+                Gold Price Pakistan
+              </Link>
+            </li>
+            <li className="text-gray-400">14 Free Tools • 100% Client-Side</li>
+          </ul>
+        </div>
+        <div className="flex flex-col justify-end">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="grid grid-cols-2 gap-1 w-5 h-5 shrink-0 p-0.5 rounded bg-slate-800">
+              <span className="rounded-xs bg-[#0055FF]" />
+              <span className="rounded-xs bg-[#00C48C]" />
+              <span className="rounded-xs bg-[#FF5A5F]" />
+              <span className="rounded-xs bg-[#FFAA00]" />
+            </div>
+            <span className="font-extrabold text-white text-sm">alltoolspk.com</span>
           </div>
-          <span className="font-extrabold text-base text-slate-900 dark:text-white">
-            alltools<span className="text-[#0055FF]">pk.com</span>
-          </span>
-        </div>
-
-        {/* 4 Mandatory Google AdSense Compliance Links */}
-        <div className="flex flex-wrap justify-center items-center gap-6 text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300">
-          <Link
-            href="/privacy"
-            onClick={(e) => handleLinkClick(e, 'privacy')}
-            className="hover:text-[#0055FF] dark:hover:text-white transition-colors"
-          >
-            Privacy Policy
-          </Link>
-          <span>&bull;</span>
-          <Link
-            href="/terms"
-            onClick={(e) => handleLinkClick(e, 'terms')}
-            className="hover:text-[#0055FF] dark:hover:text-white transition-colors"
-          >
-            Terms of Service
-          </Link>
-          <span>&bull;</span>
-          <Link
-            href="/about"
-            onClick={(e) => handleLinkClick(e, 'about')}
-            className="hover:text-[#0055FF] dark:hover:text-white transition-colors"
-          >
-            About Us
-          </Link>
-          <span>&bull;</span>
-          <Link
-            href="/contact"
-            onClick={(e) => handleLinkClick(e, 'contact')}
-            className="hover:text-[#0055FF] dark:hover:text-white transition-colors"
-          >
-            Contact
-          </Link>
-          <span>&bull;</span>
-          <Link
-            href="/currency-gold-rates"
-            onClick={(e) => handleLinkClick(e, 'currency-gold-rates')}
-            className="text-emerald-600 dark:text-emerald-400 font-bold hover:underline transition-colors"
-          >
-            Dollar Rate Today | Gold Price Pakistan
-          </Link>
-        </div>
-
-        {/* Disclaimer & Copyright */}
-        <div className="space-y-1 text-xs text-slate-400 dark:text-slate-500">
-          <p>
-            Client-side browser computing suite. No confidential data, documents, or photographs are ever uploaded or stored on our servers.
+          <p className="text-xs text-gray-400 leading-relaxed">
+            © 2026 alltoolspk.com - Built for privacy, speed, and productivity. No data uploaded.
           </p>
-          <p>© 2026 alltoolspk.com. All Rights Reserved. Built for privacy, speed, and productivity.</p>
         </div>
       </div>
     </footer>
