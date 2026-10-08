@@ -1,5 +1,6 @@
 import React from 'react';
 import { ToolItem } from '@/lib/config';
+import { ToolIconBox } from '@/components/ToolIcons';
 
 export interface ToolCardProps {
   tool: ToolItem;
@@ -12,29 +13,26 @@ export interface ToolCardProps {
   onClick?: () => void;
 }
 
-export function ToolCard({ tool, color, onClick }: ToolCardProps) {
-  const initial = tool.name ? tool.name.charAt(0) : 'A';
+export function ToolCard({ tool, onClick }: ToolCardProps) {
   const badgeLabel = tool.badge || tool.tag;
-
-  // Curated light background tint for icon box: default to tool.bgColor or light color
-  const bgColor = (tool as any).bgColor || color?.light || '#f3f4f6';
+  const isPdf3X = tool.slug === 'pdf-to-word' || tool.slug === 'pdf-3x-pro';
 
   return (
     <div
       onClick={onClick}
-      className="bg-white border border-gray-200 rounded-xl p-4 h-[160px] flex flex-col justify-between hover:shadow-lg transition-all cursor-pointer group"
+      className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all h-[180px] flex flex-col justify-between cursor-pointer group"
     >
       <div>
         <div className="flex items-center justify-between mb-3">
-          {/* High-visibility icon container: dark text on light bg, zero opacity/filter artifacts */}
-          <div
-            className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
-            style={{ backgroundColor: bgColor }}
-          >
-            <div className="text-gray-900 text-2xl font-bold opacity-100">
-              {(tool as any).iconText || tool.icon || initial}
+          {isPdf3X ? (
+            /* PDF 3X Pro keeps custom 3-tool stacked icon badge */
+            <div className="w-[56px] h-[56px] rounded-[14px] bg-gradient-to-br from-[#FF416C] via-[#8E2DE2] to-[#4A00E0] shadow-lg flex items-center justify-center shrink-0">
+              <span className="text-white text-xl">📄🗜️📝</span>
             </div>
-          </div>
+          ) : (
+            <ToolIconBox toolKey={tool.slug} />
+          )}
+
           {badgeLabel && (
             <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200">
               {badgeLabel}
