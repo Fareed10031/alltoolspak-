@@ -27,11 +27,11 @@ export const ToolIconsConfig: Record<string, { bg: string; icon: React.ReactNode
   },
   "pdf-merger": {
     bg: "bg-gradient-to-br from-[#FF416C] to-[#FF4B2B]",
-    icon: <span className="text-white text-2xl">📑</span>
+    icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
   },
   "pdf-merge": {
     bg: "bg-gradient-to-br from-[#FF416C] to-[#FF4B2B]",
-    icon: <span className="text-white text-2xl">📑</span>
+    icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
   },
   "image-to-pdf": {
     bg: "bg-gradient-to-br from-[#00B09B] to-[#96C93D]",
@@ -42,12 +42,12 @@ export const ToolIconsConfig: Record<string, { bg: string; icon: React.ReactNode
     icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="2" height="2"/></svg>
   },
   "password-generator": {
-    bg: "bg-gradient-to-br from-[#0F0C29] to-[#302B63]",
-    icon: <span className="text-xl">🔐</span>
+    bg: "bg-gradient-to-br from-[#141E30] to-[#243B55]",
+    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="white"/></svg>
   },
   "password-gen": {
-    bg: "bg-gradient-to-br from-[#0F0C29] to-[#302B63]",
-    icon: <span className="text-xl">🔐</span>
+    bg: "bg-gradient-to-br from-[#141E30] to-[#243B55]",
+    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="white"/></svg>
   },
   "ats-resume-builder": {
     bg: "bg-gradient-to-br from-[#2193b0] to-[#6dd5ed]",
@@ -59,7 +59,7 @@ export const ToolIconsConfig: Record<string, { bg: string; icon: React.ReactNode
   },
   "age-calculator": {
     bg: "bg-gradient-to-br from-[#ee0979] to-[#ff6a00]",
-    icon: <span className="text-white text-xl">📅</span>
+    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
   },
   "unit-converter": {
     bg: "bg-gradient-to-br from-[#7F00FF] to-[#E100FF]",
@@ -74,8 +74,8 @@ export const ToolIconsConfig: Record<string, { bg: string; icon: React.ReactNode
     icon: <span className="text-white font-black text-lg">$</span>
   },
   "mortgage-calculator": {
-    bg: "bg-gradient-to-br from-[#4e54c8] to-[#8f94fb]",
-    icon: <span className="text-white text-xl">🏠</span>
+    bg: "bg-gradient-to-br from-[#667eea] to-[#764ba2]",
+    icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="white" strokeWidth="1.5"/><text x="12" y="16" fontSize="7" fontWeight="bold" fill="white" textAnchor="middle">$</text></svg>
   },
   "global-salary": {
     bg: "bg-gradient-to-br from-[#00c6ff] to-[#0072ff]",
@@ -87,11 +87,11 @@ export const ToolIconsConfig: Record<string, { bg: string; icon: React.ReactNode
   },
   "currency-gold": {
     bg: "bg-gradient-to-br from-[#F7971E] to-[#FFD200]",
-    icon: <span className="text-white text-xl">👑$</span>
+    icon: <span className="text-white text-xl font-bold">👑$</span>
   },
   "currency-gold-rates": {
     bg: "bg-gradient-to-br from-[#F7971E] to-[#FFD200]",
-    icon: <span className="text-white text-xl">👑$</span>
+    icon: <span className="text-white text-xl font-bold">👑$</span>
   },
 };
 
@@ -110,3 +110,5 @@ export function ToolIconBox({ toolKey }: { toolKey: string }) {
     </div>
   );
 }
+
+export default ToolIconBox;
