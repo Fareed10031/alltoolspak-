@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import MegaMenu from '@/components/MegaMenu';
+import BlackFooter from '@/components/BlackFooter';
 import { CookieBanner } from '@/components/CookieBanner';
 import { Analytics } from "@vercel/analytics/react";
 

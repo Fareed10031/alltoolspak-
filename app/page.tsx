@@ -4,6 +4,7 @@ import React from 'react';
 import { HomePage } from '@/components/pages/HomePage';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import BlackFooter from '@/components/BlackFooter';
 import { CookieBanner } from '@/components/CookieBanner';
 import { TOOLS } from '@/lib/config';
 
@@ -49,7 +50,7 @@ export default function Page() {
       <main className="flex-1">
         <HomePage onSelectTool={navigateTo} onNavigate={navigateTo} />
       </main>
-      <Footer onNavigate={navigateTo} onSelectTool={navigateTo} />
+      <BlackFooter />
       <CookieBanner onNavigate={navigateTo} />
     </div>
   );

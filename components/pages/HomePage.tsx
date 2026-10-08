@@ -102,8 +102,8 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
       </section>
 
       {/* TOOLS GRID */}
-      <section key={`tools-grid-${TOOLS.length}`} className="max-w-6xl mx-auto px-4 sm:px-6 mb-20">
-        <div key={`tools-count-${TOOLS.length}`} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section key={`tools-grid-${TOOLS.length}`} className="mb-20">
+        <div key={`tools-count-${TOOLS.length}`} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 max-w-7xl mx-auto">
           {filteredTools.map((tool, i) => {
             const color = COLORS[i % COLORS.length];
             return (

@@ -150,15 +150,10 @@ export default function Header({ onNavigate, onSelectTool }: HeaderProps) {
             Explore Tools
           </Link>
 
-          {/* Mobile Hamburger Toggle */}
-          <button
-            type="button"
-            className="md:hidden p-2 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle mobile menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          {/* MegaMenu Trigger */}
+          <div className="md:hidden">
+            <MegaMenu />
+          </div>
         </div>
       </div>
 
