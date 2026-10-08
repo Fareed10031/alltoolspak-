@@ -10,6 +10,8 @@ import {
   AlertTriangle,
   RotateCcw,
   CheckCircle2,
+  Copy,
+  Check,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -28,9 +30,18 @@ export const COUNTRIES = [
 
 export function AmazonEuVatTool() {
   const [buyer, setBuyer] = useState('');
-  const [gross, setGross] = useState('');
+  const [amountInput, setAmountInput] = useState('');
   const [countryCode, setCountryCode] = useState('DE');
   const [orderId, setOrderId] = useState('');
+  
+  // 1. VAT Inclusive vs Exclusive Toggle (Default: inclusive)
+  const [pricingMode, setPricingMode] = useState<'inclusive' | 'exclusive'>('inclusive');
+
+  // 2. 2026 Non-EU Customs Duty checkbox (€3 for <= €150 starting July 2026)
+  const [applyCustomsDuty2026, setApplyCustomsDuty2026] = useState(false);
+
+  const [copied, setCopied] = useState(false);
+
   const [seller] = useState({
     company: 'AllToolsPK LTD',
     address: 'Peshawar, Pakistan',
@@ -43,13 +54,59 @@ export function AmazonEuVatTool() {
     () => COUNTRIES.find((c) => c.code === countryCode) || COUNTRIES[0],
     [countryCode]
   );
-  const grossVal = parseFloat(gross) || 0;
+
+  const parsedAmount = parseFloat(amountInput) || 0;
   const isExport = country.code === 'US';
 
-  // EU Formula: Gross includes VAT. Net = Gross / (1 + rate)
-  const net = isExport ? grossVal : grossVal / (1 + country.rate / 100);
-  const vatAmount = grossVal - net;
-  const canDownload = buyer.trim().length > 2 && grossVal > 0;
+  // Calculation logic based on pricingMode:
+  // Inclusive (default): User types Gross. Net = Gross / (1 + rate), VAT = Gross - Net.
+  // Exclusive: User types Net. Net = Amount, VAT = Net * rate, Gross = Net + VAT.
+  let net = 0;
+  let vatAmount = 0;
+  let gross = 0;
+
+  if (isExport) {
+    net = parsedAmount;
+    vatAmount = 0;
+    gross = parsedAmount;
+  } else if (pricingMode === 'inclusive') {
+    gross = parsedAmount;
+    net = parsedAmount > 0 ? parsedAmount / (1 + country.rate / 100) : 0;
+    vatAmount = gross - net;
+  } else {
+    // Exclusive mode: net = gross, vat = gross*rate, gross = gross + vat
+    net = parsedAmount;
+    vatAmount = (parsedAmount * country.rate) / 100;
+    gross = net + vatAmount;
+  }
+
+  // July 2026 Non-EU Seller Customs Duty (€3 for parcels <= €150)
+  const customsDuty = applyCustomsDuty2026 ? 3 : 0;
+  const finalGross = gross + customsDuty;
+
+  // Amazon Referral Fee: 15% of Gross
+  const referralFee = gross * 0.15;
+  // Seller Payout: Net turnover minus referral fee
+  const yourPayout = net - referralFee;
+
+  // Default buyer name for unlocked download
+  const effectiveBuyer = buyer.trim() || 'Sample Customer';
+  const hasTypedAmount = parsedAmount > 0;
+  // Unlock download whenever an amount is provided
+  const canDownload = hasTypedAmount;
+
+  const copyResults = () => {
+    const textToCopy = `Amazon EU VAT Breakdown (${country.name})
+Net Turnover: ${country.symbol}${net.toFixed(2)}
+VAT (${country.rate}%): ${country.symbol}${vatAmount.toFixed(2)}
+Gross Total: ${country.symbol}${finalGross.toFixed(2)}${customsDuty > 0 ? ' (incl. €3 EU Customs Duty)' : ''}
+Amazon Referral Fee (15%): €${referralFee.toFixed(2)}
+Your Payout: €${yourPayout.toFixed(2)}`;
+
+    navigator.clipboard.writeText(textToCopy);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const generateInvoiceText = () => {
     const legal = isExport
@@ -66,87 +123,86 @@ VAT ID: ${seller.vatId} | EORI: ${seller.eori} | ${!isExport ? `OSS ID: ${seller
 
 Invoice No: INV-${new Date().getFullYear()}-${Math.floor(Math.random() * 9000) + 1000}
 Order ID: ${orderId || '111-1234567-1234567'} | Date: ${new Date().toLocaleDateString()} | Marketplace: Amazon.${country.marketplace}
-BILL TO: ${buyer}
+BILL TO: ${effectiveBuyer}
 Destination: ${country.name} (${country.code}) | Currency: ${country.currency}
 
-DESCRIPTION: Amazon Marketplace Fulfilled Merchandise
-HS CODE: 8517.12.00 | ORIGIN: PK | QTY: 1
+LINE ITEMS:
+1. Amazon Marketplace Fulfilled Merchandise (HS Code: 8517.12.00)
+   Qty: 1 | Net: ${country.symbol} ${net.toFixed(2)} | VAT (${country.rate}%): ${country.symbol} ${vatAmount.toFixed(2)} | Gross: ${country.symbol} ${gross.toFixed(2)}
+${customsDuty > 0 ? `2. EU Customs Duty (July 2026 Non-EU rule <= €150): €3.00\n` : ''}
+TOTALS:
 Net Turnover: ${country.symbol} ${net.toFixed(2)} ${country.currency}
-VAT (${country.rate}%): ${country.symbol} ${vatAmount.toFixed(2)} ${country.currency}
-Gross Total: ${country.symbol} ${grossVal.toFixed(2)} ${country.currency}
+VAT Amount (${country.rate}%): ${country.symbol} ${vatAmount.toFixed(2)} ${country.currency}
+Gross Order Total: ${country.symbol} ${finalGross.toFixed(2)} ${country.currency}
 
-Tax Notice: ${legal}
-Compliant with EU Commission VAT OSS & Amazon Seller Central Invoice Requirements.
-`.trim();
+Amazon Referral Fee (15%): €${referralFee.toFixed(2)}
+Estimated Seller Payout: €${yourPayout.toFixed(2)}
+
+STATUTORY DECLARATION:
+${legal}
+Place of jurisdiction: ${country.name}. Auto-calculated under Article 146 & EU OSS rules.
+    `.trim();
   };
 
   const downloadTxt = () => {
     if (!canDownload) return;
-    const blob = new Blob([generateInvoiceText()], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `VAT_Invoice_${country.code}_${buyer.replace(/\s+/g, '_')}_${country.currency}_${grossVal.toFixed(2)}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const element = document.createElement('a');
+    const file = new Blob([generateInvoiceText()], { type: 'text/plain;charset=utf-8' });
+    element.href = URL.createObjectURL(file);
+    element.download = `VAT_Invoice_${country.code}_${country.currency}_${finalGross.toFixed(2)}.txt`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
   };
 
   const downloadPdf = () => {
     if (!canDownload) return;
+
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'pt',
       format: 'a4',
     });
 
-    const invoiceNo = `INV-${new Date().getFullYear()}-${Math.floor(Math.random() * 9000) + 1000}`;
-    const orderRef = orderId.trim() || '111-1234567-1234567';
+    let y = 45;
 
-    // Header banner
-    doc.setFillColor(15, 23, 42); // slate-900
-    doc.rect(0, 0, 595, 75, 'F');
-
-    doc.setTextColor(255, 255, 255);
+    // Header Badge
+    doc.setFillColor(15, 23, 42);
+    doc.rect(40, y, 515, 32, 'F');
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(16);
+    doc.setFontSize(11);
+    doc.setTextColor(255, 255, 255);
     doc.text(
-      isExport ? 'COMMERCIAL INVOICE - EXPORT OUTSIDE EU' : 'VAT COMMERCIAL INVOICE - OSS COMPLIANT',
-      40,
-      42
+      isExport ? 'COMMERCIAL INVOICE - EXPORT (ARTICLE 146)' : 'VAT COMMERCIAL INVOICE (EU OSS COMPLIANT)',
+      50,
+      y + 20
     );
 
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'normal');
-    doc.text('Generated via AllToolsPK • 100% Client-Side & EU OSS Ready', 40, 58);
+    y += 50;
 
-    let y = 105;
-
-    // Seller & Invoice columns
-    doc.setFontSize(9);
+    // Seller Info
     doc.setTextColor(15, 23, 42);
-
-    // Left: Seller
+    doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
-    doc.text('SELLER (Exporter):', 40, y);
+    doc.text(seller.company, 40, y);
     doc.setFont('helvetica', 'normal');
-    doc.text(seller.company, 40, y + 14);
-    doc.text(seller.address, 40, y + 26);
-    doc.text(`VAT ID: ${seller.vatId} | EORI: ${seller.eori}`, 40, y + 38);
+    doc.setFontSize(8.5);
+    doc.text(seller.address, 40, y + 14);
+    doc.text(`Tax ID: ${seller.vatId} | EORI: ${seller.eori}`, 40, y + 26);
     if (!isExport) {
-      doc.text(`OSS ID: ${seller.ossId}`, 40, y + 50);
+      doc.text(`Union OSS Identification: ${seller.ossId}`, 40, y + 38);
     }
 
-    // Right: Invoice Meta
-    const rightCol = 360;
+    // Invoice Meta Right
     doc.setFont('helvetica', 'bold');
-    doc.text('INVOICE REFERENCE:', rightCol, y);
+    doc.setFontSize(9);
+    doc.text(`Invoice No: INV-${new Date().getFullYear()}-${Math.floor(Math.random() * 9000) + 1000}`, 340, y);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Invoice No: ${invoiceNo}`, rightCol, y + 14);
-    doc.text(`Order ID: ${orderRef}`, rightCol, y + 26);
-    doc.text(`Date: ${new Date().toLocaleDateString()}`, rightCol, y + 38);
-    doc.text(`Marketplace: Amazon.${country.marketplace}`, rightCol, y + 50);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 340, y + 14);
+    doc.text(`Order ID: ${orderId || '111-1234567-1234567'}`, 340, y + 26);
+    doc.text(`Marketplace: Amazon.${country.marketplace}`, 340, y + 38);
 
-    y += 75;
+    y += 60;
 
     // Line
     doc.setDrawColor(226, 232, 240);
@@ -157,7 +213,7 @@ Compliant with EU Commission VAT OSS & Amazon Seller Central Invoice Requirement
     doc.setFont('helvetica', 'bold');
     doc.text('BILL TO / CUSTOMER:', 40, y);
     doc.setFont('helvetica', 'normal');
-    doc.text(buyer, 40, y + 14);
+    doc.text(effectiveBuyer, 40, y + 14);
     doc.text(`Destination: ${country.name} (${country.code}) | Currency: ${country.currency}`, 40, y + 26);
 
     y += 45;
@@ -187,7 +243,7 @@ Compliant with EU Commission VAT OSS & Amazon Seller Central Invoice Requirement
     doc.text('8517.12.00', 260, y + 14);
     doc.text('1', 350, y + 14);
     doc.text(`${country.symbol} ${net.toFixed(2)}`, 405, y + 14);
-    doc.text(`${country.symbol} ${grossVal.toFixed(2)}`, 480, y + 14);
+    doc.text(`${country.symbol} ${gross.toFixed(2)}`, 480, y + 14);
 
     y += 40;
 
@@ -205,6 +261,12 @@ Compliant with EU Commission VAT OSS & Amazon Seller Central Invoice Requirement
     doc.text(`${country.symbol} ${vatAmount.toFixed(2)} ${country.currency}`, 480, y);
     y += 14;
 
+    if (customsDuty > 0) {
+      doc.text(`EU Customs Duty (2026):`, 340, y);
+      doc.text(`€3.00`, 480, y);
+      y += 14;
+    }
+
     doc.setDrawColor(15, 23, 42);
     doc.line(320, y, 555, y);
     y += 14;
@@ -212,7 +274,7 @@ Compliant with EU Commission VAT OSS & Amazon Seller Central Invoice Requirement
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10);
     doc.text(`Gross Total:`, 340, y);
-    doc.text(`${country.symbol} ${grossVal.toFixed(2)} ${country.currency}`, 480, y);
+    doc.text(`${country.symbol} ${finalGross.toFixed(2)} ${country.currency}`, 480, y);
 
     y += 30;
 
@@ -236,7 +298,7 @@ Compliant with EU Commission VAT OSS & Amazon Seller Central Invoice Requirement
     const noticeLines = doc.splitTextToSize(legalNotice, 495);
     doc.text(noticeLines, 48, y + 26);
 
-    doc.save(`VAT_Invoice_${country.code}_${country.currency}_${grossVal.toFixed(2)}.pdf`);
+    doc.save(`VAT_Invoice_${country.code}_${country.currency}_${finalGross.toFixed(2)}.pdf`);
   };
 
   const handlePrint = () => {
@@ -246,76 +308,129 @@ Compliant with EU Commission VAT OSS & Amazon Seller Central Invoice Requirement
 
   const loadSample = () => {
     setBuyer('Enterprise Logistics GmbH');
-    setGross('119.00');
+    setAmountInput('119.00');
     setCountryCode('DE');
     setOrderId('111-7892341-9921045');
+    setPricingMode('inclusive');
+    setApplyCustomsDuty2026(false);
   };
 
   const resetForm = () => {
     setBuyer('');
-    setGross('');
+    setAmountInput('');
     setCountryCode('DE');
     setOrderId('');
+    setPricingMode('inclusive');
+    setApplyCustomsDuty2026(false);
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 sm:p-7 shadow-xs text-slate-900 dark:text-white font-sans">
-      {/* Top Banner */}
-      <div className="no-print mb-6 pb-4 border-b border-slate-100 dark:border-slate-800">
-        <div className="flex items-center justify-between gap-2">
-          <span className="inline-flex items-center gap-1.5 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 text-xs font-bold px-3 py-1 rounded-full">
-            <ShieldCheck className="w-3.5 h-3.5" />
-            EU OSS Ready • 100% Free &amp; Client-Side
-          </span>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={loadSample}
-              className="text-xs font-semibold rounded-xl cursor-pointer"
-            >
-              Load Sample
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={resetForm}
-              className="text-xs font-medium rounded-xl cursor-pointer text-slate-500"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-            </Button>
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 max-w-4xl mx-auto shadow-sm">
+      {/* Tool Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="bg-blue-600 text-white text-[11px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">
+              Directive 2006/112/EC
+            </span>
+            <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5" /> 100% Client-Side
+            </span>
           </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">
+            Amazon EU VAT Calculator
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+            EU OSS & Article 146 Tax Engine • 2026 Updated Rates • Instant Compliant Invoices
+          </p>
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-black mt-3 tracking-tight">
-          Amazon EU VAT Calculator
-        </h1>
-        <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1.5 leading-relaxed">
-          Calculate destination EU VAT rates, net turnover, and generate compliant invoices for Amazon sellers. Auto currency {country.symbol} {country.currency}.
-        </p>
+        <div className="flex items-center gap-2 no-print">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={loadSample}
+            className="text-xs font-semibold rounded-xl cursor-pointer border-slate-200 dark:border-slate-700"
+          >
+            Sample Data
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={resetForm}
+            className="text-xs font-semibold rounded-xl cursor-pointer text-slate-500 hover:text-slate-900"
+          >
+            <RotateCcw className="w-3.5 h-3.5 mr-1" /> Reset
+          </Button>
+        </div>
       </div>
 
-      {/* Input Fields */}
-      <div className="no-print space-y-4">
+      {/* 2. VAT Inclusive vs Exclusive Toggle */}
+      <div className="mt-6 p-3 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <span className="font-bold text-slate-700 dark:text-slate-300">
+          Pricing Calculation Mode:
+        </span>
+        <div className="inline-flex rounded-xl p-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+          <button
+            type="button"
+            onClick={() => setPricingMode('inclusive')}
+            className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
+              pricingMode === 'inclusive'
+                ? 'bg-blue-600 text-white shadow-xs'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+            }`}
+          >
+            Price is VAT Inclusive (default)
+          </button>
+          <button
+            type="button"
+            onClick={() => setPricingMode('exclusive')}
+            className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
+              pricingMode === 'exclusive'
+                ? 'bg-blue-600 text-white shadow-xs'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+            }`}
+          >
+            Price is VAT Exclusive
+          </button>
+        </div>
+      </div>
+
+      {/* 3. 2026 Non-EU Customs Duty Checkbox */}
+      <div className="mt-3 p-3 bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/60 rounded-2xl flex items-center gap-3">
+        <input
+          type="checkbox"
+          id="customs2026"
+          checked={applyCustomsDuty2026}
+          onChange={(e) => setApplyCustomsDuty2026(e.target.checked)}
+          className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 cursor-pointer accent-blue-600"
+        />
+        <label htmlFor="customs2026" className="text-xs font-semibold text-amber-900 dark:text-amber-200 cursor-pointer">
+          Non-EU seller? Add €3 EU Customs Duty (July 2026 rule for orders ≤ €150)
+        </label>
+      </div>
+
+      {/* Main Input Form */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
         <div>
           <label className="text-[11px] font-bold tracking-wider uppercase text-slate-700 dark:text-slate-300">
-            BUYER / CUSTOMER NAME *
+            BUYER / CUSTOMER NAME (OPTIONAL)
           </label>
           <input
             value={buyer}
             onChange={(e) => setBuyer(e.target.value)}
             className="w-full border border-slate-300 dark:border-slate-700 rounded-xl p-3 mt-1 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-            placeholder="e.g. John Doe or Enterprise GmbH"
+            placeholder="e.g. John Doe (default: Sample Customer)"
           />
         </div>
 
         <div>
           <label className="text-[11px] font-bold tracking-wider uppercase text-slate-700 dark:text-slate-300">
-            GROSS ORDER TOTAL ({country.symbol} {country.currency}) *
+            {pricingMode === 'inclusive' ? 'GROSS ORDER TOTAL' : 'NET ORDER AMOUNT'} ({country.symbol} {country.currency}) *
           </label>
           <input
-            value={gross}
-            onChange={(e) => setGross(e.target.value)}
+            value={amountInput}
+            onChange={(e) => setAmountInput(e.target.value)}
             type="number"
             step="0.01"
             className="w-full border border-slate-300 dark:border-slate-700 rounded-xl p-3 mt-1 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 text-sm font-semibold"
@@ -353,54 +468,73 @@ Compliant with EU Commission VAT OSS & Amazon Seller Central Invoice Requirement
         </div>
       </div>
 
-      {/* Live Calculation Breakdown */}
-      <div className="bg-[#F0F6FF] dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/60 rounded-2xl p-4 sm:p-5 mt-6">
-        <div className="flex flex-wrap justify-between items-center gap-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-blue-950 dark:text-blue-200">
-            LIVE CALCULATION BREAKDOWN
-          </span>
-          <span className="bg-white dark:bg-slate-800 border border-blue-200 dark:border-blue-800 text-xs px-3 py-1 rounded-full font-bold text-slate-800 dark:text-slate-200 shadow-xs">
-            {country.name} • {country.rate}% {isExport ? 'Export' : 'VAT'}
-          </span>
-        </div>
-
-        <div className="grid grid-cols-3 gap-3 mt-4">
-          <div className="bg-white dark:bg-slate-800 rounded-xl p-3 text-center shadow-xs border border-blue-50 dark:border-slate-700">
-            <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Net Turnover</div>
-            <div className="font-bold text-sm sm:text-base text-slate-900 dark:text-white mt-0.5">
-              {country.symbol} {net.toFixed(2)}
+      {/* 4. Live Calculation Breakdown (Only visible after user types amount) */}
+      {hasTypedAmount && (
+        <div className="bg-[#F0F6FF] dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/60 rounded-2xl p-4 sm:p-5 mt-6 animate-in fade-in duration-200">
+          <div className="flex flex-wrap justify-between items-center gap-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-blue-950 dark:text-blue-200">
+              LIVE CALCULATION BREAKDOWN
+            </span>
+            <div className="flex items-center gap-2">
+              <span className="bg-white dark:bg-slate-800 border border-blue-200 dark:border-blue-800 text-xs px-3 py-1 rounded-full font-bold text-slate-800 dark:text-slate-200 shadow-xs">
+                {country.name} • {country.rate}% {isExport ? 'Export' : 'VAT'}
+              </span>
+              <button
+                type="button"
+                onClick={copyResults}
+                className="inline-flex items-center gap-1 text-xs px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg cursor-pointer transition-colors shadow-xs"
+                title="Copy breakdown to clipboard"
+              >
+                {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                {copied ? 'Copied!' : 'Copy'}
+              </button>
             </div>
           </div>
-          <div className="bg-white dark:bg-slate-800 rounded-xl p-3 text-center shadow-xs border border-blue-50 dark:border-slate-700">
-            <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">VAT ({country.rate}%)</div>
-            <div className="font-bold text-sm sm:text-base text-blue-600 dark:text-blue-400 mt-0.5">
-              {country.symbol} {vatAmount.toFixed(2)}
+
+          <div className="grid grid-cols-3 gap-3 mt-4">
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-3 text-center shadow-xs border border-blue-50 dark:border-slate-700">
+              <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Net Turnover</div>
+              <div className="font-bold text-sm sm:text-base text-slate-900 dark:text-white mt-0.5">
+                {country.symbol} {net.toFixed(2)}
+              </div>
+            </div>
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-3 text-center shadow-xs border border-blue-50 dark:border-slate-700">
+              <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">VAT ({country.rate}%)</div>
+              <div className="font-bold text-sm sm:text-base text-blue-600 dark:text-blue-400 mt-0.5">
+                {country.symbol} {vatAmount.toFixed(2)}
+              </div>
+            </div>
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-3 text-center shadow-xs border border-blue-50 dark:border-slate-700">
+              <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Gross Total</div>
+              <div className="font-bold text-sm sm:text-base text-emerald-600 dark:text-emerald-400 mt-0.5">
+                {country.symbol} {finalGross.toFixed(2)}
+              </div>
             </div>
           </div>
-          <div className="bg-white dark:bg-slate-800 rounded-xl p-3 text-center shadow-xs border border-blue-50 dark:border-slate-700">
-            <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Gross Total</div>
-            <div className="font-bold text-sm sm:text-base text-emerald-600 dark:text-emerald-400 mt-0.5">
-              {country.symbol} {grossVal.toFixed(2)}
+
+          {/* 1. PROFIT BOX */}
+          <div className="bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900/60 p-4 rounded-xl mt-4 text-xs sm:text-sm">
+            <div className="text-slate-700 dark:text-slate-300 font-medium">
+              Amazon Referral Fee (15%): €{referralFee.toFixed(2)}
+            </div>
+            <div className="font-bold text-green-700 dark:text-green-400 text-base mt-1">
+              Your Payout: €{yourPayout.toFixed(2)}
             </div>
           </div>
-        </div>
 
-        <div className="text-[11px] mt-3 bg-white dark:bg-slate-800 p-2.5 rounded-lg text-slate-600 dark:text-slate-300 border border-blue-100 dark:border-slate-700 leading-relaxed">
-          {isExport
-            ? `Export - Article 146 - No VAT - ${country.currency} compliant`
-            : `OSS ID ${seller.ossId} - ${country.rate}% - ${country.currency} compliant - EU Directive 2006/112/EC`}
+          <div className="text-[11px] mt-3 bg-white dark:bg-slate-800 p-2.5 rounded-lg text-slate-600 dark:text-slate-300 border border-blue-100 dark:border-slate-700 leading-relaxed">
+            {isExport
+              ? `Export - Article 146 - No VAT - ${country.currency} compliant`
+              : `OSS ID ${seller.ossId} - ${country.rate}% - ${country.currency} compliant - EU Directive 2006/112/EC`}
+            {customsDuty > 0 && ` • Includes €3.00 July 2026 Non-EU Customs Duty`}
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Validation warning */}
-      {!canDownload && (
-        <div className="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/80 p-3 rounded-xl mt-4 text-xs font-semibold text-amber-900 dark:text-amber-300 flex items-center gap-2">
-          <AlertTriangle className="w-4 h-4 shrink-0 text-amber-600" />
-          <span>
-            ⚠️ Required to unlock download: Please Complete:{' '}
-            {!buyer ? 'Buyer Name' : ''} {!buyer && !grossVal ? ', ' : ''}{' '}
-            {!grossVal ? 'Gross Amount' : ''}
-          </span>
+      {/* Validation helper */}
+      {!hasTypedAmount && (
+        <div className="bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 p-3 rounded-xl mt-4 text-xs font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-2">
+          <span>💡 Enter an order amount to view live net turnover, VAT, profit breakdown, and unlock invoice downloads.</span>
         </div>
       )}
 
@@ -417,8 +551,8 @@ Compliant with EU Commission VAT OSS & Amazon Seller Central Invoice Requirement
         >
           <Download className="w-4 h-4" />
           {canDownload
-            ? `Download 100% PASS PDF (${country.currency} ${grossVal.toFixed(2)})`
-            : 'Fill All Fields to Enable Download'}
+            ? `Download 100% PASS PDF (${country.currency} ${finalGross.toFixed(2)})`
+            : 'Enter Amount to Enable Download'}
         </button>
 
         <div className="grid grid-cols-2 gap-2">
@@ -445,7 +579,7 @@ Compliant with EU Commission VAT OSS & Amazon Seller Central Invoice Requirement
           <span>✅ 100% Verified: Auto Currency ({country.currency}) | Article 146 | EU OSS Scheme | HS 8517.12.00</span>
         </p>
 
-        {/* ===== AMAZON VAT ABOUT SECTION - 800+ WORDS - ADSENSE READY ===== */}
+        {/* 5. ABOUT SECTION WITH 3 STEPS, SEO FAQS & DISCLAIMER */}
         <div className="mt-12 p-6 sm:p-8 bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 text-left">
           <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">About Amazon EU VAT Calculator</h2>
           
@@ -459,100 +593,57 @@ Compliant with EU Commission VAT OSS & Amazon Seller Central Invoice Requirement
               to any server. All calculations happen inside your browser.
             </p>
 
-            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">What is Amazon EU VAT Calculator?</h3>
-            <p>
-              Amazon EU VAT Calculator is designed for international Amazon sellers from Pakistan, India, USA, 
-              UK, and other non-EU countries who sell on Amazon EU marketplaces including Amazon.de, Amazon.fr, 
-              Amazon.it, Amazon.es, and Amazon.nl. When you sell to an EU buyer, you must charge VAT at the rate 
-              of the buyer's country. For example, Germany charges 19%, France 20%, Italy 22%, Spain 21%, 
-              Netherlands 21%, Belgium 21%, Sweden 25%, Denmark 25%, and so on. Our calculator uses the updated 
-              2026 VAT rates for all 27 EU countries and applies the OSS scheme correctly. It is built for 
-              electronics, mobile accessories, and general products with HS Code 8517.12.00 support. The tool 
-              helps you generate accurate invoices for accounting, bookkeeping, and tax filing. It ensures compliance 
-              with EU tax authorities and prevents Amazon account issues related to incorrect VAT invoices. 
-              The calculator works completely offline in your browser, so buyer names, amounts, and destination 
-              details are never sent to any server, ensuring GDPR compliance and privacy.
-            </p>
-
-            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">How to Use This Tool?</h3>
-            <p><strong className="text-slate-900 dark:text-white">Step 1: Enter Your Data</strong> - Enter Buyer Name, Destination Country, and Gross Amount in EUR. The data stays in your browser and is 100% client-side. No login required.</p>
-            <p><strong className="text-slate-900 dark:text-white">Step 2: Verify VAT Rate</strong> - The system auto-detects the EU VAT rate under Directive 2006/112/EC based on the selected destination country. It shows net turnover and VAT amount instantly.</p>
-            <p><strong className="text-slate-900 dark:text-white">Step 3: Download Invoice</strong> - Download the generated invoice as Text or Print as PDF for Amazon FBA accounting. The invoice includes OSS ID, HS Code, Article 146 reference, and is ready for your records.</p>
-
-            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">Key Features of This Tool</h3>
-            <ul className="list-disc pl-6 space-y-1.5">
-              <li>100% Client-Side Calculation - No data uploaded to server, complete privacy</li>
-              <li>Supports all 27 EU Countries with 2026 updated VAT rates</li>
-              <li>Complies with EU OSS Scheme and Article 146 and Directive 2006/112/EC</li>
-              <li>Auto-generates Net Turnover, VAT Amount, and Gross Amount breakdown</li>
-              <li>Generates professional invoice with OSS ID, HS Code 8517.12.00 for electronics</li>
-              <li>Currency support in EUR with accurate calculation</li>
-              <li>Download as Text file or Print as PDF for Amazon FBA records</li>
-              <li>Free forever, no signup, no API key, no tracking, no ads</li>
-              <li>Fast, mobile-friendly, and works on all devices</li>
-              <li>Built for Amazon FBA sellers, dropshippers, private label sellers, and wholesalers</li>
-            </ul>
-
-            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">Understanding EU VAT for Amazon FBA Sellers</h3>
-            <p>
-              Under the EU VAT rules, if you are a non-EU seller selling goods to EU consumers, VAT must be 
-              charged at the destination principle. This means the VAT rate is determined by where the buyer lives, 
-              not where you ship from. The One Stop Shop (OSS) simplifies VAT reporting by allowing you to report 
-              VAT for all EU sales in a single EU country instead of registering in each country. Our calculator 
-              follows this model. For example, if a buyer in Germany purchases a product for 100 EUR gross, the 
-              system calculates Net Turnover = 100 / 1.19 = 84.03 EUR and VAT = 15.97 EUR at 19%. Similarly, for 
-              France at 20%, Net = 83.33 EUR and VAT = 16.67 EUR. This accurate breakdown is essential for Amazon 
-              VAT invoices and accounting. Incorrect VAT can lead to penalties, Amazon listing removal, and loss 
-              of customer trust. Using a correct calculator ensures you charge the right amount and stay compliant.
-            </p>
-
-            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">Why Use AllToolsPK Amazon EU VAT Calculator?</h3>
-            <p>
-              Unlike other calculators that upload your data to servers, AllToolsPK runs entirely in your browser. 
-              This means buyer names and transaction amounts are never stored. It is also specifically optimized for 
-              Amazon FBA requirements, including OSS ID field, HS Code for customs, and Article 146 for export 
-              exemptions. The tool is free, fast, and updated for 2026 VAT rates. It saves time for sellers who 
-              need to generate hundreds of invoices monthly. It is ideal for sellers from Pakistan and other countries 
-              who need a simple, reliable, and compliant solution without paying for expensive VAT software. The tool 
-              also helps with bookkeeping and tax filing by providing clear net and VAT separation.
-            </p>
-
-            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">Frequently Asked Questions (FAQ)</h3>
-            <div className="space-y-3 pt-1">
-              <div>
-                <strong className="text-slate-900 dark:text-white">Q: Is this tool free to use?</strong><br/>
-                <span>A: Yes, it is 100% free forever with no limits.</span>
+            {/* 3 STEPS SECTION */}
+            <h2 className="text-2xl font-bold mt-8 text-slate-900 dark:text-white">How to Use in 3 Steps</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <span className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-sm flex items-center justify-center mb-2">1</span>
+                <h4 className="font-bold text-slate-900 dark:text-white text-sm">Enter Gross Amount</h4>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Input your customer&apos;s order amount and select whether pricing is VAT inclusive or exclusive.</p>
               </div>
-              <div>
-                <strong className="text-slate-900 dark:text-white">Q: Is my buyer data safe and private?</strong><br/>
-                <span>A: Yes, all calculations are done locally in your browser. No data is uploaded, stored, or tracked.</span>
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <span className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-sm flex items-center justify-center mb-2">2</span>
+                <h4 className="font-bold text-slate-900 dark:text-white text-sm">Select Country</h4>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Pick destination EU tax jurisdiction. The engine automatically loads standard VAT rates for 2026.</p>
               </div>
-              <div>
-                <strong className="text-slate-900 dark:text-white">Q: Does it support all 27 EU countries?</strong><br/>
-                <span>A: Yes, it supports Germany, France, Italy, Spain, Netherlands, Belgium, Sweden, Denmark, Poland, Ireland, Austria, and all other EU countries.</span>
-              </div>
-              <div>
-                <strong className="text-slate-900 dark:text-white">Q: What is HS Code 8517.12.00?</strong><br/>
-                <span>A: HS Code 8517.12.00 refers to telephones for cellular networks or other wireless networks, commonly used for smartphones and electronics on Amazon.</span>
-              </div>
-              <div>
-                <strong className="text-slate-900 dark:text-white">Q: What is Article 146?</strong><br/>
-                <span>A: Article 146 of EU VAT Directive refers to exemptions for certain exports and transactions under OSS scheme.</span>
-              </div>
-              <div>
-                <strong className="text-slate-900 dark:text-white">Q: Can I use this for Amazon accounting?</strong><br/>
-                <span>A: Yes, the generated invoice is suitable for Amazon FBA accounting, bookkeeping, and VAT reporting.</span>
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <span className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-sm flex items-center justify-center mb-2">3</span>
+                <h4 className="font-bold text-slate-900 dark:text-white text-sm">See Profit + Download Invoice</h4>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Review Amazon 15% referral fee and your net seller payout, then download your audit-ready invoice in 1 click.</p>
               </div>
             </div>
 
-            <p className="mt-6 text-sm text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800 pt-4">
-              Disclaimer: This tool provides calculations based on publicly available EU VAT rates for 2026. 
-              Please consult a tax professional for official tax advice. AllToolsPK is not responsible for 
-              tax filing errors. The tool is for informational and invoice generation purposes only.
+            {/* SEO FAQ SECTION */}
+            <h2 className="text-2xl font-bold mt-8 text-slate-900 dark:text-white">Frequently Asked Questions (FAQ)</h2>
+            <div className="space-y-4 pt-1">
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">What is OSS?</h3>
+                <p className="text-sm mt-1 text-slate-600 dark:text-slate-300">
+                  The One-Stop Shop (OSS) is an electronic portal introduced under the European Union VAT e-commerce package. It allows cross-border sellers to register for VAT in a single EU Member State and declare and pay all VAT due in all other EU Member States on consumer sales through a single quarterly return, avoiding individual VAT registrations in 27 countries.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">What is IOSS vs OSS?</h3>
+                <p className="text-sm mt-1 text-slate-600 dark:text-slate-300">
+                  Import One-Stop Shop (IOSS) applies strictly to distance sales of imported goods dispatched from non-EU countries with a consignment intrinsic value not exceeding €150. OSS (Union scheme) covers intra-EU distance sales of goods and B2C services where the merchandise is already physically stored within the EU territory (such as Amazon FBA European fulfillment centers).
+                </p>
+              </div>
+
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">How much VAT in Germany?</h3>
+                <p className="text-sm mt-1 text-slate-600 dark:text-slate-300">
+                  The standard VAT rate in Germany (Umsatzsteuer / MwSt.) is 19% applicable to most consumer merchandise, electronics, and digital services. Germany also maintains a reduced rate of 7% for select essential goods such as books, printed media, basic foodstuffs, and hotel accommodations.
+                </p>
+              </div>
+            </div>
+
+            {/* DISCLAIMER */}
+            <p className="mt-6 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800 pt-4 font-medium italic">
+              Disclaimer: Not tax advice, for information only. This tool provides calculations based on publicly available EU VAT rates for 2026. Please consult a qualified tax advisor or certified accountant for statutory filing advice.
             </p>
           </div>
         </div>
-        {/* ===== END OF ABOUT SECTION ===== */}
       </div>
 
       {/* Print Document Render */}
