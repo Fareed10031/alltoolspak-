@@ -20,7 +20,7 @@ export function ToolCard({ tool, onClick }: ToolCardProps) {
   return (
     <div
       onClick={onClick}
-      className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all h-[180px] flex flex-col justify-between cursor-pointer group"
+      className="bg-white rounded-[20px] p-5 border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all h-[190px] flex flex-col justify-between cursor-pointer group"
     >
       <div>
         <div className="flex items-center justify-between mb-3">

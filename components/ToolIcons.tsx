@@ -35,7 +35,7 @@ export const ToolIconsConfig: Record<string, { bg: string; icon: React.ReactNode
   },
   "image-to-pdf": {
     bg: "bg-gradient-to-br from-[#00B09B] to-[#96C93D]",
-    icon: <span className="text-white text-2xl">🖼️➡️📄</span>
+    icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M4 4h7v7H4z M14 4h6v3h-6z M14 8h6v3h-6z M4 14h7v6H4z M14 14h3v6h-3z M18 14h2v6h-2z"/></svg>
   },
   "qr-generator": {
     bg: "bg-gradient-to-br from-[#000000] to-[#434343]",
@@ -63,7 +63,7 @@ export const ToolIconsConfig: Record<string, { bg: string; icon: React.ReactNode
   },
   "unit-converter": {
     bg: "bg-gradient-to-br from-[#7F00FF] to-[#E100FF]",
-    icon: <span className="text-white text-xl">⚖️</span>
+    icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M12 3v18M3 7h3M18 7h3M3 17h3M18 17h3"/><circle cx="6" cy="7" r="2" fill="white"/><circle cx="18" cy="17" r="2" fill="white"/></svg>
   },
   "usa-paycheck": {
     bg: "bg-gradient-to-br from-[#11998e] to-[#38ef7d]",
@@ -79,11 +79,11 @@ export const ToolIconsConfig: Record<string, { bg: string; icon: React.ReactNode
   },
   "global-salary": {
     bg: "bg-gradient-to-br from-[#00c6ff] to-[#0072ff]",
-    icon: <span className="text-white text-xl">🌍💵</span>
+    icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
   },
   "global-salary-calculator": {
     bg: "bg-gradient-to-br from-[#00c6ff] to-[#0072ff]",
-    icon: <span className="text-white text-xl">🌍💵</span>
+    icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
   },
   "currency-gold": {
     bg: "bg-gradient-to-br from-[#F7971E] to-[#FFD200]",
