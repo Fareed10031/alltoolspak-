@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X, Grid } from 'lucide-react';
 import { TOOLS, SITE_NAME } from '@/lib/config';
+import MegaMenu from '@/components/MegaMenu';
 
 export interface HeaderProps {
   currentPath?: string;
@@ -96,8 +97,11 @@ export default function Header({ onNavigate, onSelectTool }: HeaderProps) {
           </Link>
         </nav>
 
-        {/* 3. RIGHT SIDE: Tools Grid Icon + CTA + Mobile Hamburger */}
+        {/* 3. RIGHT SIDE: 9-Dot MegaMenu + Tools Grid Icon + CTA + Mobile Hamburger */}
         <div className="flex items-center gap-3">
+          {/* iLovePDF Style 9-dot MegaMenu */}
+          <MegaMenu />
+
           {/* Tools Grid Dropdown Toggle */}
           <div className="relative">
             <button

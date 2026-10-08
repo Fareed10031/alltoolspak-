@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { AI_BG_Remover_PRO } from './AI_BG_Remover_PRO';
+import { WorldNo1_BgRemover } from './WorldNo1_BgRemover';
 
 export function BgRemover() {
-  return <AI_BG_Remover_PRO />;
+  return <WorldNo1_BgRemover />;
 }
 
 export default BgRemover;
