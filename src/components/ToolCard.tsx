@@ -3,7 +3,7 @@ import { ToolItem } from '@/lib/config';
 
 export interface ToolCardProps {
   tool: ToolItem;
-  color: {
+  color?: {
     bg: string;
     light: string;
     border: string;
@@ -13,11 +13,11 @@ export interface ToolCardProps {
 }
 
 export function ToolCard({ tool, color, onClick }: ToolCardProps) {
-  const initial = tool.name ? tool.name[0].toUpperCase() : 'A';
+  const initial = tool.name ? tool.name.charAt(0) : 'A';
   const badgeLabel = tool.badge || tool.tag;
 
-  // Curated light background tint for icon box
-  const iconLightBg = color?.light || 'bg-blue-50';
+  // Curated light background tint for icon box: default to tool.bgColor or light color
+  const bgColor = (tool as any).bgColor || color?.light || '#f3f4f6';
 
   return (
     <div
@@ -26,14 +26,17 @@ export function ToolCard({ tool, color, onClick }: ToolCardProps) {
     >
       <div>
         <div className="flex items-center justify-between mb-3">
-          {/* Icon container: w-12 h-12 rounded-lg with light bg color and text-xl, NOT white on white */}
+          {/* High-visibility icon container: dark text on light bg, zero opacity/filter artifacts */}
           <div
-            className={`w-12 h-12 ${iconLightBg} rounded-lg flex items-center justify-center text-xl text-gray-800 shrink-0 font-bold`}
+            className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+            style={{ backgroundColor: bgColor }}
           >
-            {tool.icon ? tool.icon : initial}
+            <div className="text-gray-900 text-2xl font-bold opacity-100">
+              {(tool as any).iconText || tool.icon || initial}
+            </div>
           </div>
           {badgeLabel && (
-            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 border border-gray-200">
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200">
               {badgeLabel}
             </span>
           )}
