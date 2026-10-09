@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { WorldNo1_BgRemover } from './WorldNo1_BgRemover';
+import BgRemoverWorldNo1 from './BgRemoverWorldNo1';
 
 export function BgRemover() {
-  return <WorldNo1_BgRemover />;
+  return <BgRemoverWorldNo1 />;
 }
 
 export default BgRemover;
