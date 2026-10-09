@@ -137,7 +137,8 @@ export function QrGeneratorTool() {
   const [bgColor, setBgColor] = useState<string>('#ffffff');
   const [isTransparent, setIsTransparent] = useState<boolean>(false);
   const [errorCorrection, setErrorCorrection] = useState<ErrorCorrectionLevel>('H');
-  const [qrSize, setQrSize] = useState<number>(1024);
+  const [exportSize, setExportSize] = useState<number>(512); // FIXED: 512px default export size
+  const [qrSize, setQrSize] = useState<number>(512); // Standard resolution
   const [margin, setMargin] = useState<number>(4); // FIX: 4 is Standard for Print, 2 is too low
   const [dotStyle, setDotStyle] = useState<DotStyle>('square'); // FIX: square = 100% scannable
   const [cornerStyle, setCornerStyle] = useState<CornerStyle>('square');
@@ -146,7 +147,8 @@ export function QrGeneratorTool() {
   const [logoDataUrl, setLogoDataUrl] = useState<string | null>(null);
   const [logoName, setLogoName] = useState<string>('');
 
-  // Status & Verification States
+  // Status, Toast & Verification States
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [scanVerified, setScanVerified] = useState<boolean>(true);
   const [scanWarning, setScanWarning] = useState<string | null>(null);
   const [contrastWarning, setContrastWarning] = useState<string | null>(null);
@@ -157,6 +159,14 @@ export function QrGeneratorTool() {
   // Canvas Refs
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Toast Notification helper (replaces window.alert for iFrame compatibility)
+  const showToast = useCallback((msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 3500);
+  }, []);
 
   // Helper 1: Build Final URL with UTM Parameters
   const buildFinalUrl = useCallback((baseUrl: string) => {
@@ -327,7 +337,7 @@ export function QrGeneratorTool() {
     if (!file) return;
 
     if (file.size > 2 * 1024 * 1024) {
-      alert('Logo file must be smaller than 2MB.');
+      showToast('Max 2MB logo allowed');
       return;
     }
 
@@ -337,6 +347,7 @@ export function QrGeneratorTool() {
       setLogoName(file.name);
       // Auto-switch to Error Correction Level H for logo embedding
       setErrorCorrection('H');
+      showToast('Logo attached! Switched to High Error Correction (Level H)');
     };
     reader.readAsDataURL(file);
   };
@@ -345,9 +356,10 @@ export function QrGeneratorTool() {
     setLogoDataUrl(null);
     setLogoName('');
     if (fileInputRef.current) fileInputRef.current.value = '';
+    showToast('Logo removed');
   };
 
-  // Render QR Code onto Canvas
+  // Render QR Code onto Live Preview Canvas (Fixed 512px for mobile fit & optimal performance)
   const renderQrCanvas = useCallback(async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -360,17 +372,18 @@ export function QrGeneratorTool() {
 
     try {
       const effectiveEcLevel = logoDataUrl ? 'H' : errorCorrection;
+      const previewSize = 512; // FIXED: Preview always small 512px for mobile fit
 
-      // FIX 1: When default square pattern is selected, use standard QRCode.toCanvas for 100% scannability
+      // Default square pattern uses standard QRCode.toCanvas for 100% scannability
       if (dotStyle === 'square' && cornerStyle === 'square') {
-        canvas.width = qrSize;
-        canvas.height = qrSize;
+        canvas.width = previewSize;
+        canvas.height = previewSize;
         await new Promise<void>((resolve, reject) => {
           QRCode.toCanvas(
             canvas,
             formattedPayload,
             {
-              width: qrSize,
+              width: previewSize,
               margin: margin,
               color: {
                 dark: fgColor,
@@ -393,18 +406,18 @@ export function QrGeneratorTool() {
         const quietZone = margin;
         const totalModules = moduleCount + quietZone * 2;
 
-        canvas.width = qrSize;
-        canvas.height = qrSize;
+        canvas.width = previewSize;
+        canvas.height = previewSize;
 
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        const modulePixelSize = qrSize / totalModules;
+        const modulePixelSize = previewSize / totalModules;
 
-        ctx.clearRect(0, 0, qrSize, qrSize);
+        ctx.clearRect(0, 0, previewSize, previewSize);
         if (!isTransparent) {
           ctx.fillStyle = bgColor;
-          ctx.fillRect(0, 0, qrSize, qrSize);
+          ctx.fillRect(0, 0, previewSize, previewSize);
         }
 
         ctx.fillStyle = fgColor;
@@ -458,7 +471,7 @@ export function QrGeneratorTool() {
         }
       }
 
-      // Logo draw logic - FIX: Max 20% size else scan fail
+      // Logo - Max 20% size with protective white background
       if (logoDataUrl) {
         await new Promise<void>((resolve) => {
           const img = new Image();
@@ -469,34 +482,20 @@ export function QrGeneratorTool() {
               resolve();
               return;
             }
-            const logoSize = canvas.width * 0.20; // FIX: Max 20% else scan fail
+            const logoSize = canvas.width * 0.20; // Max 20% size
             const logoX = (canvas.width - logoSize) / 2;
             const logoY = (canvas.height - logoSize) / 2;
 
-            // White padding background
+            // White background for logo for better scan
             ctx.fillStyle = '#FFFFFF';
-            const badgePadding = logoSize * 0.08;
-            ctx.fillRect(
-              logoX - badgePadding,
-              logoY - badgePadding,
-              logoSize + badgePadding * 2,
-              logoSize + badgePadding * 2
-            );
-
-            // Subtle border
+            ctx.fillRect(logoX - 4, logoY - 4, logoSize + 8, logoSize + 8);
             ctx.strokeStyle = '#E2E8F0';
-            ctx.lineWidth = Math.max(1, canvas.width * 0.003);
-            ctx.strokeRect(
-              logoX - badgePadding,
-              logoY - badgePadding,
-              logoSize + badgePadding * 2,
-              logoSize + badgePadding * 2
-            );
-
-            // Draw logo image
+            ctx.lineWidth = 1;
+            ctx.strokeRect(logoX - 4, logoY - 4, logoSize + 8, logoSize + 8);
             ctx.drawImage(img, logoX, logoY, logoSize, logoSize);
             resolve();
           };
+          img.onerror = () => resolve();
           img.src = logoDataUrl;
         });
       }
@@ -505,7 +504,7 @@ export function QrGeneratorTool() {
       try {
         const ctx = canvas.getContext('2d');
         if (ctx) {
-          const imgData = ctx.getImageData(0, 0, qrSize, qrSize);
+          const imgData = ctx.getImageData(0, 0, previewSize, previewSize);
           const code = jsQR(imgData.data, imgData.width, imgData.height);
 
           if (code && code.data) {
@@ -530,7 +529,6 @@ export function QrGeneratorTool() {
     bgColor,
     isTransparent,
     errorCorrection,
-    qrSize,
     margin,
     dotStyle,
     cornerStyle,
@@ -545,24 +543,165 @@ export function QrGeneratorTool() {
     return () => clearTimeout(timer);
   }, [renderQrCanvas]);
 
+  // Helper to build high-res export canvas
+  const buildExportCanvas = useCallback(
+    async (targetWidth: number): Promise<HTMLCanvasElement> => {
+      const exportCanvas = document.createElement('canvas');
+      exportCanvas.width = targetWidth;
+      exportCanvas.height = targetWidth;
+      const effectiveEcLevel = logoDataUrl ? 'H' : errorCorrection;
+
+      if (dotStyle === 'square' && cornerStyle === 'square') {
+        await new Promise<void>((resolve, reject) => {
+          QRCode.toCanvas(
+            exportCanvas,
+            formattedPayload,
+            {
+              width: targetWidth,
+              margin,
+              color: {
+                dark: fgColor,
+                light: isTransparent ? '#00000000' : bgColor,
+              },
+              errorCorrectionLevel: effectiveEcLevel,
+            },
+            (err) => {
+              if (err) reject(err);
+              else resolve();
+            }
+          );
+        });
+      } else {
+        const qrObj = QRCode.create(formattedPayload, {
+          errorCorrectionLevel: effectiveEcLevel,
+        });
+        const moduleCount = qrObj.modules.size;
+        const quietZone = margin;
+        const totalModules = moduleCount + quietZone * 2;
+        const ctx = exportCanvas.getContext('2d');
+        if (ctx) {
+          const modulePixelSize = targetWidth / totalModules;
+          ctx.clearRect(0, 0, targetWidth, targetWidth);
+          if (!isTransparent) {
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, targetWidth, targetWidth);
+          }
+          ctx.fillStyle = fgColor;
+
+          const isFinderPattern = (r: number, c: number) => {
+            if (r < 7 && c < 7) return true;
+            if (r < 7 && c >= moduleCount - 7) return true;
+            if (r >= moduleCount - 7 && c < 7) return true;
+            return false;
+          };
+
+          for (let r = 0; r < moduleCount; r++) {
+            for (let c = 0; c < moduleCount; c++) {
+              if (qrObj.modules.get(r, c)) {
+                const inFinder = isFinderPattern(r, c);
+                const x = (c + quietZone) * modulePixelSize;
+                const y = (r + quietZone) * modulePixelSize;
+                const s = modulePixelSize;
+
+                if (inFinder) {
+                  if (cornerStyle === 'rounded') {
+                    ctx.beginPath();
+                    ctx.roundRect(x, y, s, s, s * 0.25);
+                    ctx.fill();
+                  } else if (cornerStyle === 'circle') {
+                    ctx.beginPath();
+                    ctx.arc(x + s / 2, y + s / 2, s * 0.48, 0, Math.PI * 2);
+                    ctx.fill();
+                  } else {
+                    ctx.fillRect(x, y, s, s);
+                  }
+                } else {
+                  if (dotStyle === 'dots') {
+                    ctx.beginPath();
+                    ctx.arc(x + s / 2, y + s / 2, s * 0.44, 0, Math.PI * 2);
+                    ctx.fill();
+                  } else if (dotStyle === 'rounded') {
+                    ctx.beginPath();
+                    ctx.roundRect(x, y, s, s, s * 0.35);
+                    ctx.fill();
+                  } else if (dotStyle === 'classy') {
+                    ctx.beginPath();
+                    ctx.roundRect(x + s * 0.05, y + s * 0.05, s * 0.9, s * 0.9, s * 0.45);
+                    ctx.fill();
+                  } else {
+                    ctx.fillRect(x, y, s, s);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      if (logoDataUrl) {
+        await new Promise<void>((resolve) => {
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.onload = () => {
+            const ctx = exportCanvas.getContext('2d');
+            if (ctx) {
+              const logoSize = exportCanvas.width * 0.20;
+              const logoX = (exportCanvas.width - logoSize) / 2;
+              const logoY = (exportCanvas.height - logoSize) / 2;
+              ctx.fillStyle = '#FFFFFF';
+              ctx.fillRect(logoX - 4, logoY - 4, logoSize + 8, logoSize + 8);
+              ctx.strokeStyle = '#E2E8F0';
+              ctx.lineWidth = Math.max(1, exportCanvas.width * 0.002);
+              ctx.strokeRect(logoX - 4, logoY - 4, logoSize + 8, logoSize + 8);
+              ctx.drawImage(img, logoX, logoY, logoSize, logoSize);
+            }
+            resolve();
+          };
+          img.onerror = () => resolve();
+          img.src = logoDataUrl;
+        });
+      }
+
+      return drawFrameOnCanvas(exportCanvas, frameStyle);
+    },
+    [
+      formattedPayload,
+      margin,
+      fgColor,
+      bgColor,
+      isTransparent,
+      errorCorrection,
+      dotStyle,
+      cornerStyle,
+      logoDataUrl,
+      drawFrameOnCanvas,
+      frameStyle,
+    ]
+  );
+
   // ==================== EXPORT FUNCTIONS ====================
-  // 1. Download PNG (with frame)
-  const handleDownloadPNG = () => {
-    if (!isValid) return alert('Please enter valid URL / Text first!');
-    if (!canvasRef.current) return;
-    const framedCanvas = drawFrameOnCanvas(canvasRef.current, frameStyle);
+  // 1. Download PNG
+  const handleDownloadPNG = async () => {
+    if (!isValid) {
+      showToast('Please enter URL or Text first (min 3 chars)!');
+      return;
+    }
+    const framedCanvas = await buildExportCanvas(exportSize);
     saveToHistory(activeType, activeType.toUpperCase(), formattedPayload);
 
     const link = document.createElement('a');
-    link.download = `qr-${activeType}-${Date.now()}.png`;
+    link.download = `AllToolsPK-QR-${activeType}-${Date.now()}.png`;
     link.href = framedCanvas.toDataURL('image/png');
     link.click();
+    showToast(`Downloaded PNG (${exportSize}x${exportSize}px)`);
   };
 
-  // 2. Download SVG (with frame support)
+  // 2. Download SVG
   const handleDownloadSVG = async () => {
-    if (!isValid) return alert('Please enter valid URL / Text first!');
-    if (!canvasRef.current) return;
+    if (!isValid) {
+      showToast('Please enter URL or Text first (min 3 chars)!');
+      return;
+    }
     saveToHistory(activeType, activeType.toUpperCase(), formattedPayload);
     try {
       const effectiveEcLevel = logoDataUrl ? 'H' : errorCorrection;
@@ -592,22 +731,25 @@ export function QrGeneratorTool() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `qr-${activeType}-${Date.now()}.svg`;
+      a.download = `AllToolsPK-QR-${activeType}-${Date.now()}.svg`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+      showToast('Downloaded vector SVG (infinite resolution)');
     } catch {
       handleDownloadPNG();
     }
   };
 
-  // 3. Download PDF (with frame support)
+  // 3. Download PDF
   const handleDownloadPDF = async () => {
-    if (!isValid) return alert('Please enter valid URL / Text first!');
-    if (!canvasRef.current) return;
+    if (!isValid) {
+      showToast('Please enter URL or Text first (min 3 chars)!');
+      return;
+    }
     saveToHistory(activeType, activeType.toUpperCase(), formattedPayload);
-    const framedCanvas = drawFrameOnCanvas(canvasRef.current, frameStyle);
+    const framedCanvas = await buildExportCanvas(exportSize);
     const imgData = framedCanvas.toDataURL('image/png');
     const { jsPDF } = await import('jspdf');
     const pdf = new jsPDF({
@@ -616,27 +758,33 @@ export function QrGeneratorTool() {
       format: [framedCanvas.width, framedCanvas.height],
     });
     pdf.addImage(imgData, 'PNG', 0, 0, framedCanvas.width, framedCanvas.height);
-    pdf.save(`qr-${activeType}-${Date.now()}.pdf`);
+    pdf.save(`AllToolsPK-QR-${activeType}-${Date.now()}.pdf`);
+    showToast('Downloaded print-ready PDF');
   };
 
-  // 4. Download JPEG (with frame support)
-  const handleDownloadJPEG = () => {
-    if (!isValid) return alert('Please enter valid URL / Text first!');
-    if (!canvasRef.current) return;
+  // 4. Download JPEG
+  const handleDownloadJPEG = async () => {
+    if (!isValid) {
+      showToast('Please enter URL or Text first (min 3 chars)!');
+      return;
+    }
     saveToHistory(activeType, activeType.toUpperCase(), formattedPayload);
-    const framedCanvas = drawFrameOnCanvas(canvasRef.current, frameStyle);
+    const framedCanvas = await buildExportCanvas(exportSize);
 
     const link = document.createElement('a');
-    link.download = `qr-${activeType}-${Date.now()}.jpg`;
+    link.download = `AllToolsPK-QR-${activeType}-${Date.now()}.jpg`;
     link.href = framedCanvas.toDataURL('image/jpeg', 0.95);
     link.click();
+    showToast(`Downloaded JPEG (${exportSize}x${exportSize}px)`);
   };
 
   // 5. Copy Image to Clipboard
   const copyImageToClipboard = async () => {
-    if (!isValid) return alert('Please enter valid URL / Text first!');
-    if (!canvasRef.current) return;
-    const framedCanvas = drawFrameOnCanvas(canvasRef.current, frameStyle);
+    if (!isValid) {
+      showToast('Please enter URL or Text first (min 3 chars)!');
+      return;
+    }
+    const framedCanvas = await buildExportCanvas(exportSize);
 
     try {
       framedCanvas.toBlob(async (blob) => {
@@ -648,19 +796,25 @@ export function QrGeneratorTool() {
         ]);
         setCopiedImage(true);
         setTimeout(() => setCopiedImage(false), 2000);
+        showToast('QR code copied to clipboard!');
       }, 'image/png');
     } catch (err) {
       console.error('Failed to copy image to clipboard:', err);
+      showToast('Unable to copy image directly. Please use download button.');
     }
   };
 
   // 6. Copy Data (Text)
   const copyDataText = async () => {
-    if (!isValid) return alert('Please enter valid URL / Text first!');
+    if (!isValid) {
+      showToast('Please enter URL or Text first (min 3 chars)!');
+      return;
+    }
     try {
       await navigator.clipboard.writeText(formattedPayload);
       setCopiedData(true);
       setTimeout(() => setCopiedData(false), 2000);
+      showToast('QR payload text copied to clipboard!');
     } catch (err) {
       console.error('Failed to copy text:', err);
     }
@@ -668,7 +822,10 @@ export function QrGeneratorTool() {
 
   // 7. Print Button
   const handlePrint = () => {
-    if (!isValid) return alert('Please enter valid URL / Text first!');
+    if (!isValid) {
+      showToast('Please enter URL or Text first (min 3 chars)!');
+      return;
+    }
     window.print();
   };
 
@@ -1572,54 +1729,56 @@ export function QrGeneratorTool() {
 
           {/* RIGHT COLUMN: LIVE CANVAS PREVIEW & EXPORT ACTIONS (5 COLS) */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="bg-slate-50/80 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5 flex flex-col items-center">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm h-fit">
               <div className="w-full flex items-center justify-between mb-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
                   Live QR Preview
                 </span>
-                {scanVerified ? (
-                  <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2.5 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
-                    <CheckCircle2 className="w-3 h-3" /> 100% Scannable
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center gap-1 text-[11px] font-bold text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/50 px-2.5 py-0.5 rounded-full border border-rose-200 dark:border-rose-800">
-                    <AlertTriangle className="w-3 h-3" /> Scan Issue
-                  </span>
-                )}
+                <span
+                  className={`text-xs px-3 py-1 rounded-full font-bold flex items-center gap-1 ${
+                    isValid
+                      ? 'bg-green-100 text-green-700 dark:bg-green-950/60 dark:text-green-400'
+                      : 'bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-400'
+                  }`}
+                >
+                  {isValid ? '✅ 100% Scannable' : '⚠️ Invalid'}
+                </span>
               </div>
 
-              {/* QR Canvas Display */}
-              <div
-                id="printable-qr"
-                className={`relative p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-all overflow-hidden ${
-                  isTransparent
-                    ? 'bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:12px_12px] bg-white dark:bg-slate-900'
-                    : 'bg-white dark:bg-slate-900'
-                }`}
-              >
-                <canvas
-                  ref={canvasRef}
-                  className="w-56 h-56 sm:w-64 sm:h-64 object-contain rounded-lg mx-auto"
-                />
+              {/* FIXED CONTAINER - NO MORE BIG QR */}
+              <div className="bg-gray-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex flex-col items-center justify-center max-w-[280px] sm:max-w-[320px] mx-auto shadow-xs">
+                <div
+                  id="printable-qr"
+                  className={`relative p-2 rounded-xl transition-all overflow-hidden ${
+                    isTransparent
+                      ? 'bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:12px_12px] bg-white dark:bg-slate-900'
+                      : 'bg-white dark:bg-slate-900'
+                  }`}
+                >
+                  <canvas
+                    ref={canvasRef}
+                    className="w-full max-w-[240px] aspect-square object-contain rounded-lg mx-auto block"
+                  />
 
-                {/* Live Frame Preview indicator if frame is active */}
-                {frameStyle !== 'none' && (
-                  <div className="w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 pt-2 text-center mt-2">
-                    <span
-                      className={`font-bold text-xs uppercase tracking-wider ${
-                        frameStyle === 'whitelabel'
-                          ? 'text-blue-600 dark:text-blue-400'
-                          : 'text-slate-900 dark:text-white'
-                      }`}
-                    >
-                      {frameStyle === 'whitelabel'
-                        ? 'Scan Me'
-                        : frameStyle === 'restaurant'
-                        ? '🍽️ Scan for Menu'
-                        : 'SCAN ME'}
-                    </span>
-                  </div>
-                )}
+                  {/* Live Frame Preview indicator if frame is active */}
+                  {frameStyle !== 'none' && (
+                    <div className="w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 pt-2 text-center mt-2">
+                      <span
+                        className={`font-bold text-xs uppercase tracking-wider ${
+                          frameStyle === 'whitelabel'
+                            ? 'text-blue-600 dark:text-blue-400'
+                            : 'text-slate-900 dark:text-white'
+                        }`}
+                      >
+                        {frameStyle === 'whitelabel'
+                          ? 'Scan Me'
+                          : frameStyle === 'restaurant'
+                          ? '🍽️ Scan for Menu'
+                          : 'SCAN ME'}
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Verification & Contrast Warnings */}
@@ -1637,14 +1796,18 @@ export function QrGeneratorTool() {
                 </div>
               )}
 
-              {/* Resolution Slider */}
-              <div className="w-full mt-4 pt-3 border-t border-slate-200 dark:border-slate-700/60">
+              {/* Resolution Selector */}
+              <div className="w-full mt-4 pt-3 border-t border-slate-200 dark:border-slate-800">
                 <div className="flex items-center justify-between text-xs mb-1">
                   <span className="font-semibold text-slate-700 dark:text-slate-300">
-                    Export Resolution: {qrSize}px
+                    Export Resolution: {exportSize}px
                   </span>
                   <span className="text-[10px] text-blue-600 dark:text-blue-400 font-bold">
-                    {qrSize >= 2048 ? 'Ultra HD Print (300 DPI)' : qrSize >= 1024 ? 'High Res HD' : 'Standard Web'}
+                    {exportSize >= 2048
+                      ? 'Ultra HD Print (300 DPI)'
+                      : exportSize >= 1024
+                      ? 'High Res HD'
+                      : 'Standard Web (512px)'}
                   </span>
                 </div>
                 <div className="grid grid-cols-3 gap-1.5 mt-1.5">
@@ -1652,9 +1815,12 @@ export function QrGeneratorTool() {
                     <button
                       key={size}
                       type="button"
-                      onClick={() => setQrSize(size)}
+                      onClick={() => {
+                        setExportSize(size);
+                        setQrSize(size);
+                      }}
                       className={`py-1 text-xs font-bold rounded-lg border transition-all cursor-pointer ${
-                        qrSize === size
+                        exportSize === size
                           ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
                           : 'border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-900 text-slate-700 dark:text-slate-300'
                       }`}
@@ -1665,7 +1831,7 @@ export function QrGeneratorTool() {
                 </div>
               </div>
 
-              {/* 2. JSX FOR FRAME TEMPLATES - Below Export Resolution buttons, ABOVE Download PNG button */}
+              {/* 2. JSX FOR FRAME TEMPLATES */}
               <div className="w-full mt-4">
                 <label className="text-sm font-semibold text-gray-800 dark:text-gray-200">
                   QR Frame Template (For Print - Free)
@@ -1694,7 +1860,7 @@ export function QrGeneratorTool() {
                   className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-xs transition-colors cursor-pointer flex items-center justify-center gap-2 text-sm"
                 >
                   <Download className="w-4 h-4" />
-                  Download PNG Image ({qrSize}px)
+                  Download PNG Image ({exportSize}px)
                 </button>
 
                 {/* Secondary Vector SVG & Print-Ready PDF */}
@@ -2022,6 +2188,21 @@ export function QrGeneratorTool() {
           </div>
         </div>
       </div>
+
+      {/* Floating Toast Notification for iFrame Compliance */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 text-xs font-bold border border-slate-700 dark:border-slate-200">
+          <Info className="w-4 h-4 text-blue-400 shrink-0" />
+          <span>{toastMessage}</span>
+          <button
+            type="button"
+            onClick={() => setToastMessage(null)}
+            className="ml-2 text-slate-400 hover:text-white dark:hover:text-black cursor-pointer"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
