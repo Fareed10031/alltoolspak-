@@ -15,17 +15,35 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+// All 27 European Union Member States (Strictly EU only, zero non-EU countries)
 export const COUNTRIES = [
   { code: 'DE', name: 'Germany', rate: 19, currency: 'EUR', symbol: '€', label: 'Germany (19%)', isEU: true, marketplace: 'de' },
   { code: 'FR', name: 'France', rate: 20, currency: 'EUR', symbol: '€', label: 'France (20%)', isEU: true, marketplace: 'fr' },
   { code: 'IT', name: 'Italy', rate: 22, currency: 'EUR', symbol: '€', label: 'Italy (22%)', isEU: true, marketplace: 'it' },
   { code: 'ES', name: 'Spain', rate: 21, currency: 'EUR', symbol: '€', label: 'Spain (21%)', isEU: true, marketplace: 'es' },
   { code: 'NL', name: 'Netherlands', rate: 21, currency: 'EUR', symbol: '€', label: 'Netherlands (21%)', isEU: true, marketplace: 'nl' },
-  { code: 'BE', name: 'Belgium', rate: 21, currency: 'EUR', symbol: '€', label: 'Belgium (21%)', isEU: true, marketplace: 'com.be' },
   { code: 'PL', name: 'Poland', rate: 23, currency: 'PLN', symbol: 'zł', label: 'Poland (23%)', isEU: true, marketplace: 'pl' },
+  { code: 'BE', name: 'Belgium', rate: 21, currency: 'EUR', symbol: '€', label: 'Belgium (21%)', isEU: true, marketplace: 'com.be' },
+  { code: 'AT', name: 'Austria', rate: 20, currency: 'EUR', symbol: '€', label: 'Austria (20%)', isEU: true, marketplace: 'de' },
   { code: 'SE', name: 'Sweden', rate: 25, currency: 'SEK', symbol: 'kr', label: 'Sweden (25%)', isEU: true, marketplace: 'se' },
-  { code: 'GB', name: 'United Kingdom', rate: 20, currency: 'GBP', symbol: '£', label: 'UK (20% VAT)', isEU: false, marketplace: 'co.uk' },
-  { code: 'US', name: 'USA (Export)', rate: 0, currency: 'USD', symbol: '$', label: 'USA (0% Export - Art 146)', isEU: false, marketplace: 'com' },
+  { code: 'DK', name: 'Denmark', rate: 25, currency: 'DKK', symbol: 'kr.', label: 'Denmark (25%)', isEU: true, marketplace: 'de' },
+  { code: 'FI', name: 'Finland', rate: 25.5, currency: 'EUR', symbol: '€', label: 'Finland (25.5%)', isEU: true, marketplace: 'de' },
+  { code: 'IE', name: 'Ireland', rate: 23, currency: 'EUR', symbol: '€', label: 'Ireland (23%)', isEU: true, marketplace: 'co.uk' },
+  { code: 'PT', name: 'Portugal', rate: 23, currency: 'EUR', symbol: '€', label: 'Portugal (23%)', isEU: true, marketplace: 'es' },
+  { code: 'CZ', name: 'Czech Republic', rate: 21, currency: 'CZK', symbol: 'Kč', label: 'Czech Republic (21%)', isEU: true, marketplace: 'de' },
+  { code: 'RO', name: 'Romania', rate: 19, currency: 'RON', symbol: 'lei', label: 'Romania (19%)', isEU: true, marketplace: 'de' },
+  { code: 'HU', name: 'Hungary', rate: 27, currency: 'HUF', symbol: 'Ft', label: 'Hungary (27%)', isEU: true, marketplace: 'de' },
+  { code: 'GR', name: 'Greece', rate: 24, currency: 'EUR', symbol: '€', label: 'Greece (24%)', isEU: true, marketplace: 'it' },
+  { code: 'BG', name: 'Bulgaria', rate: 20, currency: 'BGN', symbol: 'лв', label: 'Bulgaria (20%)', isEU: true, marketplace: 'de' },
+  { code: 'HR', name: 'Croatia', rate: 25, currency: 'EUR', symbol: '€', label: 'Croatia (25%)', isEU: true, marketplace: 'it' },
+  { code: 'SK', name: 'Slovakia', rate: 20, currency: 'EUR', symbol: '€', label: 'Slovakia (20%)', isEU: true, marketplace: 'de' },
+  { code: 'SI', name: 'Slovenia', rate: 22, currency: 'EUR', symbol: '€', label: 'Slovenia (22%)', isEU: true, marketplace: 'it' },
+  { code: 'LT', name: 'Lithuania', rate: 21, currency: 'EUR', symbol: '€', label: 'Lithuania (21%)', isEU: true, marketplace: 'de' },
+  { code: 'LV', name: 'Latvia', rate: 21, currency: 'EUR', symbol: '€', label: 'Latvia (21%)', isEU: true, marketplace: 'de' },
+  { code: 'EE', name: 'Estonia', rate: 22, currency: 'EUR', symbol: '€', label: 'Estonia (22%)', isEU: true, marketplace: 'de' },
+  { code: 'CY', name: 'Cyprus', rate: 19, currency: 'EUR', symbol: '€', label: 'Cyprus (19%)', isEU: true, marketplace: 'de' },
+  { code: 'LU', name: 'Luxembourg', rate: 17, currency: 'EUR', symbol: '€', label: 'Luxembourg (17%)', isEU: true, marketplace: 'de' },
+  { code: 'MT', name: 'Malta', rate: 18, currency: 'EUR', symbol: '€', label: 'Malta (18%)', isEU: true, marketplace: 'it' },
 ];
 
 export function AmazonEuVatTool() {
@@ -58,22 +76,28 @@ export function AmazonEuVatTool() {
   );
 
   const parsedAmount = parseFloat(amountInput) || 0;
-  const isExport = country.code === 'US';
-  const hasBuyerVatId = buyerVatId.trim().length > 0;
+  
+  // Strict Buyer VAT ID EU Format Validation: 2 uppercase letters + 8 to 12 digits/alphanumeric
+  // e.g., DE123456789, FR12345678901, IT12345678901
+  const cleanVatId = buyerVatId.trim().toUpperCase();
+  const isVatIdProvided = cleanVatId.length > 0;
+  const isVatIdValid = useMemo(() => {
+    if (!isVatIdProvided) return true;
+    return /^[A-Z]{2}[0-9A-Z]{8,12}$/.test(cleanVatId);
+  }, [cleanVatId, isVatIdProvided]);
 
-  // Calculation logic based on pricingMode:
-  // Inclusive (default): User types Gross. Net = Gross / (1 + rate), VAT = Gross - Net.
-  // Exclusive: User types Net. Net = Amount, VAT = Net * rate, Gross = Net + VAT.
+  const hasValidBuyerVatId = isVatIdProvided && isVatIdValid;
+
+  // Invoice Logic:
+  // Since all 27 countries are strictly EU Member States:
+  // - IF Buyer VAT ID is valid EU format -> Article 44 Reverse Charge + 0% VAT
+  // - IF Buyer VAT ID is empty -> Article 146 + OSS ID (standard destination rate applied)
   let net = 0;
   let vatAmount = 0;
   let gross = 0;
 
-  if (isExport) {
-    net = parsedAmount;
-    vatAmount = 0;
-    gross = parsedAmount;
-  } else if (hasBuyerVatId) {
-    // Reverse charge for validated B2B VAT transactions: 0% VAT charged
+  if (hasValidBuyerVatId) {
+    // Valid B2B Reverse Charge: 0% VAT
     net = parsedAmount;
     vatAmount = 0;
     gross = parsedAmount;
@@ -99,24 +123,24 @@ export function AmazonEuVatTool() {
 
   // Default buyer values
   const effectiveBuyer = buyer.trim() || 'Sample Customer';
-  const effectiveBuyerAddress = buyerAddress.trim() || 'Friedrichstraße 42, 10117 Berlin, Germany';
+  const effectiveBuyerAddress =
+    buyerAddress.trim() || 'Berlin Strasse 12, 10115 Berlin, Germany';
   const hasTypedAmount = parsedAmount > 0;
-  const canDownload = hasTypedAmount;
+  const canDownload = hasTypedAmount && isVatIdValid;
 
-  // Tax Notice legal clause determination:
-  // If buyer VAT ID filled, show "Reverse Charge - Article 44" else show "Article 146 - Export with OSS" / standard EU OSS line
-  const legalTaxNoticeText = hasBuyerVatId
-    ? `Reverse Charge - Article 44 / Article 196 of EU VAT Directive 2006/112/EC. VAT to be accounted for by the recipient (B2B). Customer VAT ID: ${buyerVatId.trim()}.`
-    : isExport
-    ? `Article 146 - Export with OSS. VAT Exempt - Export Outside EU under Article 146 of EU VAT Directive 2006/112/EC. No VAT charged. Place of supply outside EU.`
-    : `VAT charged under EU OSS Scheme - Article 146 exemption not applicable for EU destination. Standard rate ${country.rate}% per ${country.name}. HS Code 8517.12.00 - Origin: PK`;
+  // Tax Notice text:
+  // IF Buyer VAT ID valid -> Article 44 Reverse Charge
+  // IF Buyer VAT ID empty -> Article 146 + OSS ID
+  const legalTaxNoticeText = hasValidBuyerVatId
+    ? `Reverse Charge - Article 44 / Article 196 of EU VAT Directive 2006/112/EC. VAT to be accounted for by the recipient (B2B intra-Community supply). Customer VAT ID: ${cleanVatId}. Standard rate 0% reverse-charged.`
+    : `VAT charged under EU OSS Scheme - Article 146 exemption not applicable for EU destination. Standard rate ${country.rate}% per ${country.name}. HS Code 8517.12.00 - Origin: PK. OSS ID: ${seller.ossId}.`;
 
   const copyResults = () => {
     const textToCopy = `Amazon EU VAT Breakdown (${country.name})
 Net Turnover: ${country.symbol}${net.toFixed(2)}
-VAT (${hasBuyerVatId ? '0% Reverse Charge' : `${country.rate}%`}): ${country.symbol}${vatAmount.toFixed(2)}
+VAT (${hasValidBuyerVatId ? '0% Reverse Charge' : `${country.rate}%`}): ${country.symbol}${vatAmount.toFixed(2)}
 Gross Total: ${country.symbol}${finalGross.toFixed(2)}${customsDuty > 0 ? ' (incl. €3 EU Customs Duty)' : ''}
-Tax Regime: ${hasBuyerVatId ? 'Reverse Charge - Article 44' : 'Article 146 - Export with OSS'}
+Tax Regime: ${hasValidBuyerVatId ? 'Article 44 Reverse Charge (0%)' : `Article 146 + OSS ID (${country.rate}%)`}
 Amazon Referral Fee (15%): €${referralFee.toFixed(2)}
 Your Payout: €${yourPayout.toFixed(2)}`;
 
@@ -127,18 +151,18 @@ Your Payout: €${yourPayout.toFixed(2)}`;
 
   const generateInvoiceText = () => {
     return `
-${hasBuyerVatId ? 'VAT COMMERCIAL INVOICE - REVERSE CHARGE (ARTICLE 44)' : isExport ? 'COMMERCIAL INVOICE - EXPORT (ARTICLE 146)' : 'VAT COMMERCIAL INVOICE - OSS COMPLIANT'}
+${hasValidBuyerVatId ? 'VAT COMMERCIAL INVOICE - B2B REVERSE CHARGE (ARTICLE 44)' : 'VAT COMMERCIAL INVOICE - EU OSS SCHEME COMPLIANT'}
 Generated by AllToolsPK - 100% Client-Side & EU OSS Ready
 
 SELLER: ${seller.company}
 Address: ${seller.address}
-VAT ID: ${seller.vatId} | EORI: ${seller.eori} | ${!isExport ? `OSS ID: ${seller.ossId}` : ''}
+VAT ID: ${seller.vatId} | EORI: ${seller.eori} | ${!hasValidBuyerVatId ? `OSS ID: ${seller.ossId}` : ''}
 
 Invoice No: INV-${new Date().getFullYear()}-${Math.floor(Math.random() * 9000) + 1000}
 Order ID: ${orderId || '111-1234567-1234567'} | Date: ${new Date().toLocaleDateString()} | Marketplace: Amazon.${country.marketplace}
 BILL TO: ${effectiveBuyer}
 Customer Address: ${effectiveBuyerAddress}
-${hasBuyerVatId ? `Customer VAT ID: ${buyerVatId.trim()} (B2B Reverse Charge - Article 44)` : 'Customer VAT ID: Not Provided (B2C Private Consumer)'}
+${hasValidBuyerVatId ? `Customer VAT ID: ${cleanVatId} (B2B Reverse Charge - Article 44)` : 'Customer VAT ID: Not Provided (B2C Private Consumer - EU OSS Article 146)'}
 Destination: ${country.name} (${country.code}) | Currency: ${country.currency}
 
 LINE ITEMS:
@@ -147,7 +171,7 @@ LINE ITEMS:
 ${customsDuty > 0 ? `2. EU Customs Duty (July 2026 Non-EU rule <= €150): €3.00\n` : ''}
 TOTALS:
 Net Turnover: ${country.symbol} ${net.toFixed(2)} ${country.currency}
-VAT Amount (${hasBuyerVatId ? '0%' : `${country.rate}%`}): ${country.symbol} ${vatAmount.toFixed(2)} ${country.currency}
+VAT Amount (${hasValidBuyerVatId ? '0%' : `${country.rate}%`}): ${country.symbol} ${vatAmount.toFixed(2)} ${country.currency}
 Gross Order Total: ${country.symbol} ${finalGross.toFixed(2)} ${country.currency}
 
 Amazon Referral Fee (15%): €${referralFee.toFixed(2)}
@@ -186,14 +210,12 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
     doc.setFillColor(15, 23, 42);
     doc.rect(40, y, 515, 30, 'F');
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10.5);
+    doc.setFontSize(10);
     doc.setTextColor(255, 255, 255);
     doc.text(
-      hasBuyerVatId
+      hasValidBuyerVatId
         ? 'VAT COMMERCIAL INVOICE - B2B REVERSE CHARGE (ARTICLE 44)'
-        : isExport
-        ? 'COMMERCIAL INVOICE - EXPORT (ARTICLE 146)'
-        : 'VAT COMMERCIAL INVOICE (EU OSS COMPLIANT)',
+        : 'VAT COMMERCIAL INVOICE (EU OSS SCHEME & ARTICLE 146 COMPLIANT)',
       50,
       y + 19
     );
@@ -209,7 +231,7 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
     doc.setFontSize(8);
     doc.text(seller.address, 40, y + 13);
     doc.text(`Tax ID: ${seller.vatId} | EORI: ${seller.eori}`, 40, y + 24);
-    if (!isExport) {
+    if (!hasValidBuyerVatId) {
       doc.text(`Union OSS Identification: ${seller.ossId}`, 40, y + 35);
     }
 
@@ -237,14 +259,14 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
     doc.setFontSize(8);
     doc.text(effectiveBuyer, 40, y + 12);
     doc.text(`Address: ${effectiveBuyerAddress}`, 40, y + 23);
-    if (hasBuyerVatId) {
+    if (hasValidBuyerVatId) {
       doc.setFont('helvetica', 'bold');
-      doc.text(`Buyer VAT ID: ${buyerVatId.trim()} [Reverse Charge - Article 44 Applied]`, 40, y + 34);
+      doc.text(`Buyer VAT ID: ${cleanVatId} [Reverse Charge - Article 44 Applied (0% VAT)]`, 40, y + 34);
       doc.setFont('helvetica', 'normal');
       doc.text(`Destination: ${country.name} (${country.code}) | Currency: ${country.currency}`, 40, y + 45);
       y += 58;
     } else {
-      doc.text(`Buyer VAT ID: N/A (B2C Consumer) [Article 146 - Export with OSS]`, 40, y + 34);
+      doc.text(`Buyer VAT ID: N/A (B2C Private Consumer) [Article 146 - EU OSS Scheme]`, 40, y + 34);
       doc.text(`Destination: ${country.name} (${country.code}) | Currency: ${country.currency}`, 40, y + 45);
       y += 58;
     }
@@ -289,7 +311,7 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
     doc.text(`${country.symbol} ${net.toFixed(2)} ${country.currency}`, 480, y);
     y += 13;
 
-    doc.text(`VAT (${hasBuyerVatId ? '0% Reverse Charge' : `${country.rate}%`}):`, 340, y);
+    doc.text(`VAT (${hasValidBuyerVatId ? '0% Reverse Charge' : `${country.rate}%`}):`, 340, y);
     doc.text(`${country.symbol} ${vatAmount.toFixed(2)} ${country.currency}`, 480, y);
     y += 13;
 
@@ -310,7 +332,7 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
 
     y += 26;
 
-    // Legal Box with Exact Required Line
+    // Legal Box
     doc.setFillColor(248, 250, 252);
     doc.rect(40, y, 515, 42, 'F');
     doc.setDrawColor(203, 213, 225);
@@ -328,7 +350,7 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
 
     y += 54;
 
-    // 3. Invoice PDF Footer
+    // Invoice PDF Footer
     doc.setFont('helvetica', 'italic');
     doc.setFontSize(7.5);
     doc.setTextColor(148, 163, 184);
@@ -348,8 +370,8 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
 
   const loadSample = () => {
     setBuyer('Enterprise Logistics GmbH');
-    setBuyerAddress('Friedrichstraße 42, 10117 Berlin, Germany');
-    setBuyerVatId('DE987654321');
+    setBuyerAddress('Berlin Strasse 12, 10115 Berlin, Germany');
+    setBuyerVatId('DE123456789');
     setAmountInput('119.00');
     setCountryCode('DE');
     setOrderId('111-7892341-9921045');
@@ -378,14 +400,14 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
               Directive 2006/112/EC
             </span>
             <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5" /> 100% Client-Side
+              <ShieldCheck className="w-3.5 h-3.5" /> 27 EU Member States Only
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">
             Amazon EU VAT Calculator
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-            EU OSS & Article 146 Tax Engine • 2026 Updated Rates • Instant Compliant Invoices
+            EU OSS & Article 44 B2B Tax Engine • 2026 Updated Rates for 27 EU Countries • Instant Compliant Invoices
           </p>
         </div>
 
@@ -476,21 +498,36 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
             value={buyerAddress}
             onChange={(e) => setBuyerAddress(e.target.value)}
             className="w-full border border-slate-300 dark:border-slate-700 rounded-xl p-3 mt-1 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-            placeholder="e.g. Friedrichstraße 42, 10117 Berlin, Germany"
+            placeholder="Full address with city, country - e.g., Berlin Strasse 12, 10115 Berlin, Germany"
           />
         </div>
 
         <div>
-          <label className="text-[11px] font-bold tracking-wider uppercase text-slate-700 dark:text-slate-300 flex items-center justify-between">
-            <span>BUYER VAT ID (OPTIONAL FOR B2B)</span>
-            {hasBuyerVatId && <span className="text-blue-600 font-bold text-[10px]">Article 44 Reverse Charge</span>}
-          </label>
+          <div className="flex items-center justify-between">
+            <label className="text-[11px] font-bold tracking-wider uppercase text-slate-700 dark:text-slate-300">
+              BUYER VAT ID (OPTIONAL FOR B2B)
+            </label>
+            {hasValidBuyerVatId && (
+              <span className="text-emerald-600 dark:text-emerald-400 font-bold text-[10px] flex items-center gap-1">
+                ✓ Valid EU B2B Reverse Charge
+              </span>
+            )}
+          </div>
           <input
             value={buyerVatId}
             onChange={(e) => setBuyerVatId(e.target.value)}
-            className="w-full border border-slate-300 dark:border-slate-700 rounded-xl p-3 mt-1 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 text-sm font-mono"
-            placeholder="e.g. DE987654321 (triggers Reverse Charge)"
+            className={`w-full border rounded-xl p-3 mt-1 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:ring-2 text-sm font-mono uppercase ${
+              isVatIdProvided && !isVatIdValid
+                ? 'border-rose-500 focus:ring-rose-500 bg-rose-50/20'
+                : 'border-slate-300 dark:border-slate-700 focus:ring-blue-500'
+            }`}
+            placeholder="e.g. DE123456789 (2 letters + 8-12 digits)"
           />
+          {isVatIdProvided && !isVatIdValid && (
+            <p className="text-rose-600 dark:text-rose-400 text-xs mt-1 font-semibold flex items-center gap-1">
+              ⚠️ Invalid EU VAT ID format: Must start with 2 letters followed by 8-12 alphanumeric digits (e.g. DE123456789).
+            </p>
+          )}
         </div>
 
         <div>
@@ -507,9 +544,10 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
           />
         </div>
 
-        <div>
-          <label className="text-[11px] font-bold tracking-wider uppercase text-slate-700 dark:text-slate-300">
-            DESTINATION COUNTRY / TAX JURISDICTION
+        <div className="sm:col-span-2">
+          <label className="text-[11px] font-bold tracking-wider uppercase text-slate-700 dark:text-slate-300 flex items-center justify-between">
+            <span>DESTINATION COUNTRY (27 EU MEMBER STATES ONLY)</span>
+            <span className="text-blue-600 font-bold text-[10px]">Strictly EU Territory</span>
           </label>
           <select
             value={countryCode}
@@ -524,7 +562,7 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
           </select>
         </div>
 
-        <div>
+        <div className="sm:col-span-2">
           <label className="text-[11px] font-bold tracking-wider uppercase text-slate-700 dark:text-slate-300">
             INVOICE / ORDER ID (OPTIONAL)
           </label>
@@ -546,7 +584,7 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
             </span>
             <div className="flex items-center gap-2">
               <span className="bg-white dark:bg-slate-800 border border-blue-200 dark:border-blue-800 text-xs px-3 py-1 rounded-full font-bold text-slate-800 dark:text-slate-200 shadow-xs">
-                {country.name} • {hasBuyerVatId ? 'B2B Reverse Charge 0%' : `${country.rate}% ${isExport ? 'Export' : 'VAT'}`}
+                {country.name} • {hasValidBuyerVatId ? 'Article 44 Reverse Charge (0%)' : `Article 146 OSS (${country.rate}%)`}
               </span>
               <button
                 type="button"
@@ -569,7 +607,7 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
             </div>
             <div className="bg-white dark:bg-slate-800 rounded-xl p-3 text-center shadow-xs border border-blue-50 dark:border-slate-700">
               <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
-                {hasBuyerVatId ? 'VAT (0% Rev Charge)' : `VAT (${country.rate}%)`}
+                {hasValidBuyerVatId ? 'VAT (0% Rev Charge)' : `VAT (${country.rate}%)`}
               </div>
               <div className="font-bold text-sm sm:text-base text-blue-600 dark:text-blue-400 mt-0.5">
                 {country.symbol} {vatAmount.toFixed(2)}
@@ -594,10 +632,14 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
           </div>
 
           <div className="text-[11px] mt-3 bg-white dark:bg-slate-800 p-2.5 rounded-lg text-slate-600 dark:text-slate-300 border border-blue-100 dark:border-slate-700 leading-relaxed">
-            {hasBuyerVatId ? (
-              <span className="font-semibold text-blue-600">Reverse Charge - Article 44 applied. Customer VAT: {buyerVatId.trim()}.</span>
+            {hasValidBuyerVatId ? (
+              <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                ✓ B2B Intra-EU Supply: Article 44 Reverse Charge applied (0% VAT). Customer VAT: {cleanVatId}.
+              </span>
             ) : (
-              <span>Article 146 - Export with OSS. {country.rate}% standard rate applicable.</span>
+              <span>
+                EU OSS Consumer Sale: Article 146 destination principle. Standard {country.rate}% VAT rate applied.
+              </span>
             )}
             {customsDuty > 0 && ` • Includes €3.00 July 2026 Non-EU Customs Duty`}
           </div>
@@ -608,6 +650,13 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
       {!hasTypedAmount && (
         <div className="bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 p-3 rounded-xl mt-4 text-xs font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-2">
           <span>💡 Enter an order amount to view live net turnover, VAT, profit breakdown, and unlock invoice downloads.</span>
+        </div>
+      )}
+
+      {isVatIdProvided && !isVatIdValid && (
+        <div className="bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/80 p-3 rounded-xl mt-4 text-xs font-semibold text-rose-900 dark:text-rose-300 flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 shrink-0 text-rose-600" />
+          <span>⚠️ Please correct Buyer VAT ID format (2 letters followed by 8-12 alphanumeric characters, e.g. DE123456789) before generating invoice.</span>
         </div>
       )}
 
@@ -625,6 +674,8 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
           <Download className="w-4 h-4" />
           {canDownload
             ? `Download 100% PASS PDF (${country.currency} ${finalGross.toFixed(2)})`
+            : !isVatIdValid
+            ? 'Fix Buyer VAT ID Format to Enable Download'
             : 'Enter Amount to Enable Download'}
         </button>
 
@@ -649,7 +700,7 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
 
         <p className="text-emerald-600 dark:text-emerald-400 text-xs font-semibold flex items-center gap-1.5 pt-1">
           <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
-          <span>✅ 100% Verified: Auto Currency ({country.currency}) | Article 146 | EU OSS Scheme | HS 8517.12.00</span>
+          <span>✅ 100% Verified: 27 EU Member States | Directive 2006/112/EC | Article 44 & 146 | HS 8517.12.00</span>
         </p>
 
         {/* About Section with 3 Steps, FAQs, and Tax Notice */}
@@ -659,11 +710,11 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
           <div className="prose max-w-none text-slate-700 dark:text-slate-300 leading-relaxed space-y-4 text-sm sm:text-base">
             <p>
               Amazon EU VAT Calculator is a free, privacy-first, client-side tool built for Amazon FBA sellers 
-              who sell products to customers in the 27 EU countries. It calculates VAT automatically under the 
-              EU OSS (One Stop Shop) Scheme and EU VAT Directive 2006/112/EC. The tool auto-detects the correct 
-              VAT rate based on the destination country, calculates net turnover, VAT amount, and generates a 
-              professional invoice with OSS ID, HS Code 8517.12.00, and Article 146 reference. No data is uploaded 
-              to any server. All calculations happen inside your browser.
+              who sell products to customers strictly across the 27 European Union Member States. It calculates VAT 
+              automatically under the EU OSS (One Stop Shop) Scheme and EU VAT Directive 2006/112/EC. The tool 
+              auto-detects the correct VAT rate based on the destination country, calculates net turnover, VAT amount, 
+              and generates a professional invoice with OSS ID, HS Code 8517.12.00, Article 146 and Article 44 reverse charge 
+              references. No data is uploaded to any server. All calculations happen inside your browser.
             </p>
 
             {/* 3 STEPS SECTION */}
@@ -676,7 +727,7 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
               </div>
               <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                 <span className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-sm flex items-center justify-center mb-2">2</span>
-                <h4 className="font-bold text-slate-900 dark:text-white text-sm">Select Country</h4>
+                <h4 className="font-bold text-slate-900 dark:text-white text-sm">Select 1 of 27 EU Countries</h4>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Pick destination EU tax jurisdiction. The engine automatically loads standard VAT rates for 2026.</p>
               </div>
               <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
