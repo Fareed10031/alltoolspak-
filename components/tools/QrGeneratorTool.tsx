@@ -123,6 +123,15 @@ export function QrGeneratorTool() {
     btcAmount: '',
   });
 
+  // UTM States
+  const [useUtm, setUseUtm] = useState(false);
+  const [utmSource, setUtmSource] = useState('qr');
+  const [utmMedium, setUtmMedium] = useState('print');
+  const [utmCampaign, setUtmCampaign] = useState('general');
+
+  // QR Frame Template State
+  const [frameStyle, setFrameStyle] = useState<'none' | 'scanme' | 'whitelabel' | 'restaurant'>('none');
+
   // Customization States
   const [fgColor, setFgColor] = useState<string>('#000000');
   const [bgColor, setBgColor] = useState<string>('#ffffff');
@@ -148,6 +157,41 @@ export function QrGeneratorTool() {
   // Canvas Refs
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Helper 1: Build Final URL with UTM Parameters
+  const buildFinalUrl = useCallback((baseUrl: string) => {
+    if (!useUtm || !baseUrl || !baseUrl.startsWith('http')) return baseUrl;
+    try {
+      const url = new URL(baseUrl);
+      if (utmSource) url.searchParams.set('utm_source', utmSource);
+      if (utmMedium) url.searchParams.set('utm_medium', utmMedium);
+      if (utmCampaign) url.searchParams.set('utm_campaign', utmCampaign);
+      return url.toString();
+    } catch {
+      return baseUrl;
+    }
+  }, [useUtm, utmSource, utmMedium, utmCampaign]);
+
+  // Helper 2: Draw Frame on Canvas for Print Export
+  const drawFrameOnCanvas = useCallback((qrCanvas: HTMLCanvasElement, frame: string) => {
+    if (frame === 'none') return qrCanvas;
+    const paddingBottom = 80;
+    const newCanvas = document.createElement('canvas');
+    newCanvas.width = qrCanvas.width;
+    newCanvas.height = qrCanvas.height + paddingBottom;
+    const ctx = newCanvas.getContext('2d')!;
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, newCanvas.width, newCanvas.height);
+    ctx.drawImage(qrCanvas, 0, 0);
+    ctx.fillStyle = frame === 'whitelabel' ? '#2563EB' : '#111827';
+    ctx.font = `bold ${Math.floor(newCanvas.width / 16)}px Inter, sans-serif`;
+    ctx.textAlign = 'center';
+    let text = 'SCAN ME';
+    if (frame === 'whitelabel') text = 'Scan Me';
+    if (frame === 'restaurant') text = '🍽️ Scan for Menu';
+    ctx.fillText(text, newCanvas.width / 2, newCanvas.height - 25);
+    return newCanvas;
+  }, []);
 
   // Load history from localStorage
   useEffect(() => {
@@ -186,7 +230,7 @@ export function QrGeneratorTool() {
   const formattedPayload = useMemo(() => {
     switch (activeType) {
       case 'url':
-        return formData.urlText.trim() || 'https://alltoolspk.com';
+        return buildFinalUrl(formData.urlText.trim() || 'https://alltoolspk.com');
       case 'wifi': {
         const ssid = formData.wifiSsid.trim();
         const pass = formData.wifiPass.trim();
@@ -249,7 +293,7 @@ export function QrGeneratorTool() {
       default:
         return 'https://alltoolspk.com';
     }
-  }, [activeType, formData]);
+  }, [activeType, formData, buildFinalUrl]);
 
   // Contrast Check
   useEffect(() => {
@@ -456,12 +500,10 @@ export function QrGeneratorTool() {
           setScanVerified(true);
           setScanWarning(null);
         } else {
-          // If decoding failed (e.g. low contrast or oversized logo)
           setScanVerified(false);
           setScanWarning('⚠️ Low contrast or logo too large - May not scan reliably on standard phones');
         }
       } catch (e) {
-        // Fallback for extreme environments
         setScanVerified(true);
       }
     } catch (err) {
@@ -491,26 +533,25 @@ export function QrGeneratorTool() {
   }, [renderQrCanvas]);
 
   // ==================== EXPORT FUNCTIONS ====================
-  // 1. Download PNG
-  const downloadPng = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+  // 1. Download PNG (with frame)
+  const handleDownloadPNG = () => {
+    if (!canvasRef.current) return;
+    const framedCanvas = drawFrameOnCanvas(canvasRef.current, frameStyle);
     saveToHistory(activeType, activeType.toUpperCase(), formattedPayload);
 
-    const a = document.createElement('a');
-    a.href = canvas.toDataURL('image/png');
-    a.download = `qr-${activeType}-${Date.now()}.png`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const link = document.createElement('a');
+    link.download = `qr-${activeType}-${Date.now()}.png`;
+    link.href = framedCanvas.toDataURL('image/png');
+    link.click();
   };
 
-  // 2. Download SVG (Vector Infinite Resolution for Print)
-  const downloadSvg = async () => {
+  // 2. Download SVG (with frame support)
+  const handleDownloadSVG = async () => {
+    if (!canvasRef.current) return;
     saveToHistory(activeType, activeType.toUpperCase(), formattedPayload);
     try {
       const effectiveEcLevel = logoDataUrl ? 'H' : errorCorrection;
-      const svgString = await QRCode.toString(formattedPayload, {
+      let svgString = await QRCode.toString(formattedPayload, {
         type: 'svg',
         margin,
         color: {
@@ -519,6 +560,18 @@ export function QrGeneratorTool() {
         },
         errorCorrectionLevel: effectiveEcLevel,
       });
+
+      if (frameStyle !== 'none') {
+        let text = 'SCAN ME';
+        const textColor = frameStyle === 'whitelabel' ? '#2563EB' : '#111827';
+        if (frameStyle === 'whitelabel') text = 'Scan Me';
+        if (frameStyle === 'restaurant') text = '🍽️ Scan for Menu';
+
+        svgString = svgString.replace(
+          '</svg>',
+          `<rect x="0" y="90%" width="100%" height="10%" fill="#ffffff"/><text x="50%" y="97%" font-family="Inter, sans-serif" font-weight="bold" font-size="14" fill="${textColor}" text-anchor="middle">${text}</text></svg>`
+        );
+      }
 
       const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
       const url = URL.createObjectURL(blob);
@@ -529,97 +582,46 @@ export function QrGeneratorTool() {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error('SVG generation failed:', err);
+    } catch {
+      handleDownloadPNG();
     }
   };
 
-  // 3. Download PDF (A4 Centered, Print-Ready)
-  const downloadPdf = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+  // 3. Download PDF (with frame support)
+  const handleDownloadPDF = async () => {
+    if (!canvasRef.current) return;
     saveToHistory(activeType, activeType.toUpperCase(), formattedPayload);
-
-    const doc = new jsPDF({
+    const framedCanvas = drawFrameOnCanvas(canvasRef.current, frameStyle);
+    const imgData = framedCanvas.toDataURL('image/png');
+    const { jsPDF } = await import('jspdf');
+    const pdf = new jsPDF({
       orientation: 'portrait',
-      unit: 'mm',
-      format: 'a4',
+      unit: 'px',
+      format: [framedCanvas.width, framedCanvas.height],
     });
-
-    const qrSizeMM = 110;
-    const x = (210 - qrSizeMM) / 2;
-    const y = 45;
-
-    // Header Title
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(22);
-    doc.setTextColor(15, 23, 42);
-    doc.text('High-Resolution QR Code', 105, 26, { align: 'center' });
-
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(100, 116, 139);
-    doc.text(
-      `Format: ${activeType.toUpperCase()} | Print Resolution: 300 DPI | Generated: ${new Date().toLocaleDateString()}`,
-      105,
-      34,
-      { align: 'center' }
-    );
-
-    // QR Image
-    doc.addImage(canvas.toDataURL('image/png'), 'PNG', x, y, qrSizeMM, qrSizeMM);
-
-    // Payload text below
-    doc.setFontSize(9);
-    doc.setTextColor(51, 65, 85);
-    const splitDesc = doc.splitTextToSize(`Payload: ${formattedPayload}`, 160);
-    doc.text(splitDesc, 105, y + qrSizeMM + 12, { align: 'center' });
-
-    // Footer
-    doc.setFontSize(8);
-    doc.setTextColor(148, 163, 184);
-    doc.text(
-      'Generated by AllToolsPK QR Engine • 100% Client-Side • Permanent & Never Expires',
-      105,
-      280,
-      { align: 'center' }
-    );
-
-    doc.save(`qr-${activeType}-${Date.now()}.pdf`);
+    pdf.addImage(imgData, 'PNG', 0, 0, framedCanvas.width, framedCanvas.height);
+    pdf.save(`qr-${activeType}-${Date.now()}.pdf`);
   };
 
-  // 4. Download JPEG
-  const downloadJpeg = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+  // 4. Download JPEG (with frame support)
+  const handleDownloadJPEG = () => {
+    if (!canvasRef.current) return;
     saveToHistory(activeType, activeType.toUpperCase(), formattedPayload);
+    const framedCanvas = drawFrameOnCanvas(canvasRef.current, frameStyle);
 
-    // Ensure white background for JPEG
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = canvas.width;
-    tempCanvas.height = canvas.height;
-    const tempCtx = tempCanvas.getContext('2d');
-    if (!tempCtx) return;
-
-    tempCtx.fillStyle = '#ffffff';
-    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-    tempCtx.drawImage(canvas, 0, 0);
-
-    const a = document.createElement('a');
-    a.href = tempCanvas.toDataURL('image/jpeg', 0.95);
-    a.download = `qr-${activeType}-${Date.now()}.jpg`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const link = document.createElement('a');
+    link.download = `qr-${activeType}-${Date.now()}.jpg`;
+    link.href = framedCanvas.toDataURL('image/jpeg', 0.95);
+    link.click();
   };
 
   // 5. Copy Image to Clipboard
   const copyImageToClipboard = async () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvasRef.current) return;
+    const framedCanvas = drawFrameOnCanvas(canvasRef.current, frameStyle);
 
     try {
-      canvas.toBlob(async (blob) => {
+      framedCanvas.toBlob(async (blob) => {
         if (!blob) return;
         await navigator.clipboard.write([
           new ClipboardItem({
@@ -748,6 +750,11 @@ export function QrGeneratorTool() {
       btcAddress: '',
       btcAmount: '',
     });
+    setUseUtm(false);
+    setUtmSource('qr');
+    setUtmMedium('print');
+    setUtmCampaign('general');
+    setFrameStyle('none');
     setFgColor('#000000');
     setBgColor('#ffffff');
     setIsTransparent(false);
@@ -761,7 +768,6 @@ export function QrGeneratorTool() {
     if (item.type === 'url') {
       setFormData((prev) => ({ ...prev, urlText: item.payload }));
     } else {
-      // General fallback
       setFormData((prev) => ({ ...prev, urlText: item.payload }));
     }
   };
@@ -804,7 +810,7 @@ export function QrGeneratorTool() {
                   priceCurrency: 'USD',
                 },
                 description:
-                  'Create custom QR codes for URL, WiFi, vCard, Email, SMS, WhatsApp, Location, and Bitcoin. Embed logos, customize colors, and export print-ready SVG, PNG, and PDF client-side.',
+                  'Create custom QR codes for URL, WiFi, vCard, Email, SMS, WhatsApp, Location, and Bitcoin. Embed logos, customize colors, UTM tracking, print frames, and export print-ready SVG, PNG, and PDF client-side.',
               },
               {
                 '@type': 'FAQPage',
@@ -869,11 +875,11 @@ export function QrGeneratorTool() {
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1.5 tracking-tight">
-              Free QR Code Generator with Logo
+              Free QR Code Generator with Logo & UTM Frames
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl">
               Generate customizable, high-resolution QR codes for URL, WiFi, vCard, WhatsApp, and more.
-              Download vector SVG, PNG, and PDF print formats in seconds.
+              Includes Google Analytics UTM builder, print frames (Scan Me / Menu), and vector SVG/PDF export.
             </p>
           </div>
 
@@ -948,6 +954,60 @@ export function QrGeneratorTool() {
                     placeholder="https://yourwebsite.com or any text"
                     className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-sm text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500"
                   />
+
+                  {/* 1. JSX FOR UTM BUILDER - Paste RIGHT AFTER your Website URL input field */}
+                  <div className="mt-4 p-4 border rounded-xl bg-blue-50/50 border-blue-100 dark:bg-blue-950/20 dark:border-blue-900/40">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={useUtm}
+                        onChange={(e) => setUseUtm(e.target.checked)}
+                        className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 cursor-pointer"
+                      />
+                      <span className="font-semibold text-sm text-slate-800 dark:text-slate-200">
+                        📈 Add UTM Tracking for Analytics
+                      </span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        (Optional - For Google Analytics)
+                      </span>
+                    </label>
+                    {useUtm && (
+                      <>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
+                          <div>
+                            <label className="text-xs font-medium text-gray-700 dark:text-gray-300">utm_source</label>
+                            <input
+                              value={utmSource}
+                              onChange={(e) => setUtmSource(e.target.value)}
+                              placeholder="qr"
+                              className="w-full mt-1 px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-xs font-medium text-gray-700 dark:text-gray-300">utm_medium</label>
+                            <input
+                              value={utmMedium}
+                              onChange={(e) => setUtmMedium(e.target.value)}
+                              placeholder="print"
+                              className="w-full mt-1 px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-xs font-medium text-gray-700 dark:text-gray-300">utm_campaign</label>
+                            <input
+                              value={utmCampaign}
+                              onChange={(e) => setUtmCampaign(e.target.value)}
+                              placeholder="menu"
+                              className="w-full mt-1 px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white"
+                            />
+                          </div>
+                        </div>
+                        <p className="text-xs text-gray-600 dark:text-gray-300 mt-2 bg-white dark:bg-slate-900 p-2 rounded border border-slate-200 dark:border-slate-700 truncate font-mono">
+                          Final: {buildFinalUrl(formData.urlText || 'https://example.com')}
+                        </p>
+                      </>
+                    )}
+                  </div>
                 </div>
               )}
 
@@ -1511,7 +1571,7 @@ export function QrGeneratorTool() {
               {/* QR Canvas Display */}
               <div
                 id="printable-qr"
-                className={`relative p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-all ${
+                className={`relative p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-all overflow-hidden ${
                   isTransparent
                     ? 'bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:12px_12px] bg-white dark:bg-slate-900'
                     : 'bg-white dark:bg-slate-900'
@@ -1521,6 +1581,25 @@ export function QrGeneratorTool() {
                   ref={canvasRef}
                   className="w-56 h-56 sm:w-64 sm:h-64 object-contain rounded-lg mx-auto"
                 />
+
+                {/* Live Frame Preview indicator if frame is active */}
+                {frameStyle !== 'none' && (
+                  <div className="w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 pt-2 text-center mt-2">
+                    <span
+                      className={`font-bold text-xs uppercase tracking-wider ${
+                        frameStyle === 'whitelabel'
+                          ? 'text-blue-600 dark:text-blue-400'
+                          : 'text-slate-900 dark:text-white'
+                      }`}
+                    >
+                      {frameStyle === 'whitelabel'
+                        ? 'Scan Me'
+                        : frameStyle === 'restaurant'
+                        ? '🍽️ Scan for Menu'
+                        : 'SCAN ME'}
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Verification & Contrast Warnings */}
@@ -1566,12 +1645,32 @@ export function QrGeneratorTool() {
                 </div>
               </div>
 
-              {/* 4. HIGH-QUALITY EXPORT BUTTONS */}
+              {/* 2. JSX FOR FRAME TEMPLATES - Below Export Resolution buttons, ABOVE Download PNG button */}
+              <div className="w-full mt-4">
+                <label className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                  QR Frame Template (For Print - Free)
+                </label>
+                <select
+                  value={frameStyle}
+                  onChange={(e) => setFrameStyle(e.target.value as any)}
+                  className="w-full mt-2 px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 text-sm font-medium shadow-sm text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                >
+                  <option value="none">No Frame - Clean QR</option>
+                  <option value="scanme">Frame: SCAN ME (Bold Black - Best for Flyers)</option>
+                  <option value="whitelabel">Frame: White Label - Scan Me (Blue - Modern)</option>
+                  <option value="restaurant">Frame: 🍽️ Scan for Menu (Restaurant & Cafe)</option>
+                </select>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  Adds white label below QR - Paid in QR TIGER ($7/mo), free here. Print-ready.
+                </p>
+              </div>
+
+              {/* 3. HIGH-QUALITY EXPORT BUTTONS */}
               <div className="w-full mt-4 space-y-2">
                 {/* Primary Download PNG */}
                 <button
                   type="button"
-                  onClick={downloadPng}
+                  onClick={handleDownloadPNG}
                   className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-xs transition-colors cursor-pointer flex items-center justify-center gap-2 text-sm"
                 >
                   <Download className="w-4 h-4" />
@@ -1582,7 +1681,7 @@ export function QrGeneratorTool() {
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
-                    onClick={downloadSvg}
+                    onClick={handleDownloadSVG}
                     className="py-2.5 px-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5 text-xs shadow-xs"
                     title="Infinite resolution for professional printing"
                   >
@@ -1592,12 +1691,12 @@ export function QrGeneratorTool() {
 
                   <button
                     type="button"
-                    onClick={downloadPdf}
+                    onClick={handleDownloadPDF}
                     className="py-2.5 px-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5 text-xs shadow-xs"
                     title="A4 Centered PDF format"
                   >
                     <FileText className="w-3.5 h-3.5 text-emerald-600" />
-                    Download PDF (A4)
+                    Download PDF
                   </button>
                 </div>
 
@@ -1605,7 +1704,7 @@ export function QrGeneratorTool() {
                 <div className="grid grid-cols-3 gap-2 pt-1">
                   <button
                     type="button"
-                    onClick={downloadJpeg}
+                    onClick={handleDownloadJPEG}
                     className="py-2 px-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-lg text-xs transition-colors cursor-pointer text-center"
                   >
                     JPEG File
