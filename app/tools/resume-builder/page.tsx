@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ReziClonePro } from '@/components/tools/ReziClonePro';
+import ATSResumeBuilder from '@/components/tools/ATSResumeBuilder';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
@@ -28,9 +28,9 @@ export default function ResumeBuilderPage() {
           document.documentElement.classList.toggle('dark');
         }}
       />
-      <main className="flex-1 py-8 sm:py-12 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto">
-          <ReziClonePro />
+      <main className="flex-1 py-4 sm:py-8 px-2 sm:px-4">
+        <div className="max-w-7xl mx-auto">
+          <ATSResumeBuilder />
         </div>
       </main>
       <Footer onNavigate={navigateTo} onSelectTool={navigateTo} />
