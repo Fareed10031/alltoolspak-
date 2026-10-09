@@ -46,6 +46,38 @@ export const COUNTRIES = [
   { code: 'MT', name: 'Malta', rate: 18, currency: 'EUR', symbol: '€', label: 'Malta (18%)', isEU: true, marketplace: 'it' },
 ];
 
+// Official European Commission VIES EU VAT ID Regex Patterns (Strict validation)
+export const EU_VAT_PATTERNS: Record<string, { regex: RegExp; formatHint: string }> = {
+  DE: { regex: /^DE[0-9]{9}$/, formatHint: '^DE[0-9]{9}$ (DE + 9 digits only)' },
+  IT: { regex: /^IT[0-9]{11}$/, formatHint: '^IT[0-9]{11}$ (IT + 11 digits)' },
+  FR: { regex: /^FR[A-Z0-9]{2}[0-9]{9}$/, formatHint: '^FR[A-Z0-9]{2}[0-9]{9}$ (FR + 2 alphanumeric + 9 digits)' },
+  ES: { regex: /^ES[A-Z0-9][0-9]{7}[A-Z0-9]$/, formatHint: 'ES + 9 alphanumeric characters' },
+  NL: { regex: /^NL[0-9]{9}B[0-9]{2}$/, formatHint: 'NL + 9 digits + B + 2 digits (e.g. NL123456789B01)' },
+  PL: { regex: /^PL[0-9]{10}$/, formatHint: 'PL + 10 digits (e.g. PL1234567890)' },
+  BE: { regex: /^BE[0-1][0-9]{9}$/, formatHint: 'BE + 10 digits (e.g. BE0123456789)' },
+  AT: { regex: /^ATU[0-9]{8}$/, formatHint: 'ATU + 8 digits (e.g. ATU12345678)' },
+  SE: { regex: /^SE[0-9]{12}$/, formatHint: 'SE + 12 digits' },
+  DK: { regex: /^DK[0-9]{8}$/, formatHint: 'DK + 8 digits' },
+  FI: { regex: /^FI[0-9]{8}$/, formatHint: 'FI + 8 digits' },
+  IE: { regex: /^IE([0-9]{7}[A-W][A-I]?|[0-9][A-Z0-9+*][0-9]{5}[A-W])$/, formatHint: 'IE + 8 or 9 alphanumeric chars' },
+  PT: { regex: /^PT[0-9]{9}$/, formatHint: 'PT + 9 digits' },
+  CZ: { regex: /^CZ[0-9]{8,10}$/, formatHint: 'CZ + 8 to 10 digits' },
+  RO: { regex: /^RO[0-9]{2,10}$/, formatHint: 'RO + 2 to 10 digits' },
+  HU: { regex: /^HU[0-9]{8}$/, formatHint: 'HU + 8 digits' },
+  GR: { regex: /^(GR|EL)[0-9]{9}$/, formatHint: 'GR/EL + 9 digits' },
+  EL: { regex: /^EL[0-9]{9}$/, formatHint: 'EL + 9 digits' },
+  BG: { regex: /^BG[0-9]{9,10}$/, formatHint: 'BG + 9 or 10 digits' },
+  HR: { regex: /^HR[0-9]{11}$/, formatHint: 'HR + 11 digits' },
+  SK: { regex: /^SK[0-9]{10}$/, formatHint: 'SK + 10 digits' },
+  SI: { regex: /^SI[0-9]{8}$/, formatHint: 'SI + 8 digits' },
+  LT: { regex: /^LT([0-9]{9}|[0-9]{12})$/, formatHint: 'LT + 9 or 12 digits' },
+  LV: { regex: /^LV[0-9]{11}$/, formatHint: 'LV + 11 digits' },
+  EE: { regex: /^EE[0-9]{9}$/, formatHint: 'EE + 9 digits' },
+  CY: { regex: /^CY[0-9]{8}[A-Z]$/, formatHint: 'CY + 8 digits + 1 letter' },
+  LU: { regex: /^LU[0-9]{8}$/, formatHint: 'LU + 8 digits' },
+  MT: { regex: /^MT[0-9]{8}$/, formatHint: 'MT + 8 digits' },
+};
+
 export function AmazonEuVatTool() {
   const [buyer, setBuyer] = useState('');
   const [buyerAddress, setBuyerAddress] = useState('');
@@ -77,16 +109,64 @@ export function AmazonEuVatTool() {
 
   const parsedAmount = parseFloat(amountInput) || 0;
   
-  // Strict Buyer VAT ID EU Format Validation: 2 uppercase letters + 8 to 12 digits/alphanumeric
-  // e.g., DE123456789, FR12345678901, IT12345678901
+  // Strict Buyer VAT ID EU Format Validation per EU Member State:
+  // DE must be ^DE[0-9]{9}$ (9 digits only), IT must be ^IT[0-9]{11}$, FR must be ^FR[A-Z0-9]{2}[0-9]{9}$, etc.
   const cleanVatId = buyerVatId.trim().toUpperCase();
   const isVatIdProvided = cleanVatId.length > 0;
-  const isVatIdValid = useMemo(() => {
-    if (!isVatIdProvided) return true;
-    return /^[A-Z]{2}[0-9A-Z]{8,12}$/.test(cleanVatId);
+
+  const vatValidation = useMemo(() => {
+    if (!isVatIdProvided) return { isValid: true, error: '' };
+    const prefix = cleanVatId.substring(0, 2);
+    const pattern = EU_VAT_PATTERNS[prefix];
+
+    if (!pattern) {
+      return {
+        isValid: false,
+        error: `Invalid EU country prefix "${prefix}". VAT ID must start with a valid 2-letter EU Member State code (e.g. DE, IT, FR, ES, NL).`,
+      };
+    }
+
+    if (!pattern.regex.test(cleanVatId)) {
+      return {
+        isValid: false,
+        error: `Invalid format for ${prefix} VAT ID. Required format: ${pattern.formatHint}.`,
+      };
+    }
+
+    return { isValid: true, error: '' };
   }, [cleanVatId, isVatIdProvided]);
 
+  const isVatIdValid = vatValidation.isValid;
+  const vatErrorMessage = vatValidation.error;
   const hasValidBuyerVatId = isVatIdProvided && isVatIdValid;
+
+  // Buyer Full Address Validation:
+  // If address length < 15 chars or does not contain city/country, show yellow warning
+  const trimmedAddress = buyerAddress.trim();
+  const hasTypedAddress = trimmedAddress.length > 0;
+
+  const isAddressComplete = useMemo(() => {
+    if (!hasTypedAddress) return true;
+    if (trimmedAddress.length < 15) return false;
+
+    const lower = trimmedAddress.toLowerCase();
+    
+    // Check if contains EU country name or country code
+    const mentionsCountry = COUNTRIES.some(
+      (c) =>
+        lower.includes(c.name.toLowerCase()) ||
+        new RegExp(`\\b${c.code.toLowerCase()}\\b`).test(lower)
+    ) || /germany|deutschland|italy|italia|france|spain|españa|netherlands|poland|belgium|austria|österreich|sweden|denmark|finland|ireland|portugal|czech|romania|hungary|greece|bulgaria|croatia|slovakia|slovenia|lithuania|latvia|estonia|cyprus|luxembourg|malta/i.test(lower);
+
+    // Check if contains city name or postal/comma address structure
+    const mentionsCity = /milano|milan|roma|rome|napoli|torino|turin|berlin|munich|münchen|hamburg|frankfurt|köln|cologne|paris|lyon|marseille|madrid|barcelona|valencia|seville|amsterdam|rotterdam|utrecht|warsaw|warszawa|krakow|vienna|wien|brussels|bruxelles|dublin|cork|lisbon|lisboa|porto|prague|praha|athens|sofia|zagreb|bratislava|ljubljana|vilnius|riga|tallinn|nicosia/i.test(lower);
+
+    const hasCityPostalComma = trimmedAddress.includes(',') && /[0-9]{4,5}/.test(trimmedAddress);
+
+    return mentionsCountry || mentionsCity || hasCityPostalComma;
+  }, [trimmedAddress, hasTypedAddress]);
+
+  const showAddressWarning = hasTypedAddress && !isAddressComplete;
 
   // Invoice Logic:
   // Since all 27 countries are strictly EU Member States:
@@ -124,7 +204,7 @@ export function AmazonEuVatTool() {
   // Default buyer values
   const effectiveBuyer = buyer.trim() || 'Sample Customer';
   const effectiveBuyerAddress =
-    buyerAddress.trim() || 'Berlin Strasse 12, 10115 Berlin, Germany';
+    buyerAddress.trim() || 'Via Roma 10, 20121 Milano, Italy';
   const hasTypedAmount = parsedAmount > 0;
   const canDownload = hasTypedAmount && isVatIdValid;
 
@@ -139,7 +219,7 @@ export function AmazonEuVatTool() {
     const textToCopy = `Amazon EU VAT Breakdown (${country.name})
 Net Turnover: ${country.symbol}${net.toFixed(2)}
 VAT (${hasValidBuyerVatId ? '0% Reverse Charge' : `${country.rate}%`}): ${country.symbol}${vatAmount.toFixed(2)}
-Gross Total: ${country.symbol}${finalGross.toFixed(2)}${customsDuty > 0 ? ' (incl. €3 EU Customs Duty)' : ''}
+${customsDuty > 0 ? `EU Customs Duty (2026): €3.00\n` : ''}Gross Total: ${country.symbol}${finalGross.toFixed(2)}${customsDuty > 0 ? ` (Gross becomes ${country.symbol}${finalGross.toFixed(2)})` : ''}
 Tax Regime: ${hasValidBuyerVatId ? 'Article 44 Reverse Charge (0%)' : `Article 146 + OSS ID (${country.rate}%)`}
 Amazon Referral Fee (15%): €${referralFee.toFixed(2)}
 Your Payout: €${yourPayout.toFixed(2)}`;
@@ -369,14 +449,14 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
   };
 
   const loadSample = () => {
-    setBuyer('Enterprise Logistics GmbH');
-    setBuyerAddress('Berlin Strasse 12, 10115 Berlin, Germany');
-    setBuyerVatId('DE123456789');
-    setAmountInput('119.00');
-    setCountryCode('DE');
+    setBuyer('Enterprise Logistics SRL');
+    setBuyerAddress('Via Roma 10, 20121 Milano, Italy');
+    setBuyerVatId('IT12345678901');
+    setAmountInput('120.00');
+    setCountryCode('IT');
     setOrderId('111-7892341-9921045');
     setPricingMode('inclusive');
-    setApplyCustomsDuty2026(false);
+    setApplyCustomsDuty2026(true);
   };
 
   const resetForm = () => {
@@ -497,9 +577,19 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
           <input
             value={buyerAddress}
             onChange={(e) => setBuyerAddress(e.target.value)}
-            className="w-full border border-slate-300 dark:border-slate-700 rounded-xl p-3 mt-1 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-            placeholder="Full address with city, country - e.g., Berlin Strasse 12, 10115 Berlin, Germany"
+            className={`w-full border rounded-xl p-3 mt-1 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:ring-2 text-sm ${
+              showAddressWarning
+                ? 'border-amber-400 focus:ring-amber-400 bg-amber-50/20'
+                : 'border-slate-300 dark:border-slate-700 focus:ring-blue-500'
+            }`}
+            placeholder="Via Roma 10, 20121 Milano, Italy - Full EU address required"
           />
+          {showAddressWarning && (
+            <div className="mt-1.5 p-2 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800/70 rounded-xl text-amber-800 dark:text-amber-300 text-xs flex items-center gap-2 font-medium animate-in fade-in">
+              <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+              <span>Please enter complete EU address with city, postcode, country for Amazon compliance</span>
+            </div>
+          )}
         </div>
 
         <div>
@@ -509,7 +599,7 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
             </label>
             {hasValidBuyerVatId && (
               <span className="text-emerald-600 dark:text-emerald-400 font-bold text-[10px] flex items-center gap-1">
-                ✓ Valid EU B2B Reverse Charge
+                ✓ Valid EU B2B Reverse Charge (Article 44)
               </span>
             )}
           </div>
@@ -521,11 +611,11 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
                 ? 'border-rose-500 focus:ring-rose-500 bg-rose-50/20'
                 : 'border-slate-300 dark:border-slate-700 focus:ring-blue-500'
             }`}
-            placeholder="e.g. DE123456789 (2 letters + 8-12 digits)"
+            placeholder="e.g. DE123456789 (DE: 9 digits, IT: 11 digits, FR: 2+9 digits)"
           />
           {isVatIdProvided && !isVatIdValid && (
             <p className="text-rose-600 dark:text-rose-400 text-xs mt-1 font-semibold flex items-center gap-1">
-              ⚠️ Invalid EU VAT ID format: Must start with 2 letters followed by 8-12 alphanumeric digits (e.g. DE123456789).
+              ⚠️ {vatErrorMessage || 'Invalid EU VAT ID format.'}
             </p>
           )}
         </div>
@@ -598,7 +688,7 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-3 mt-4">
+          <div className={`grid ${customsDuty > 0 ? 'grid-cols-2 sm:grid-cols-4' : 'grid-cols-3'} gap-3 mt-4`}>
             <div className="bg-white dark:bg-slate-800 rounded-xl p-3 text-center shadow-xs border border-blue-50 dark:border-slate-700">
               <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Net Turnover</div>
               <div className="font-bold text-sm sm:text-base text-slate-900 dark:text-white mt-0.5">
@@ -613,6 +703,16 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
                 {country.symbol} {vatAmount.toFixed(2)}
               </div>
             </div>
+            {customsDuty > 0 && (
+              <div className="bg-amber-50 dark:bg-amber-950/40 rounded-xl p-3 text-center shadow-xs border border-amber-200 dark:border-amber-800">
+                <div className="text-[11px] text-amber-800 dark:text-amber-300 font-bold">
+                  EU Customs Duty (2026)
+                </div>
+                <div className="font-bold text-sm sm:text-base text-amber-900 dark:text-amber-200 mt-0.5">
+                  €3.00
+                </div>
+              </div>
+            )}
             <div className="bg-white dark:bg-slate-800 rounded-xl p-3 text-center shadow-xs border border-blue-50 dark:border-slate-700">
               <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Gross Total</div>
               <div className="font-bold text-sm sm:text-base text-emerald-600 dark:text-emerald-400 mt-0.5">
@@ -620,6 +720,19 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
               </div>
             </div>
           </div>
+
+          {/* EU Customs Duty Banner */}
+          {customsDuty > 0 && (
+            <div className="mt-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 rounded-xl p-3 text-xs text-amber-900 dark:text-amber-200 font-semibold flex flex-wrap items-center justify-between gap-2">
+              <span className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block animate-pulse"></span>
+                <span>EU Customs Duty (2026): €3.00</span>
+              </span>
+              <span className="font-bold text-amber-950 dark:text-amber-100 bg-amber-100 dark:bg-amber-900/60 px-2.5 py-1 rounded-md text-xs">
+                Gross becomes {country.symbol}{finalGross.toFixed(2)}
+              </span>
+            </div>
+          )}
 
           {/* Profit Box */}
           <div className="bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900/60 p-4 rounded-xl mt-4 text-xs sm:text-sm">
@@ -641,7 +754,7 @@ This invoice is generated client-side for Amazon Seller Central compliance. Not 
                 EU OSS Consumer Sale: Article 146 destination principle. Standard {country.rate}% VAT rate applied.
               </span>
             )}
-            {customsDuty > 0 && ` • Includes €3.00 July 2026 Non-EU Customs Duty`}
+            {customsDuty > 0 && ` • Includes €3.00 July 2026 Non-EU Customs Duty (Gross becomes ${country.symbol}${finalGross.toFixed(2)})`}
           </div>
         </div>
       )}
