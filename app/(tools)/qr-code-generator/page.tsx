@@ -6,7 +6,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
 
-export default function QrGeneratorPage() {
+export default function QrCodeGeneratorPage() {
   useEffect(() => {
     document.title = 'Free QR Code Generator with Logo - WiFi, vCard, URL - SVG, PNG, PDF - 100% Client-Side';
     const metaDesc = document.querySelector('meta[name="description"]');
