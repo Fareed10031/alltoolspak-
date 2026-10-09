@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import BgRemoverWorldNo1 from './BgRemoverWorldNo1';
+import BgRemoverFixed from './BgRemoverFixed';
 
 export function BackgroundRemoverTool() {
-  return <BgRemoverWorldNo1 />;
+  return <BgRemoverFixed />;
 }
 
 export default BackgroundRemoverTool;
