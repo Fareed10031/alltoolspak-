@@ -1,12 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BgRemover } from '@/components/tools/BgRemover';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
 
 export default function BgRemoverPage() {
+  useEffect(() => {
+    document.title = 'AI Background Remover - 100% Free, HD Quality (isnet_fp16) | AllToolsPK';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute(
+        'content',
+        'Remove image backgrounds with professional AI like Remove.bg. 100% client-side, zero upload, private, hair & fur detail preserved with isnet_fp16 model.'
+      );
+    }
+  }, []);
   const navigateTo = (page: string) => {
     if (page === 'home' || page === '/') {
       window.location.href = '/';
