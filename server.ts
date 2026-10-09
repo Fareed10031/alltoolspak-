@@ -15,6 +15,13 @@ const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json());
 
+// Enable Cross-Origin Isolation headers for WebAssembly / ONNX Runtime Web
+app.use((_req, res, next) => {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+  next();
+});
+
 // API AI endpoint
 app.post('/api/ai', async (req: Request, res: Response) => {
   try {
