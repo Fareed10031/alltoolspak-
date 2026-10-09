@@ -132,15 +132,15 @@ export function QrGeneratorTool() {
   // QR Frame Template State
   const [frameStyle, setFrameStyle] = useState<'none' | 'scanme' | 'whitelabel' | 'restaurant'>('none');
 
-  // Customization States
+  // Customization States - FIX 1: Default Safe Values (100% Scannable)
   const [fgColor, setFgColor] = useState<string>('#000000');
   const [bgColor, setBgColor] = useState<string>('#ffffff');
   const [isTransparent, setIsTransparent] = useState<boolean>(false);
   const [errorCorrection, setErrorCorrection] = useState<ErrorCorrectionLevel>('H');
   const [qrSize, setQrSize] = useState<number>(1024);
-  const [margin, setMargin] = useState<number>(2);
-  const [dotStyle, setDotStyle] = useState<DotStyle>('rounded');
-  const [cornerStyle, setCornerStyle] = useState<CornerStyle>('rounded');
+  const [margin, setMargin] = useState<number>(4); // FIX: 4 is Standard for Print, 2 is too low
+  const [dotStyle, setDotStyle] = useState<DotStyle>('square'); // FIX: square = 100% scannable
+  const [cornerStyle, setCornerStyle] = useState<CornerStyle>('square');
 
   // Logo State
   const [logoDataUrl, setLogoDataUrl] = useState<string | null>(null);
@@ -295,6 +295,11 @@ export function QrGeneratorTool() {
     }
   }, [activeType, formData, buildFinalUrl]);
 
+  // FIX 2: Validation - min 3 chars
+  const isValid = useMemo(() => {
+    return Boolean(formattedPayload && formattedPayload.trim().length >= 3);
+  }, [formattedPayload]);
+
   // Contrast Check
   useEffect(() => {
     const getLuminance = (hex: string) => {
@@ -347,144 +352,149 @@ export function QrGeneratorTool() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    if (!formattedPayload.trim() || formattedPayload.trim().length < 3) {
+      setScanVerified(false);
+      setScanWarning('Please enter valid URL or Text (min 3 chars)');
+      return;
+    }
+
     try {
       const effectiveEcLevel = logoDataUrl ? 'H' : errorCorrection;
-      const qrObj = QRCode.create(formattedPayload, {
-        errorCorrectionLevel: effectiveEcLevel,
-      });
 
-      const moduleCount = qrObj.modules.size;
-      const quietZone = margin;
-      const totalModules = moduleCount + quietZone * 2;
+      // FIX 1: When default square pattern is selected, use standard QRCode.toCanvas for 100% scannability
+      if (dotStyle === 'square' && cornerStyle === 'square') {
+        canvas.width = qrSize;
+        canvas.height = qrSize;
+        await new Promise<void>((resolve, reject) => {
+          QRCode.toCanvas(
+            canvas,
+            formattedPayload,
+            {
+              width: qrSize,
+              margin: margin,
+              color: {
+                dark: fgColor,
+                light: isTransparent ? '#00000000' : bgColor,
+              },
+              errorCorrectionLevel: effectiveEcLevel,
+            },
+            (error) => {
+              if (error) reject(error);
+              else resolve();
+            }
+          );
+        });
+      } else {
+        const qrObj = QRCode.create(formattedPayload, {
+          errorCorrectionLevel: effectiveEcLevel,
+        });
 
-      // Set internal high resolution canvas dimensions
-      canvas.width = qrSize;
-      canvas.height = qrSize;
+        const moduleCount = qrObj.modules.size;
+        const quietZone = margin;
+        const totalModules = moduleCount + quietZone * 2;
 
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
+        canvas.width = qrSize;
+        canvas.height = qrSize;
 
-      const modulePixelSize = qrSize / totalModules;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
 
-      // Clear or fill background
-      ctx.clearRect(0, 0, qrSize, qrSize);
-      if (!isTransparent) {
-        ctx.fillStyle = bgColor;
-        ctx.fillRect(0, 0, qrSize, qrSize);
-      }
+        const modulePixelSize = qrSize / totalModules;
 
-      ctx.fillStyle = fgColor;
+        ctx.clearRect(0, 0, qrSize, qrSize);
+        if (!isTransparent) {
+          ctx.fillStyle = bgColor;
+          ctx.fillRect(0, 0, qrSize, qrSize);
+        }
 
-      // Check if coordinate is inside finder patterns (7x7 corners)
-      const isFinderPattern = (r: number, c: number) => {
-        if (r < 7 && c < 7) return true; // Top-Left
-        if (r < 7 && c >= moduleCount - 7) return true; // Top-Right
-        if (r >= moduleCount - 7 && c < 7) return true; // Bottom-Left
-        return false;
-      };
+        ctx.fillStyle = fgColor;
 
-      // Draw normal data modules
-      for (let r = 0; r < moduleCount; r++) {
-        for (let c = 0; c < moduleCount; c++) {
-          if (qrObj.modules.get(r, c)) {
-            const inFinder = isFinderPattern(r, c);
-            const x = (c + quietZone) * modulePixelSize;
-            const y = (r + quietZone) * modulePixelSize;
-            const s = modulePixelSize;
+        const isFinderPattern = (r: number, c: number) => {
+          if (r < 7 && c < 7) return true;
+          if (r < 7 && c >= moduleCount - 7) return true;
+          if (r >= moduleCount - 7 && c < 7) return true;
+          return false;
+        };
 
-            if (inFinder) {
-              // Custom corner eye styling
-              if (cornerStyle === 'rounded') {
-                ctx.beginPath();
-                ctx.roundRect(x, y, s, s, s * 0.25);
-                ctx.fill();
-              } else if (cornerStyle === 'circle') {
-                ctx.beginPath();
-                ctx.arc(x + s / 2, y + s / 2, s * 0.48, 0, Math.PI * 2);
-                ctx.fill();
+        for (let r = 0; r < moduleCount; r++) {
+          for (let c = 0; c < moduleCount; c++) {
+            if (qrObj.modules.get(r, c)) {
+              const inFinder = isFinderPattern(r, c);
+              const x = (c + quietZone) * modulePixelSize;
+              const y = (r + quietZone) * modulePixelSize;
+              const s = modulePixelSize;
+
+              if (inFinder) {
+                if (cornerStyle === 'rounded') {
+                  ctx.beginPath();
+                  ctx.roundRect(x, y, s, s, s * 0.25);
+                  ctx.fill();
+                } else if (cornerStyle === 'circle') {
+                  ctx.beginPath();
+                  ctx.arc(x + s / 2, y + s / 2, s * 0.48, 0, Math.PI * 2);
+                  ctx.fill();
+                } else {
+                  ctx.fillRect(x, y, s, s);
+                }
               } else {
-                ctx.fillRect(x, y, s, s);
-              }
-            } else {
-              // Module Dot Styles
-              if (dotStyle === 'dots') {
-                ctx.beginPath();
-                ctx.arc(x + s / 2, y + s / 2, s * 0.44, 0, Math.PI * 2);
-                ctx.fill();
-              } else if (dotStyle === 'rounded') {
-                ctx.beginPath();
-                ctx.roundRect(x, y, s, s, s * 0.35);
-                ctx.fill();
-              } else if (dotStyle === 'classy') {
-                ctx.beginPath();
-                ctx.roundRect(x + s * 0.05, y + s * 0.05, s * 0.9, s * 0.9, s * 0.45);
-                ctx.fill();
-              } else {
-                ctx.fillRect(x, y, s, s);
+                if (dotStyle === 'dots') {
+                  ctx.beginPath();
+                  ctx.arc(x + s / 2, y + s / 2, s * 0.44, 0, Math.PI * 2);
+                  ctx.fill();
+                } else if (dotStyle === 'rounded') {
+                  ctx.beginPath();
+                  ctx.roundRect(x, y, s, s, s * 0.35);
+                  ctx.fill();
+                } else if (dotStyle === 'classy') {
+                  ctx.beginPath();
+                  ctx.roundRect(x + s * 0.05, y + s * 0.05, s * 0.9, s * 0.9, s * 0.45);
+                  ctx.fill();
+                } else {
+                  ctx.fillRect(x, y, s, s);
+                }
               }
             }
           }
         }
       }
 
-      // Embed Logo if present
+      // Logo draw logic - FIX: Max 20% size else scan fail
       if (logoDataUrl) {
         await new Promise<void>((resolve) => {
           const img = new Image();
           img.crossOrigin = 'anonymous';
           img.onload = () => {
-            const logoFraction = 0.22; // 22% of QR code size
-            const logoBoxSize = qrSize * logoFraction;
-            const logoX = (qrSize - logoBoxSize) / 2;
-            const logoY = (qrSize - logoBoxSize) / 2;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+              resolve();
+              return;
+            }
+            const logoSize = canvas.width * 0.20; // FIX: Max 20% else scan fail
+            const logoX = (canvas.width - logoSize) / 2;
+            const logoY = (canvas.height - logoSize) / 2;
 
-            // Draw white background badge with border & shadow
-            ctx.save();
-            ctx.fillStyle = '#ffffff';
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
-            ctx.shadowBlur = 8;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 2;
-
-            const badgePadding = logoBoxSize * 0.08;
-            ctx.beginPath();
-            ctx.roundRect(
+            // White padding background
+            ctx.fillStyle = '#FFFFFF';
+            const badgePadding = logoSize * 0.08;
+            ctx.fillRect(
               logoX - badgePadding,
               logoY - badgePadding,
-              logoBoxSize + badgePadding * 2,
-              logoBoxSize + badgePadding * 2,
-              logoBoxSize * 0.22
+              logoSize + badgePadding * 2,
+              logoSize + badgePadding * 2
             );
-            ctx.fill();
 
             // Subtle border
-            ctx.strokeStyle = '#e2e8f0';
-            ctx.lineWidth = Math.max(1, qrSize * 0.003);
-            ctx.stroke();
-            ctx.restore();
+            ctx.strokeStyle = '#E2E8F0';
+            ctx.lineWidth = Math.max(1, canvas.width * 0.003);
+            ctx.strokeRect(
+              logoX - badgePadding,
+              logoY - badgePadding,
+              logoSize + badgePadding * 2,
+              logoSize + badgePadding * 2
+            );
 
-            // Draw logo image with aspect ratio containment
-            ctx.save();
-            ctx.beginPath();
-            ctx.roundRect(logoX, logoY, logoBoxSize, logoBoxSize, logoBoxSize * 0.16);
-            ctx.clip();
-
-            const aspect = img.width / img.height;
-            let drawW = logoBoxSize;
-            let drawH = logoBoxSize;
-            let dx = logoX;
-            let dy = logoY;
-
-            if (aspect > 1) {
-              drawH = logoBoxSize / aspect;
-              dy = logoY + (logoBoxSize - drawH) / 2;
-            } else {
-              drawW = logoBoxSize * aspect;
-              dx = logoX + (logoBoxSize - drawW) / 2;
-            }
-
-            ctx.drawImage(img, dx, dy, drawW, drawH);
-            ctx.restore();
+            // Draw logo image
+            ctx.drawImage(img, logoX, logoY, logoSize, logoSize);
             resolve();
           };
           img.src = logoDataUrl;
@@ -493,15 +503,18 @@ export function QrGeneratorTool() {
 
       // Self-Verification via jsQR client-side scanning
       try {
-        const imgData = ctx.getImageData(0, 0, qrSize, qrSize);
-        const code = jsQR(imgData.data, imgData.width, imgData.height);
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          const imgData = ctx.getImageData(0, 0, qrSize, qrSize);
+          const code = jsQR(imgData.data, imgData.width, imgData.height);
 
-        if (code && code.data) {
-          setScanVerified(true);
-          setScanWarning(null);
-        } else {
-          setScanVerified(false);
-          setScanWarning('⚠️ Low contrast or logo too large - May not scan reliably on standard phones');
+          if (code && code.data) {
+            setScanVerified(true);
+            setScanWarning(null);
+          } else {
+            setScanVerified(false);
+            setScanWarning('⚠️ Low contrast or logo too large - May not scan reliably');
+          }
         }
       } catch (e) {
         setScanVerified(true);
@@ -535,6 +548,7 @@ export function QrGeneratorTool() {
   // ==================== EXPORT FUNCTIONS ====================
   // 1. Download PNG (with frame)
   const handleDownloadPNG = () => {
+    if (!isValid) return alert('Please enter valid URL / Text first!');
     if (!canvasRef.current) return;
     const framedCanvas = drawFrameOnCanvas(canvasRef.current, frameStyle);
     saveToHistory(activeType, activeType.toUpperCase(), formattedPayload);
@@ -547,6 +561,7 @@ export function QrGeneratorTool() {
 
   // 2. Download SVG (with frame support)
   const handleDownloadSVG = async () => {
+    if (!isValid) return alert('Please enter valid URL / Text first!');
     if (!canvasRef.current) return;
     saveToHistory(activeType, activeType.toUpperCase(), formattedPayload);
     try {
@@ -589,6 +604,7 @@ export function QrGeneratorTool() {
 
   // 3. Download PDF (with frame support)
   const handleDownloadPDF = async () => {
+    if (!isValid) return alert('Please enter valid URL / Text first!');
     if (!canvasRef.current) return;
     saveToHistory(activeType, activeType.toUpperCase(), formattedPayload);
     const framedCanvas = drawFrameOnCanvas(canvasRef.current, frameStyle);
@@ -605,6 +621,7 @@ export function QrGeneratorTool() {
 
   // 4. Download JPEG (with frame support)
   const handleDownloadJPEG = () => {
+    if (!isValid) return alert('Please enter valid URL / Text first!');
     if (!canvasRef.current) return;
     saveToHistory(activeType, activeType.toUpperCase(), formattedPayload);
     const framedCanvas = drawFrameOnCanvas(canvasRef.current, frameStyle);
@@ -617,6 +634,7 @@ export function QrGeneratorTool() {
 
   // 5. Copy Image to Clipboard
   const copyImageToClipboard = async () => {
+    if (!isValid) return alert('Please enter valid URL / Text first!');
     if (!canvasRef.current) return;
     const framedCanvas = drawFrameOnCanvas(canvasRef.current, frameStyle);
 
@@ -638,6 +656,7 @@ export function QrGeneratorTool() {
 
   // 6. Copy Data (Text)
   const copyDataText = async () => {
+    if (!isValid) return alert('Please enter valid URL / Text first!');
     try {
       await navigator.clipboard.writeText(formattedPayload);
       setCopiedData(true);
@@ -649,6 +668,7 @@ export function QrGeneratorTool() {
 
   // 7. Print Button
   const handlePrint = () => {
+    if (!isValid) return alert('Please enter valid URL / Text first!');
     window.print();
   };
 
