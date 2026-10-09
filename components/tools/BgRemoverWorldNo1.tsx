@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import BgRemoverFixed from './BgRemoverFixed';
+import BgRemoverSingleFileFixed from './BgRemoverSingleFileFixed';
 
 export function BgRemoverWorldNo1() {
-  return <BgRemoverFixed />;
+  return <BgRemoverSingleFileFixed />;
 }
 
 export default BgRemoverWorldNo1;
