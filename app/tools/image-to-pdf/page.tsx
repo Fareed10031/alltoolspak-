@@ -1,12 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ImageToPdfTool } from '@/components/tools/ImageToPdfTool';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
 
 export default function ImageToPdfPage() {
+  useEffect(() => {
+    document.title = 'Image to PDF - HD Pro (100% Quality, Original Size, No Compression) | AllToolsPK';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute(
+        'content',
+        'Convert JPG, PNG, and WebP images to high-definition PDF with zero quality loss. Native 1:1 image dimensions, uncompressed pages, 100% client-side privacy.'
+      );
+    }
+  }, []);
   const navigateTo = (page: string) => {
     if (page === 'home' || page === '/') {
       window.location.href = '/';

@@ -1,371 +1,370 @@
 'use client';
 
-import React, { useState } from 'react';
-import jsPDF from 'jspdf';
-import { ProToolBase } from '@/components/ProToolBase';
-import { TOOLS } from '@/lib/config';
-import { Upload, Image as ImageIcon, Trash2, Plus, FileText, CheckCircle2 } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { jsPDF } from 'jspdf';
+import { Upload, Trash2, ArrowUp, ArrowDown, FileText, CheckCircle2, ShieldCheck, Sparkles, Layers } from 'lucide-react';
 
-interface UploadedImageItem {
+export type ImageItem = {
   id: string;
   file: File;
-  name: string;
-  size: number;
-  previewUrl: string;
+  dataUrl: string;
   width: number;
   height: number;
+  format: 'JPEG' | 'PNG';
+};
+
+function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise((res) => {
+    const reader = new FileReader();
+    reader.onload = () => res(reader.result as string);
+    reader.readAsDataURL(file);
+  });
 }
 
-export function ImageToPdfTool() {
-  const tool = TOOLS.find((t) => t.slug === 'image-to-pdf') || {
-    slug: 'image-to-pdf',
-    name: 'Image to PDF',
-    desc: 'Convert JPG/PNG images to high quality PDF, no quality loss.',
-    tag: 'Convert',
-    colorIndex: 3,
+function getImageDimensions(dataUrl: string): Promise<{ width: number; height: number }> {
+  return new Promise((res) => {
+    const img = new Image();
+    img.onload = () => res({ width: img.naturalWidth || 800, height: img.naturalHeight || 600 });
+    img.onerror = () => res({ width: 800, height: 600 });
+    img.src = dataUrl;
+  });
+}
+
+export function ImageToPDFPro() {
+  const [images, setImages] = useState<ImageItem[]>([]);
+  const [title, setTitle] = useState('AllToolsPK_HD_Document');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [toastMsg, setToastMsg] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const showToast = (msg: string) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(null), 4000);
   };
 
-  const [images, setImages] = useState<UploadedImageItem[]>([]);
-  const [errorMessage, setErrorMessage] = useState<string>('');
-
-  const handleImagesUploaded = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setForm: React.Dispatch<React.SetStateAction<Record<string, any>>>
-  ) => {
-    setErrorMessage('');
-    const files = Array.from(e.target.files || []);
-    if (files.length === 0) return;
-
-    // Filter only image files
-    const validImageFiles = files.filter((f) => f.type.startsWith('image/'));
-    if (validImageFiles.length === 0) {
-      setErrorMessage('Please select valid image files (JPG, PNG, WebP).');
-      e.target.value = '';
+  const handleFiles = async (files: FileList | File[]) => {
+    const fileList = Array.from(files).filter((f) => f.type.startsWith('image/'));
+    if (fileList.length === 0) {
+      showToast('Please select valid JPG, PNG, or WebP image files.');
       return;
     }
 
-    const newItems: UploadedImageItem[] = [];
-    let processedCount = 0;
+    setIsProcessing(true);
+    const newImages: ImageItem[] = [];
 
-    validImageFiles.forEach((file) => {
-      const url = URL.createObjectURL(file);
-      const img = new Image();
-      img.src = url;
-      img.onload = () => {
-        newItems.push({
-          id: `${file.name}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+    for (const file of fileList) {
+      try {
+        const dataUrl = await readFileAsDataUrl(file);
+        const dims = await getImageDimensions(dataUrl);
+        // Preserve original format for max quality
+        const isPng = file.type.includes('png') || file.type.includes('webp');
+        newImages.push({
+          id: Math.random().toString(36).substring(7) + '-' + Date.now(),
           file,
-          name: file.name.replace(/\.[^/.]+$/, ''),
-          size: file.size,
-          previewUrl: url,
-          width: img.naturalWidth || img.width || 800,
-          height: img.naturalHeight || img.height || 600,
+          dataUrl,
+          width: dims.width,
+          height: dims.height,
+          format: isPng ? 'PNG' : 'JPEG',
         });
-
-        processedCount += 1;
-        if (processedCount === validImageFiles.length) {
-          setImages((prev) => {
-            const updated = [...prev, ...newItems];
-            setForm((formPrev) => ({
-              ...formPrev,
-              hasImage: updated.length > 0 ? 'true' : '',
-              imageCount: updated.length,
-              documentTitle:
-                formPrev.documentTitle || updated[0]?.name || 'Converted_Document',
-            }));
-            return updated;
-          });
-        }
-      };
-      img.onerror = () => {
-        processedCount += 1;
-        if (processedCount === validImageFiles.length && newItems.length > 0) {
-          setImages((prev) => {
-            const updated = [...prev, ...newItems];
-            setForm((formPrev) => ({
-              ...formPrev,
-              hasImage: updated.length > 0 ? 'true' : '',
-              imageCount: updated.length,
-              documentTitle:
-                formPrev.documentTitle || updated[0]?.name || 'Converted_Document',
-            }));
-            return updated;
-          });
-        }
-      };
-    });
-
-    // Reset input value so user can re-select same file or add more on mobile
-    e.target.value = '';
-  };
-
-  const removeImage = (
-    id: string,
-    setForm: React.Dispatch<React.SetStateAction<Record<string, any>>>
-  ) => {
-    setImages((prev) => {
-      const target = prev.find((item) => item.id === id);
-      if (target?.previewUrl) {
-        URL.revokeObjectURL(target.previewUrl);
+      } catch (err) {
+        console.error('Failed to read image:', err);
       }
-      const updated = prev.filter((item) => item.id !== id);
-      setForm((formPrev) => ({
-        ...formPrev,
-        hasImage: updated.length > 0 ? 'true' : '',
-        imageCount: updated.length,
-      }));
-      return updated;
-    });
+    }
+
+    setImages((prev) => [...prev, ...newImages]);
+    setIsProcessing(false);
+    showToast(`Added ${newImages.length} image${newImages.length > 1 ? 's' : ''} with 100% quality preserved!`);
   };
 
-  const generateImagePdf = (form: Record<string, any>) => {
+  const moveImage = (index: number, direction: 'up' | 'down') => {
+    if (direction === 'up' && index === 0) return;
+    if (direction === 'down' && index === images.length - 1) return;
+
+    const newImages = [...images];
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    const temp = newImages[index];
+    newImages[index] = newImages[targetIndex];
+    newImages[targetIndex] = temp;
+    setImages(newImages);
+  };
+
+  const generatePDF = () => {
     if (images.length === 0) {
-      setErrorMessage('Please upload at least one image to convert to PDF.');
+      showToast('Please upload at least one image to convert to PDF.');
       return;
     }
 
-    const firstImg = images[0];
-    const initialOrientation =
-      firstImg.width > firstImg.height ? 'landscape' : 'portrait';
+    try {
+      // First page size = first image size - PRO feature for 100% quality
+      const first = images[0];
+      const pdf = new jsPDF({
+        unit: 'px',
+        format: [first.width, first.height],
+        orientation: first.width > first.height ? 'landscape' : 'portrait',
+        compress: false, // Important: No PDF compression
+      });
 
-    const doc = new jsPDF({
-      orientation: initialOrientation,
-      unit: 'pt',
-      format: 'a4',
-    });
+      images.forEach((img, index) => {
+        if (index > 0) {
+          // Each page size = its image size - 100% correct result, no cropping
+          pdf.addPage([img.width, img.height], img.width > img.height ? 'l' : 'p');
+        }
+        // QUALITY 100% - NO COMPRESSION, ORIGINAL SIZE
+        // 'NONE' = No compression, best quality. iLovePDF uses 'FAST'
+        pdf.addImage(
+          img.dataUrl,
+          img.format,
+          0,
+          0,
+          img.width,
+          img.height,
+          undefined,
+          'NONE' // Key for HD quality
+        );
+      });
 
-    images.forEach((imgItem, index) => {
-      if (index > 0) {
-        const orientation =
-          imgItem.width > imgItem.height ? 'landscape' : 'portrait';
-        doc.addPage('a4', orientation);
-      }
-
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight();
-      const padding = 28;
-      const maxWidth = pageWidth - padding * 2;
-      const maxHeight = pageHeight - padding * 2;
-
-      const imgRatio = imgItem.width / imgItem.height;
-      let renderWidth = maxWidth;
-      let renderHeight = renderWidth / imgRatio;
-
-      if (renderHeight > maxHeight) {
-        renderHeight = maxHeight;
-        renderWidth = renderHeight * imgRatio;
-      }
-
-      const x = (pageWidth - renderWidth) / 2;
-      const y = (pageHeight - renderHeight) / 2;
-
-      // Add image to current PDF page
-      doc.addImage(imgItem.previewUrl, 'JPEG', x, y, renderWidth, renderHeight);
-    });
-
-    const safeTitle = (
-      form.documentTitle ||
-      images[0]?.name ||
-      'Converted_Document'
-    )
-      .trim()
-      .replace(/[^a-zA-Z0-9_-]/g, '_');
-
-    doc.save(`${safeTitle}.pdf`);
+      const safeTitle = (title || 'AllToolsPK_HD').trim().replace(/[^a-zA-Z0-9_-]/g, '_');
+      pdf.save(`${safeTitle}.pdf`);
+      showToast('HD PDF generated and downloaded successfully!');
+    } catch (err: any) {
+      console.error(err);
+      showToast(`Error generating PDF: ${err?.message || 'Unknown error'}`);
+    }
   };
 
   return (
-    <ProToolBase
-      tool={tool}
-      required={['hasImage', 'documentTitle']}
-      initialState={{
-        hasImage: '',
-        documentTitle: '',
-        imageCount: 0,
-      }}
-      render={(form, setForm) => (
-        <div className="space-y-6">
-          {/* File Upload Box - Mobile Optimized */}
-          <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-blue-500 rounded-2xl p-6 sm:p-8 text-center bg-slate-50/50 dark:bg-slate-800/30 transition-colors">
-            <input
-              type="file"
-              id="image-to-pdf-input"
-              accept="image/png, image/jpeg, image/webp, image/*"
-              multiple
-              onChange={(e) => handleImagesUploaded(e, setForm)}
-              className="hidden"
-            />
-            <label
-              htmlFor="image-to-pdf-input"
-              className="cursor-pointer flex flex-col items-center justify-center space-y-3 min-h-[140px]"
-            >
-              <div className="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 flex items-center justify-center shadow-xs">
-                <Upload className="w-7 h-7" />
-              </div>
-              <div className="space-y-1">
-                <p className="text-sm sm:text-base font-bold text-slate-800 dark:text-slate-200">
-                  {images.length > 0
-                    ? `Tap to add more photos (${images.length} selected)`
-                    : 'Tap to select photos or scans'}
-                </p>
-                <p className="text-xs text-slate-500">
-                  Supports multiple JPG, PNG, or WebP &bull; Combines into multi-page PDF &bull; 100% Client-Side
-                </p>
-              </div>
-            </label>
+    <div className="max-w-4xl mx-auto p-4 sm:p-6 transition-colors">
+      {/* Tool Header */}
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
+          <div className="flex items-center gap-2">
+            <span className="bg-blue-600 text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
+              HD PRO BUILD
+            </span>
+            <span className="bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-[11px] font-bold px-3 py-1 rounded-full">
+              ✓ 100% Uncompressed
+            </span>
           </div>
+          <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1">
+            <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+            100% Private &bull; In-Browser
+          </span>
+        </div>
 
-          {errorMessage && (
-            <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 text-xs font-semibold">
-              {errorMessage}
-            </div>
+        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+          Image to PDF - HD Pro (Better than iLovePDF)
+        </h1>
+        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+          100% Client-Side &bull; No Quality Loss &bull; Original Size &bull; Multi-Page JPG, PNG &amp; WebP
+        </p>
+
+        {/* Drag & Drop Upload Box */}
+        <div
+          onClick={() => fileInputRef.current?.click()}
+          onDrop={(e) => {
+            e.preventDefault();
+            if (e.dataTransfer.files) handleFiles(e.dataTransfer.files);
+          }}
+          onDragOver={(e) => e.preventDefault()}
+          className="mt-6 border-2 border-dashed border-blue-400 dark:border-blue-700 hover:border-blue-600 dark:hover:border-blue-500 rounded-2xl p-8 sm:p-12 text-center bg-blue-50/30 dark:bg-slate-800/40 cursor-pointer transition-all shadow-xs"
+        >
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => e.target.files && handleFiles(e.target.files)}
+          />
+          <div className="w-14 h-14 mx-auto rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-md mb-3">
+            <Upload className="w-7 h-7" />
+          </div>
+          <p className="text-base sm:text-lg font-black text-slate-800 dark:text-slate-100">
+            {images.length > 0 ? `Add More Photos (${images.length} Selected)` : 'Tap to select or Drag & Drop Images'}
+          </p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Supports JPG, PNG, WebP &bull; Multi Page &bull; Zero Server Uploads &bull; Max 1:1 Pixel Clarity
+          </p>
+          {isProcessing && (
+            <p className="text-xs font-bold text-blue-600 dark:text-blue-400 mt-3 animate-pulse">
+              Processing image dimensions &amp; colors...
+            </p>
           )}
+        </div>
 
-          <div>
-            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
-              Output PDF Document Title *
-            </label>
-            <input
-              type="text"
-              placeholder="e.g. Scanned_Receipts or Meeting_Notes"
-              value={form.documentTitle || ''}
-              onChange={(e) => setForm({ ...form, documentTitle: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-base sm:text-sm focus:ring-2 focus:ring-blue-600 outline-none"
-            />
-          </div>
+        {/* Preview + Reorder Grid */}
+        {images.length > 0 && (
+          <div className="mt-6">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <Layers className="w-4 h-4 text-blue-600" />
+                Pages ({images.length}) &bull; Reorder or Delete
+              </span>
+              <button
+                type="button"
+                onClick={() => setImages([])}
+                className="text-xs text-rose-600 hover:text-rose-700 dark:text-rose-400 font-bold cursor-pointer"
+              >
+                Clear All
+              </button>
+            </div>
 
-          {/* Uploaded Images List with Preview Cards */}
-          {images.length > 0 && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between text-xs font-bold text-slate-500 px-1">
-                <span>Selected Images ({images.length} pages)</span>
-                <span className="text-emerald-600 flex items-center gap-1 font-semibold">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  Ready to compile into PDF
-                </span>
-              </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {images.map((img, i) => (
+                <div
+                  key={img.id}
+                  className="bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 relative flex flex-col shadow-xs"
+                >
+                  <div className="w-full h-32 bg-slate-100 dark:bg-slate-900 rounded-lg overflow-hidden flex items-center justify-center relative mb-2">
+                    <img
+                      src={img.dataUrl}
+                      alt={`Page ${i + 1}`}
+                      className="w-full h-full object-contain"
+                    />
+                    <span className="absolute bottom-1 left-1 bg-black/70 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
+                      Page {i + 1}
+                    </span>
+                  </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-80 overflow-y-auto p-1">
-                {images.map((img, idx) => (
-                  <div
-                    key={img.id}
-                    className="relative flex items-center gap-3 p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs"
-                  >
-                    <div className="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-700 overflow-hidden shrink-0 flex items-center justify-center">
-                      <img
-                        src={img.previewUrl}
-                        alt={img.name}
-                        className="w-full h-full object-cover"
-                      />
+                  <div className="flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-300 font-medium px-0.5">
+                    <span className="font-bold">{img.width}×{img.height}</span>
+                    <span className="bg-slate-200 dark:bg-slate-700 text-[10px] px-1.5 py-0.5 rounded font-bold">
+                      {img.format}
+                    </span>
+                  </div>
+
+                  {/* Reorder Up/Down + Delete Buttons */}
+                  <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-200 dark:border-slate-700">
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        disabled={i === 0}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          moveImage(i, 'up');
+                        }}
+                        className="p-1 rounded hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer text-slate-600 dark:text-slate-300"
+                        title="Move Page Up"
+                      >
+                        <ArrowUp className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        disabled={i === images.length - 1}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          moveImage(i, 'down');
+                        }}
+                        className="p-1 rounded hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer text-slate-600 dark:text-slate-300"
+                        title="Move Page Down"
+                      >
+                        <ArrowDown className="w-3.5 h-3.5" />
+                      </button>
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">
-                        Page {idx + 1}: {img.name}
-                      </p>
-                      <p className="text-[10px] text-slate-400">
-                        {img.width}×{img.height}px &bull; {(img.size / 1024).toFixed(0)} KB
-                      </p>
-                    </div>
+
                     <button
                       type="button"
-                      onClick={() => removeImage(img.id, setForm)}
-                      className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setImages(images.filter((x) => x.id !== img.id));
+                      }}
+                      className="bg-red-500 hover:bg-red-600 text-white text-xs px-2 py-0.5 rounded font-black cursor-pointer shadow-xs transition-colors"
                       title="Remove image"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      ✕
                     </button>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-          )}
+          </div>
+        )}
+
+        {/* Output Title */}
+        <div className="mt-5">
+          <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+            Output PDF Title (Optional)
+          </label>
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="e.g. Receipts or Scanned_Notes"
+            className="w-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 rounded-xl mt-1.5 text-sm font-medium focus:ring-2 focus:ring-blue-600 outline-none"
+          />
         </div>
-      )}
-      seoContent={
-        /* ===== IMAGE TO PDF - 800+ WORDS - UNIQUE & ADSENSE READY ===== */
-        <div className="p-2 sm:p-4 text-left">
-          <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">About Image to PDF Converter on AllToolsPK</h2>
-          
-          <div className="prose max-w-none text-slate-700 dark:text-slate-300 leading-relaxed space-y-4 text-sm sm:text-base">
-            <p>
-              Image to PDF Converter on AllToolsPK is a free, privacy-first, client-side tool that converts 
-              JPG, PNG, and WebP images into high-quality PDF documents with no quality loss. Combine multiple 
-              images into a single multi-page PDF instantly without uploading files to any server. Unlike other 
-              converters that send your scanned documents and photos to cloud servers, our tool runs 100% in your 
-              browser using HTML5 Canvas and jsPDF technology. Your images never leave your device, ensuring 
-              complete privacy for receipts, invoices, ID cards, and personal photos.
-            </p>
 
-            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">What is Image to PDF Converter?</h3>
-            <p>
-              Image to PDF Converter transforms your images into professional PDF files. For example, if you have 
-              10 photos of receipts, class notes, or scanned CNIC and documents captured with your phone camera, 
-              you can combine them into one organized PDF file for sharing, printing, or archiving. Students can 
-              convert assignment photos into PDF for submission, businesses can convert scanned invoices and 
-              receipts into PDF for accounting, job seekers can convert certificates into one PDF portfolio. Our 
-              converter supports JPG, JPEG, PNG, and WebP formats, maintaining high resolution, sharp text, and 
-              true color reproduction. You can customize page orientation, adjust page margins, and compile 
-              unlimited photos into an uncompressed, publication-grade document in seconds.
-            </p>
+        {/* Download Action Button */}
+        <button
+          onClick={generatePDF}
+          disabled={images.length === 0}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl mt-4 font-black text-sm sm:text-base shadow-md transition-colors disabled:bg-slate-300 dark:disabled:bg-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed cursor-pointer"
+        >
+          {images.length === 0
+            ? 'Upload Images to Generate PDF'
+            : `Download HD PDF - ${images.length} Page${images.length > 1 ? 's' : ''} - 100% Quality`}
+        </button>
 
-            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">How to Use This Image to PDF Tool?</h3>
-            <p><strong className="text-slate-900 dark:text-white">Step 1: Select Images</strong> - Click to upload or drag and drop single or multiple JPG, PNG, or WebP images from your phone, tablet, or PC. All files remain in local browser RAM.</p>
-            <p><strong className="text-slate-900 dark:text-white">Step 2: Configure Page Options</strong> - Choose your target page orientation (Auto, Portrait, or Landscape) and preferred margin styling (None, Compact, or Normal).</p>
-            <p><strong className="text-slate-900 dark:text-white">Step 3: Convert &amp; Download</strong> - Click Download PDF to compile the images into a clean, searchable vector PDF document instantly with zero watermarks or signup requirements.</p>
-
-            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">Key Features of Our Image to PDF Converter</h3>
-            <ul className="list-disc pl-6 space-y-1.5">
-              <li>100% Client-Side Processing - Your images never touch an external server, guaranteeing total confidentiality</li>
-              <li>Multi-Image Batch Compilation - Merge dozens of photos into a single multi-page PDF document simultaneously</li>
-              <li>Universal Image Support - Seamlessly accepts standard JPG, JPEG, PNG, and next-generation WebP graphic formats</li>
-              <li>Zero Quality Degradation - Preserves full camera sensor resolution, document clarity, and fine printed text</li>
-              <li>Intelligent Auto-Orientation - Automatically adjusts each page layout to match horizontal or vertical photos</li>
-              <li>Free Forever with No Watermarks - No paywalls, no monthly subscription fees, and no branding stamps</li>
-              <li>Mobile-Optimized Interface - Smoothly convert smartphone camera photos on Android, iPhone, iPad, and desktop</li>
-              <li>Offline Usability - Once loaded in your browser, perform conversions anywhere without active internet connectivity</li>
-            </ul>
-
-            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">Why Choose AllToolsPK Over Cloud-Based PDF Converters?</h3>
-            <p>
-              Most online image converters upload your files across the internet to remote cloud storage. For sensitive assets like national identity cards (CNIC), passports, medical records, property papers, and tax forms, cloud uploads present significant data privacy risks. Additionally, commercial services often impose arbitrary limitations—such as capping uploads at 3 images or downgrading PDF quality unless you purchase an expensive monthly tier. AllToolsPK executes every stage of the image conversion locally within your browser sandbox. By eliminating server roundtrips, conversions are instantaneous, 100% private, and completely free forever.
-            </p>
-
-            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">Common Everyday Use Cases</h3>
-            <p>
-              <strong>Academic Submissions:</strong> Photograph handwritten homework sheets, assignments, or textbook excerpts and merge them into one organized PDF for online portals.<br/>
-              <strong>Accounting &amp; Tax Expenses:</strong> Bundle physical expense receipts, grocery bills, and fuel slips into an orderly monthly PDF statement for bookkeeping.<br/>
-              <strong>Job Applications &amp; Visas:</strong> Combine degree certificates, recommendation letters, passport scans, and ID photos into a unified application package.
-            </p>
-
-            <h3 className="text-xl font-semibold mt-6 text-slate-900 dark:text-white">Frequently Asked Questions</h3>
-            <div className="space-y-3 pt-1">
-              <div>
-                <strong className="text-slate-900 dark:text-white">Q: Is this Image to PDF converter completely free?</strong><br/>
-                <span>A: Yes, 100% free with unlimited image conversions, no watermarks, and no hidden fees.</span>
-              </div>
-              <div>
-                <strong className="text-slate-900 dark:text-white">Q: Are my confidential pictures safe?</strong><br/>
-                <span>A: Absolutely. Your images are processed solely in your device memory (RAM) and never uploaded to our servers.</span>
-              </div>
-              <div>
-                <strong className="text-slate-900 dark:text-white">Q: How many images can I merge into one PDF?</strong><br/>
-                <span>A: You can combine dozens of images into a single PDF document, limited only by your device memory.</span>
-              </div>
-              <div>
-                <strong className="text-slate-900 dark:text-white">Q: Will the converter blur small text on scanned papers?</strong><br/>
-                <span>A: No. High-resolution photos are embedded directly into standard ISO PDF containers to keep fine text sharp and readable.</span>
-              </div>
-            </div>
-
-            <p className="mt-6 text-sm text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800 pt-4">
-              Disclaimer: This utility compiles images directly within client-side browser memory. Ensure you hold necessary distribution rights for documents processed. AllToolsPK does not monitor, collect, or store user files.
-            </p>
+        {/* Pro Feature Callouts */}
+        <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800 grid sm:grid-cols-3 gap-3 text-xs text-slate-600 dark:text-slate-400">
+          <div className="flex items-start gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+            <span><strong>Original Quality:</strong> Zero recompression, pixel data copied 1:1 without blurring fine text.</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+            <span><strong>Native Page Size:</strong> Page adapts to each photo size (not forced to A4) — no cropping or borders.</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+            <span><strong>Total Privacy:</strong> 100% client-side memory execution — no pictures uploaded to any server.</span>
           </div>
         </div>
-      }
-      generateFile={generateImagePdf}
-    />
+      </div>
+
+      {/* SEO & Educational Content */}
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 mt-6 shadow-sm leading-relaxed text-sm text-slate-700 dark:text-slate-300">
+        <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mb-3">
+          About Image to PDF HD Pro Converter
+        </h2>
+        <p className="mb-4">
+          AllToolsPK Image to PDF HD Pro is an uncompromising, privacy-first converter engineered for professionals, students, and businesses who demand exact image clarity. Traditional cloud-based converters like iLovePDF recompress photos with aggressive lossy compression algorithms, degrading fine handwriting, small receipt numbers, and official stamps. Our HD engine uses uncompressed pixel transport (`compress: false` &amp; `NONE` sampling) so that every pixel captured by your camera sensor is preserved at 100% fidelity.
+        </p>
+
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white mt-5 mb-2">
+          Why HD Pro Quality is Superior
+        </h3>
+        <ul className="list-disc pl-5 space-y-1.5 mb-4">
+          <li><strong>No Arbitrary A4 Cropping:</strong> Each PDF page dynamically matches the exact width and height of each image, ensuring receipts, panoramic captures, and square scans are never forced into awkward letter ratios.</li>
+          <li><strong>Zero Compression Artifacts:</strong> JPEG and PNG streams are injected directly into standard ISO PDF containers without JPEG re-encoding generational loss.</li>
+          <li><strong>Completely Free &amp; Offline Capable:</strong> No watermark stamps, no 3-image limits, and no subscriptions. Everything executes in your device RAM.</li>
+        </ul>
+
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white mt-5 mb-2">
+          How to Convert Images to PDF in 3 Steps
+        </h3>
+        <ol className="list-decimal pl-5 space-y-1.5">
+          <li><strong>Select or Drop Images:</strong> Add single or multiple JPG, PNG, or WebP files from your phone, tablet, or computer.</li>
+          <li><strong>Arrange Pages:</strong> Reorder pages using the arrow controls or delete unwanted scans with a single tap.</li>
+          <li><strong>Download HD PDF:</strong> Enter a custom document title and click Download HD PDF for an instant download.</li>
+        </ol>
+      </div>
+
+      {/* Toast Notification */}
+      {toastMsg && (
+        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 text-xs font-bold border border-slate-700 dark:border-slate-200 animate-in fade-in slide-in-from-bottom-2">
+          <span>{toastMsg}</span>
+          <button
+            type="button"
+            onClick={() => setToastMsg(null)}
+            className="ml-2 font-black cursor-pointer text-slate-400 hover:text-white dark:hover:text-black"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
 
-export default ImageToPdfTool;
+export { ImageToPDFPro as ImageToPdfTool };
+export default ImageToPDFPro;
