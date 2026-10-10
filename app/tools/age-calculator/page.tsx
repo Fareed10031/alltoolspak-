@@ -1,12 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AgeCalculatorTool } from '@/components/tools/AgeCalculatorTool';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
 
 export default function AgeCalculatorPage() {
+  useEffect(() => {
+    document.title = 'Age Calculator - Exact Chronological Age & Live Counter | AllToolsPK';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute(
+        'content',
+        'Calculate exact age from date of birth in years, months, days, hours, and seconds. 100% free and client-side, leap year accurate for Pakistan CNIC, school, and job forms.'
+      );
+    }
+  }, []);
   const navigateTo = (page: string) => {
     if (page === 'home' || page === '/') {
       window.location.href = '/';
