@@ -78,7 +78,7 @@ export function AboutPage() {
               </div>
 
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed pt-1">
-                Fareed Ullah is a software engineer and web systems architect based in Peshawar, Pakistan. Motivated by the frustrating paywalls, upload queues, and privacy violations common across online tool websites, Fareed engineered <strong>alltoolspk.com</strong> with a clear purpose: to deliver an uncompromising suite of 8 essential digital utilities—including PDF merge/compression, image optimization, YouTube thumbnail extraction, EU Amazon VAT calculation, AI background removal, text paraphrasing, AI content detection, and ATS resume building—that operate <strong>100% on the client side</strong>.
+                Fareed Ullah is a software engineer and web systems architect based in Peshawar, Pakistan. Motivated by the frustrating paywalls, upload queues, and privacy violations common across online tool websites, Fareed engineered <strong>alltoolspk.com</strong> with a clear purpose: to deliver an uncompromising suite of essential digital utilities—including PDF merge/compression, image optimization, YouTube thumbnail extraction, EU Amazon VAT calculation, QR code generation, text paraphrasing, AI content detection, and ATS resume building—that operate <strong>100% on the client side</strong>.
               </p>
 
               <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 text-xs text-slate-600 dark:text-slate-300 space-y-1.5">

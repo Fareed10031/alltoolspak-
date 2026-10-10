@@ -33,8 +33,6 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
         'youtube-thumb',
         'youtube-thumbnail',
         'amazon-vat',
-        'bg-remover',
-        'background-remover',
         'paraphraser',
         'detector',
         'ai-detector',

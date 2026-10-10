@@ -13,18 +13,6 @@ export const ToolIconsConfig: Record<string, { bg: string; icon: React.ReactNode
     bg: "bg-gradient-to-br from-[#0052D4] to-[#4364F7]",
     icon: <span className="text-white font-black text-xl">VAT</span>
   },
-  "ai-background-remover": {
-    bg: "bg-gradient-to-br from-[#8E2DE2] to-[#4A00E0]",
-    icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12 2L13.5 8.5H20L14.75 12.5L16.25 19L12 14.75L7.75 19L9.25 12.5L4 8.5H10.5L12 2Z"/></svg>
-  },
-  "bg-remover": {
-    bg: "bg-gradient-to-br from-[#8E2DE2] to-[#4A00E0]",
-    icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12 2L13.5 8.5H20L14.75 12.5L16.25 19L12 14.75L7.75 19L9.25 12.5L4 8.5H10.5L12 2Z"/></svg>
-  },
-  "background-remover": {
-    bg: "bg-gradient-to-br from-[#8E2DE2] to-[#4A00E0]",
-    icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12 2L13.5 8.5H20L14.75 12.5L16.25 19L12 14.75L7.75 19L9.25 12.5L4 8.5H10.5L12 2Z"/></svg>
-  },
   "pdf-merger": {
     bg: "bg-gradient-to-br from-[#FF416C] to-[#FF4B2B]",
     icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>

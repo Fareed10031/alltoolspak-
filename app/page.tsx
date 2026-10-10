@@ -22,7 +22,6 @@ export default function Page() {
       'youtube-thumb',
       'youtube-thumbnail',
       'amazon-vat',
-      'bg-remover',
       'paraphraser',
       'detector',
       'ai-detector',

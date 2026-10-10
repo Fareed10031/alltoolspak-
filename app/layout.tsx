@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     'image compressor',
     'amazon eu vat calculator',
     'youtube thumbnail downloader',
-    'ai background remover',
+    'qr code generator',
     'ats resume builder',
     'ai detector',
     'humanize ai text',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'alltoolspk.com - Free Web Tools',
-    description: '100% Free & Client-Side: PDF Tools, Image Compressor, Amazon VAT, AI Background Remover & ATS Resume Builder.',
+    description: '100% Free & Client-Side: PDF Tools, Image Compressor, Amazon VAT, QR Code Generator & ATS Resume Builder.',
     url: 'https://alltoolspk.com',
     siteName: 'alltoolspk.com',
     locale: 'en_US',

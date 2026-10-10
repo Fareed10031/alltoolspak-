@@ -2,7 +2,6 @@ import { ComponentType } from 'react';
 
 // 9 New Core Pro Tools
 import { AmazonEuVatTool } from '@/components/tools/AmazonEuVatTool';
-import { BackgroundRemoverTool } from '@/components/tools/BackgroundRemoverTool';
 import { PdfMergerTool } from '@/components/tools/PdfMergerTool';
 import { ImageToPdfTool } from '@/components/tools/ImageToPdfTool';
 import { QrGeneratorTool } from '@/components/tools/QrGeneratorTool';
@@ -56,14 +55,6 @@ export const tools: ToolItem[] = [
     component: AmazonEuVatTool,
     category: 'E-Commerce & Finance',
     badge: 'EU OSS Ready',
-  },
-  {
-    id: 'background-remover',
-    name: 'AI Background Remover',
-    description: 'Automatic background removal powered by client-side neural vision. Export crisp transparent cutouts with zero watermarks.',
-    component: BackgroundRemoverTool,
-    category: 'AI & Creative',
-    badge: 'Neural Vision',
   },
   {
     id: 'pdf-merge',
@@ -232,14 +223,6 @@ export const tools: ToolItem[] = [
     component: AmazonVat,
     category: 'E-Commerce & Finance',
     badge: '195 Countries',
-  },
-  {
-    id: 'bg-remover',
-    name: 'AI Background Remover',
-    description: 'Automatic background removal powered by client-side neural vision.',
-    component: BackgroundRemoverTool,
-    category: 'AI & Creative',
-    badge: 'Neural Vision',
   },
   {
     id: 'paraphraser',

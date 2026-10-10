@@ -16,7 +16,6 @@ export default function Page() {
         'image-compress',
         'youtube-thumb',
         'amazon-vat',
-        'bg-remover',
         'paraphraser',
         'detector',
         'resume-builder',

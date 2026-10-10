@@ -217,7 +217,7 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
                 <strong>Instantaneous Execution Speed:</strong> Cloud converters suffer from file upload delays, remote processing queues, and download waits. By processing everything locally in device RAM, AllToolsPK compiles PDFs and renders images instantly.
               </li>
               <li>
-                <strong>Zero Watermarks &amp; High-Fidelity Output:</strong> Every file generated—whether a multi-page PDF invoice, a transparent PNG background cutout, or an ATS resume—is output in full fidelity without degrading quality or applying promotional stamps.
+                <strong>Zero Watermarks &amp; High-Fidelity Output:</strong> Every file generated—whether a multi-page PDF invoice, a custom QR code with logo, or an ATS resume—is output in full fidelity without degrading quality or applying promotional stamps.
               </li>
               <li>
                 <strong>Future-Proof Modular Design:</strong> The platform is designed to scale dynamically. New document, security, and calculation modules integrate seamlessly with automatic logo generation, consistent responsive layouts, and universal accessibility.

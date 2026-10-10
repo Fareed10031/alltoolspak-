@@ -61,20 +61,6 @@ export const TOOLS: ToolItem[] = [
     colorIndex: 0,
   },
   {
-    slug: "background-remover",
-    name: "AI Background Remover",
-    desc: "Automatic background removal powered by client-side neural vision. Export crisp transparent cutouts with zero watermarks.",
-    tag: "Neural Vision",
-    colorIndex: 1,
-    color: "bg-gradient-to-br from-violet-600 to-indigo-600",
-    icon: (
-      <div className="w-full h-full flex items-center justify-center relative text-white">
-        <User className="w-7 h-7 text-white/90" />
-        <Wand2 className="w-4 h-4 text-white absolute -top-0.5 -right-0.5 drop-shadow-sm" />
-      </div>
-    ),
-  },
-  {
     slug: "pdf-merge",
     name: "PDF Merger",
     desc: "Merge multiple PDFs into one single file in seconds, 100% offline.",

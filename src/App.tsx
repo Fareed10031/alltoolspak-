@@ -13,7 +13,6 @@ import { ContactPage } from '@/components/pages/ContactPage';
 
 // 9 New Core Pro Tools
 import { AmazonEuVatTool } from '@/components/tools/AmazonEuVatTool';
-import { BackgroundRemoverTool } from '@/components/tools/BackgroundRemoverTool';
 import { PdfMergerTool } from '@/components/tools/PdfMergerTool';
 import { ImageToPdfTool } from '@/components/tools/ImageToPdfTool';
 import { QrGeneratorTool } from '@/components/tools/QrGeneratorTool';
@@ -63,12 +62,6 @@ export function normalizeRoute(raw: string): string {
     case 'eu-vat-calculator':
     case 'vat-calculator':
       return 'amazon-eu-vat';
-
-    case 'background-remover':
-    case 'bg-remover':
-    case 'ai-background-remover':
-    case 'remove-bg':
-      return 'background-remover';
 
     case 'pdf-merge':
     case 'pdf-merger':
@@ -261,7 +254,6 @@ export default function App() {
     } else if (
       [
         'amazon-eu-vat',
-        'background-remover',
         'pdf-merge',
         'image-to-pdf',
         'qr-generator',
@@ -309,8 +301,6 @@ export default function App() {
       // 9 Core Pro Tools
       case 'amazon-eu-vat':
         return <AmazonEuVatTool />;
-      case 'background-remover':
-        return <BackgroundRemoverTool />;
       case 'pdf-merge':
         return <PdfMergerTool />;
       case 'image-to-pdf':
