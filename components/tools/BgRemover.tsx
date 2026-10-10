@@ -47,9 +47,18 @@ export default function AIProBackgroundRemover() {
     setStatus('Loading Pro AI Model (42MB - One Time)...');
 
     try {
-      const { removeBackground } = await import('@imgly/background-removal');
+      let removeBackgroundFn: any;
+      try {
+        // @ts-ignore
+        const mod = await import('@imgly/background-removal');
+        removeBackgroundFn = mod.removeBackground;
+      } catch {
+        // @ts-ignore
+        const cdnMod = await import(/* @vite-ignore */ 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/bundle.esm.mjs');
+        removeBackgroundFn = cdnMod.removeBackground;
+      }
 
-      const blob = await removeBackground(file, {
+      const blob = await removeBackgroundFn(file, {
         // STABLE CDN - V10 - This has isnet_fp16 file - 100% exists
         publicPath: 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/',
         model: 'isnet_fp16', // BEST QUALITY - Hair Details Pro
@@ -80,8 +89,17 @@ export default function AIProBackgroundRemover() {
       // Fallback to small model if fp16 fails on slow net
       try {
         setStatus('Retrying with Fast Model...');
-        const { removeBackground } = await import('@imgly/background-removal');
-        const blob2 = await removeBackground(file, {
+        let removeBgFallback: any;
+        try {
+          // @ts-ignore
+          const mod = await import('@imgly/background-removal');
+          removeBgFallback = mod.removeBackground;
+        } catch {
+          // @ts-ignore
+          const cdnMod = await import(/* @vite-ignore */ 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/bundle.esm.mjs');
+          removeBgFallback = cdnMod.removeBackground;
+        }
+        const blob2 = await removeBgFallback(file, {
           publicPath: 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/',
           model: 'isnet_quint8',
         } as any);
