@@ -26,6 +26,7 @@ import GlobalSalaryCalculator from '@/components/tools/GlobalSalaryCalculator';
 import { PdfToWordTool } from '@/components/tools/PdfToWordTool';
 import Pdf3XProPage from '@/app/pdf-3x-pro/page';
 import { CurrencyGoldRates } from '@/components/tools/CurrencyGoldRates';
+import { OneVisaWorldTool } from '@/components/tools/OneVisaWorldTool';
 
 // Companion / Legacy Tools
 import { ImageCompressor } from '@/components/tools/ImageCompressor';
@@ -62,6 +63,13 @@ export function normalizeRoute(raw: string): string {
     case 'eu-vat-calculator':
     case 'vat-calculator':
       return 'amazon-eu-vat';
+
+    case 'onevisa-world':
+    case 'visa-eligibility':
+    case 'visa-calculator':
+    case 'crs-calculator':
+    case 'global-visa-calculator':
+      return 'onevisa-world';
 
     case 'pdf-merge':
     case 'pdf-merger':
@@ -254,6 +262,7 @@ export default function App() {
     } else if (
       [
         'amazon-eu-vat',
+        'onevisa-world',
         'pdf-merge',
         'image-to-pdf',
         'qr-generator',
@@ -301,6 +310,8 @@ export default function App() {
       // 9 Core Pro Tools
       case 'amazon-eu-vat':
         return <AmazonEuVatTool />;
+      case 'onevisa-world':
+        return <OneVisaWorldTool />;
       case 'pdf-merge':
         return <PdfMergerTool />;
       case 'image-to-pdf':

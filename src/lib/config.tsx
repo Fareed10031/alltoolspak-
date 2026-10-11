@@ -61,6 +61,19 @@ export const TOOLS: ToolItem[] = [
     colorIndex: 0,
   },
   {
+    slug: "onevisa-world",
+    name: "OneVisa World - Visa Points Calculator",
+    desc: "Free Global Visa Eligibility & Points Calculator 2026. Check Canada CRS, UK Points, Australia 65, Germany Opportunity Card.",
+    tag: "Visa & CRS",
+    colorIndex: 1,
+    color: "bg-gradient-to-br from-blue-700 to-indigo-600",
+    icon: (
+      <div className="w-full h-full flex items-center justify-center relative text-white">
+        <Globe className="w-7 h-7 text-white/95" />
+      </div>
+    ),
+  },
+  {
     slug: "pdf-merge",
     name: "PDF Merger",
     desc: "Merge multiple PDFs into one single file in seconds, 100% offline.",

@@ -33,6 +33,8 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
         'youtube-thumb',
         'youtube-thumbnail',
         'amazon-vat',
+        'onevisa-world',
+        'visa-eligibility',
         'paraphraser',
         'detector',
         'ai-detector',

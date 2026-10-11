@@ -14,6 +14,7 @@ import MortgageCalculator from '@/components/tools/MortgageCalculator';
 import GlobalSalaryCalculator from '@/components/tools/GlobalSalaryCalculator';
 import { PdfToWordTool } from '@/components/tools/PdfToWordTool';
 import { CurrencyGoldRates } from '@/components/tools/CurrencyGoldRates';
+import { OneVisaWorldTool } from '@/components/tools/OneVisaWorldTool';
 
 // Supporting Tools
 import { ReziClonePro } from '@/components/tools/ReziClonePro';
@@ -55,6 +56,14 @@ export const tools: ToolItem[] = [
     component: AmazonEuVatTool,
     category: 'E-Commerce & Finance',
     badge: 'EU OSS Ready',
+  },
+  {
+    id: 'onevisa-world',
+    name: 'OneVisa World - Visa Eligibility & Points Calculator',
+    description: 'Free Global Visa Eligibility & Points Calculator 2026. Check Canada CRS, UK Points, Australia 65, Germany Opportunity Card with official tables.',
+    component: OneVisaWorldTool,
+    category: 'Immigration & Relocation',
+    badge: 'CRS • 2026 Ready',
   },
   {
     id: 'pdf-merge',
