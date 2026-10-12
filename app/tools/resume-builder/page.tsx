@@ -1,12 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import ATSResumeBuilder from '@/components/tools/ATSResumeBuilder';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
 
 export default function ResumeBuilderPage() {
+  useEffect(() => {
+    document.title = 'ATS Resume Builder - Pass Workday, Greenhouse & Lever - 99/99 ATS Score | AllToolsPK';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute(
+        'content',
+        "World's #1 Free ATS Resume Builder - 100% Free & Client-Side. Enhancv clean design + Rezi ATS score checker. Real text-based PDF, not image. Pass Workday, Greenhouse, Lever. No upload, 100% private."
+      );
+    }
+  }, []);
   const navigateTo = (page: string) => {
     if (page === 'home' || page === '/') {
       window.location.href = '/';
