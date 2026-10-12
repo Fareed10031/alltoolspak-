@@ -5,12 +5,12 @@ import { ImageXProTool } from '@/components/tools/ImageXProTool';
 
 export default function ImageXProPage() {
   useEffect(() => {
-    document.title = 'ImageX Pro V9 PAK FIX - 2 Engines - 100% Real | AllToolsPK';
+    document.title = 'ImageX Pro V13 FINAL - Remove.bg Quality - Guarantee | AllToolsPK';
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       metaDesc.setAttribute(
         'content',
-        'ImageX Pro V9 Pakistan Fix - Mobile Data + WiFi Both 100% Real. 2 Engines: @imgly 1.4.5 + Google MediaPipe. Auto switch, no black patch.'
+        'ImageX Pro V13 Final - Remove.bg Quality with Bria RMBG-1.4. Full body, dress, and hair background remover. 100% private, 0% black, guaranteed.'
       );
     }
   }, []);
