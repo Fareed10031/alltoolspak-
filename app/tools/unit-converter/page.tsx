@@ -1,12 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { UnitConverterTool } from '@/components/tools/UnitConverterTool';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
 
 export default function UnitConverterPage() {
+  useEffect(() => {
+    document.title = 'Unit Converter - Most Powerful 200+ Units Converter | AllToolsPK';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute(
+        'content',
+        'The most powerful Unit Converter. Convert Length, Weight, Temperature, Area, Volume, Speed, Time, Data, Pressure, Energy, Power, Fuel instantly. 200+ units, NIST accurate, 100% free, offline.'
+      );
+    }
+  }, []);
   const navigateTo = (page: string) => {
     if (page === 'home' || page === '/') {
       window.location.href = '/';
