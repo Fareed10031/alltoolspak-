@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 
 const allTools = [
+  { name: "ImageX Pro (AI BG & Upscale)", href: "/imagex-pro", icon: "✨", bg: "bg-purple-50" },
   { name: "PDF Merger", href: "/pdf-merger", icon: "📄", bg: "bg-red-50" },
   { name: "Image to PDF", href: "/image-to-pdf", icon: "🖼️", bg: "bg-blue-50" },
   { name: "QR Code Generator", href: "/qr-generator", icon: "🔳", bg: "bg-green-50" },

@@ -1,6 +1,7 @@
 import { ComponentType } from 'react';
 
-// 13 High-Earning Core Pro Tools
+// 14 High-Earning Core Pro Tools
+import { ImageXProTool } from '@/components/tools/ImageXProTool';
 import MortgageCalculator from '@/components/tools/MortgageCalculator';
 import { USAPaycheckCalculator2026 } from '@/components/tools/USAPaycheckCalculator2026';
 import { AmazonEuVatTool } from '@/components/tools/AmazonEuVatTool';
@@ -46,8 +47,35 @@ export interface ToolItem {
   gradient?: string;
 }
 
-// 13 High-Earning Core Suite in CPC Order (Password Generator Removed)
+// 14 High-Earning Core Suite in CPC Order - HERO Tool Included
 export const tools: ToolItem[] = [
+  // HERO - 150M+ Searches
+  {
+    id: 'imagex-pro',
+    slug: 'imagex-pro',
+    name: 'ImageX Pro - AI Background Remover & Upscaler',
+    description: 'Remove BG with real AI, upscale 4x HD, compress 90%, convert format - 100% private browser AI, no upload.',
+    component: ImageXProTool,
+    category: 'AI & Media',
+    badge: 'HERO • REAL AI',
+    path: '/tools/imagex-pro',
+    color: 'from-violet-600 via-purple-600 to-fuchsia-600',
+    tag: 'HERO • REAL AI',
+    isNew: true,
+    isPopular: true,
+  },
+  {
+    id: 'background-remover',
+    slug: 'background-remover',
+    name: 'AI Background Remover',
+    description: 'Remove BG with real AI, upscale 4x HD, compress 90%, convert format - 100% private browser AI.',
+    component: ImageXProTool,
+    category: 'AI & Media',
+    badge: 'REAL AI',
+    path: '/tools/background-remover',
+    color: 'from-violet-600 via-purple-600 to-fuchsia-600',
+  },
+
   // 1 - $10 CPC
   {
     id: 'mortgage-calculator',

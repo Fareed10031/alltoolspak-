@@ -1,6 +1,18 @@
 import React from 'react';
 
 export const ToolIconsConfig: Record<string, { bg: string; icon: React.ReactNode }> = {
+  "imagex-pro": {
+    bg: "bg-gradient-to-br from-[#7C3AED] via-[#9333EA] to-[#C026D3]",
+    icon: <span className="text-white text-2xl">✨</span>
+  },
+  "imagex": {
+    bg: "bg-gradient-to-br from-[#7C3AED] via-[#9333EA] to-[#C026D3]",
+    icon: <span className="text-white text-2xl">✨</span>
+  },
+  "background-remover": {
+    bg: "bg-gradient-to-br from-[#7C3AED] via-[#9333EA] to-[#C026D3]",
+    icon: <span className="text-white text-2xl">✨</span>
+  },
   "amazon-eu-vat-calculator": {
     bg: "bg-gradient-to-br from-[#0052D4] to-[#4364F7]",
     icon: <span className="text-white font-black text-xl">VAT</span>
