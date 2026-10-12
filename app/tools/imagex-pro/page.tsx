@@ -5,12 +5,12 @@ import { ImageXProTool } from '@/components/tools/ImageXProTool';
 
 export default function Page() {
   useEffect(() => {
-    document.title = 'ImageX Pro HERO - AI Background Remover + Upscaler + Compressor - 100% Private - AllToolsPK';
+    document.title = 'ImageX Pro V6 GENIUS - Self Replacing - 100% Real | AllToolsPK';
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       metaDesc.setAttribute(
         'content',
-        'Remove background 100% real AI, upscale 4x HD, compress 90%, convert JPG PNG WebP - 100% private browser AI, no upload, no server - Free - 150M+ searches - Hero tool'
+        'ImageX Pro V6 Genius Logic - 100% Real AI Background Remover + 4x HD Upscaler + Compressor. Self-replacing, no cache, 100% private.'
       );
     }
   }, []);

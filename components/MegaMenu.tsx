@@ -3,18 +3,19 @@ import React, { useState } from 'react';
 
 const allTools = [
   { name: "ImageX Pro (AI BG & Upscale)", href: "/imagex-pro", icon: "✨", bg: "bg-purple-50" },
-  { name: "PDF Merger", href: "/pdf-merger", icon: "📄", bg: "bg-red-50" },
+  { name: "Mortgage Calculator USA", href: "/mortgage-calculator", icon: "🏠", bg: "bg-blue-100" },
+  { name: "USA Paycheck 2026", href: "/usa-paycheck-calculator", icon: "💵", bg: "bg-green-100" },
+  { name: "Amazon EU VAT Calculator", href: "/amazon-eu-vat", icon: "🇪🇺", bg: "bg-amber-50" },
+  { name: "OneVisa World (CRS & Points)", href: "/onevisa-world", icon: "🌐", bg: "bg-sky-50" },
+  { name: "Global Salary Calculator", href: "/global-salary-calculator", icon: "🌍", bg: "bg-indigo-50" },
+  { name: "ATS Resume Builder", href: "/resume-builder", icon: "📝", bg: "bg-purple-50" },
+  { name: "PDF 3X Pro Suite", href: "/pdf-3x-pro", icon: "📚", bg: "bg-red-100" },
+  { name: "Live Currency & Gold", href: "/currency-gold-rates", icon: "💰", bg: "bg-yellow-100" },
+  { name: "Age Calculator Pro", href: "/age-calculator", icon: "📅", bg: "bg-orange-50" },
+  { name: "Unit Converter (200+ Units)", href: "/unit-converter", icon: "⚖️", bg: "bg-gray-100" },
+  { name: "PDF Merger", href: "/pdf-merge", icon: "📄", bg: "bg-red-50" },
   { name: "Image to PDF", href: "/image-to-pdf", icon: "🖼️", bg: "bg-blue-50" },
   { name: "QR Code Generator", href: "/qr-generator", icon: "🔳", bg: "bg-green-50" },
-  { name: "Password Generator", href: "/password-generator", icon: "🔒", bg: "bg-yellow-50" },
-  { name: "ATS Resume Builder", href: "/ats-resume-builder", icon: "📝", bg: "bg-purple-50" },
-  { name: "Age Calculator", href: "/age-calculator", icon: "📅", bg: "bg-orange-50" },
-  { name: "Unit Converter", href: "/unit-converter", icon: "⚖️", bg: "bg-gray-100" },
-  { name: "USA Paycheck 2026", href: "/usa-paycheck-calculator", icon: "💵", bg: "bg-green-100" },
-  { name: "Mortgage Calculator", href: "/mortgage-calculator", icon: "🏠", bg: "bg-blue-100" },
-  { name: "Global Salary Calculator", href: "/global-salary-calculator", icon: "🌍", bg: "bg-indigo-50" },
-  { name: "PDF 3X Pro", href: "/pdf-3x-pro", icon: "📚", bg: "bg-red-100" },
-  { name: "Live Currency & Gold", href: "/currency-gold-rates", icon: "💰", bg: "bg-yellow-100" },
 ];
 
 export default function MegaMenu() {
