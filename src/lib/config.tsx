@@ -1,7 +1,5 @@
 import React from 'react';
 import {
-  Wand2,
-  User,
   Files,
   FileCheck,
   ImageIcon,
@@ -14,9 +12,6 @@ import {
   Ruler,
   Scale,
   ArrowLeftRight,
-  KeyRound,
-  ShieldCheck,
-  Lock,
   Home,
   Globe,
   Coins,
@@ -32,15 +27,14 @@ export interface ToolItem {
   name: string;
   desc: string;
   tag: string;
-  colorIndex: number;
+  colorIndex?: number;
+  color?: string;
+  icon?: React.ReactNode;
+  badge?: string;
+  badgeColor?: string;
   shortName?: string;
   fullTitle?: string;
   shortDesc?: string;
-  badge?: string;
-  badgeColor?: string;
-  color?: string;
-  gradient?: string;
-  icon?: React.ReactNode;
   seoTitle?: string;
   path?: string;
   url?: string;
@@ -50,307 +44,319 @@ export interface ToolItem {
   isNew?: boolean;
   isPopular?: boolean;
   features?: string[];
+  gradient?: string;
 }
 
+// EXACT 13 HIGH-EARNING TOOLS IN CPC & REVENUE PRIORITY ORDER (Password Generator Completely Removed)
 export const TOOLS: ToolItem[] = [
+  // 1 - $10 CPC - HIGHEST EARNING
+  {
+    slug: "mortgage-calculator",
+    name: "Mortgage Calculator USA",
+    shortName: "Mortgage USA",
+    desc: "Calculate true monthly payment with PMI, Property Tax, Insurance & HOA - USA 2026",
+    description: "Calculate true monthly payment with PMI, Property Tax, Insurance & HOA - USA 2026",
+    badge: "PMI & Tax Ready",
+    badgeColor: "bg-purple-50 text-purple-700 border border-purple-200",
+    tag: "PMI & Tax Ready",
+    category: "Finance",
+    colorIndex: 0,
+    color: "bg-gradient-to-br from-purple-600 to-indigo-600",
+    icon: (
+      <div className="w-full h-full flex items-center justify-center text-white text-2xl" aria-label="Mortgage Calculator USA Icon">
+        🏠
+      </div>
+    ),
+    path: "/tools/mortgage-calculator",
+    url: "/mortgage-calculator",
+    isFeatured: true,
+    isPopular: true,
+  },
+
+  // 2 - $8 CPC
+  {
+    slug: "usa-paycheck-calculator",
+    name: "USA Paycheck Calculator 2026",
+    shortName: "USA Paycheck",
+    desc: "Calculate take-home pay after Federal, State, 401(k), and FICA taxes based on verified 2026 IRS standard deductions and tax brackets.",
+    description: "Calculate take-home pay after Federal, State, 401(k), and FICA taxes based on verified 2026 IRS standard deductions and tax brackets.",
+    badge: "2026 IRS Brackets",
+    badgeColor: "bg-green-50 text-green-700 border border-green-200",
+    tag: "2026 IRS Brackets",
+    category: "Finance",
+    colorIndex: 1,
+    color: "bg-gradient-to-br from-green-500 to-emerald-600",
+    icon: (
+      <div className="w-full h-full flex items-center justify-center text-white font-black text-2xl" aria-label="USA Paycheck Calculator Icon">
+        $
+      </div>
+    ),
+    path: "/tools/usa-paycheck-calculator",
+    url: "/usa-paycheck-calculator",
+    isFeatured: true,
+    isPopular: true,
+  },
+
+  // 3 - $6 CPC
   {
     slug: "amazon-eu-vat",
     name: "Amazon EU VAT Calculator",
+    shortName: "Amazon VAT",
     desc: "Calculate destination EU VAT rates, net turnover amounts, and generate bulk PDF invoices and ZIP packages for Amazon sellers.",
+    description: "Calculate destination EU VAT rates, net turnover amounts, and generate bulk PDF invoices and ZIP packages for Amazon sellers.",
+    badge: "EU OSS Ready",
+    badgeColor: "bg-blue-50 text-blue-700 border border-blue-200",
     tag: "EU OSS Ready",
-    colorIndex: 0,
+    category: "E-Commerce",
+    colorIndex: 2,
+    color: "bg-gradient-to-br from-blue-600 to-blue-800",
+    icon: (
+      <div className="w-full h-full flex items-center justify-center text-white font-black text-xl" aria-label="Amazon EU VAT Calculator Icon">
+        VAT
+      </div>
+    ),
+    path: "/tools/amazon-eu-vat",
+    url: "/amazon-eu-vat",
   },
+
+  // 4 - $5 CPC
   {
     slug: "onevisa-world",
     name: "OneVisa World - Visa Points Calculator",
+    shortName: "OneVisa World",
     desc: "Free Global Visa Eligibility & Points Calculator 2026. Check Canada CRS, UK Points, Australia 65, Germany Opportunity Card.",
+    description: "Free Global Visa Eligibility & Points Calculator 2026. Check Canada CRS, UK Points, Australia 65, Germany Opportunity Card.",
+    badge: "Visa & CRS",
+    badgeColor: "bg-blue-50 text-blue-700 border border-blue-200",
     tag: "Visa & CRS",
-    colorIndex: 1,
-    color: "bg-gradient-to-br from-blue-700 to-indigo-600",
-    icon: (
-      <div className="w-full h-full flex items-center justify-center relative text-white">
-        <Globe className="w-7 h-7 text-white/95" />
-      </div>
-    ),
-  },
-  {
-    slug: "pdf-merge",
-    name: "PDF Merger",
-    desc: "Merge multiple PDFs into one single file in seconds, 100% offline.",
-    tag: "PDF Tool",
-    colorIndex: 2,
-    color: "bg-gradient-to-br from-orange-400 to-red-500",
-    icon: (
-      <div className="w-full h-full flex items-center justify-center relative text-white">
-        <Files className="w-6 h-6 text-white/90" />
-        <FileCheck className="w-4 h-4 text-white absolute -bottom-0.5 -right-0.5 drop-shadow-sm" />
-      </div>
-    ),
-  },
-  {
-    slug: "image-to-pdf",
-    name: "Image to PDF",
-    desc: "Convert JPG/PNG images to high quality PDF, no quality loss.",
-    tag: "Convert",
+    category: "Immigration",
     colorIndex: 3,
-    color: "bg-gradient-to-br from-emerald-600 to-emerald-400",
+    color: "bg-gradient-to-br from-blue-500 to-blue-700",
     icon: (
-      <div
-        className="w-full h-full flex items-center justify-center gap-1 text-white"
-        aria-label="Image to PDF Tool Icon"
-        title="Image to PDF Tool Icon"
-      >
-        <ImageIcon className="w-5 h-5 text-white" />
-        <ArrowRight className="w-3.5 h-3.5 text-white/80 shrink-0" />
-        <FileText className="w-5 h-5 text-white" />
+      <div className="w-full h-full flex items-center justify-center text-white text-2xl" aria-label="OneVisa World Icon">
+        🌐
       </div>
     ),
+    path: "/tools/onevisa-world",
+    url: "/onevisa-world",
+    isNew: true,
   },
+
+  // 5 - $4 CPC
   {
-    slug: "qr-generator",
-    name: "QR Code Generator",
-    desc: "Create QR codes for links, text, or contact info instantly.",
-    tag: "Generator",
+    slug: "global-salary-calculator",
+    name: "Global Salary Calculator",
+    shortName: "Global Salary",
+    desc: "Calculate take-home pay, tax deductions, hourly & monthly wages across 192 countries for 2026.",
+    description: "Calculate take-home pay, tax deductions, hourly & monthly wages across 192 countries for 2026.",
+    badge: "192 Countries",
+    badgeColor: "bg-sky-50 text-sky-700 border border-sky-200",
+    tag: "192 Countries",
+    category: "Finance",
     colorIndex: 4,
-    color: "bg-gradient-to-br from-red-700 to-rose-500",
+    color: "bg-gradient-to-br from-sky-500 to-blue-600",
     icon: (
-      <div
-        className="w-full h-full flex items-center justify-center relative text-white"
-        aria-label="QR Code Generator Tool Icon"
-        title="QR Code Generator Tool Icon"
-      >
-        <QrCode className="w-8 h-8 text-white" />
-        <span className="w-2 h-2 rounded-full bg-amber-300 absolute top-1.5 right-1.5 shadow-sm animate-pulse" />
+      <div className="w-full h-full flex items-center justify-center text-white text-2xl" aria-label="Global Salary Calculator Icon">
+        🌍
       </div>
     ),
+    path: "/tools/global-salary-calculator",
+    url: "/global-salary-calculator",
   },
-  {
-    slug: "password-gen",
-    name: "Password Generator",
-    desc: "Generate strong secure passwords instantly with custom length.",
-    tag: "Security",
-    colorIndex: 5,
-    color: "bg-gradient-to-br from-cyan-600 to-teal-600",
-    icon: (
-      <div
-        className="w-full h-full flex items-center justify-center relative text-white"
-        aria-label="Password Generator Secure Icon"
-        title="Password Generator - Generate strong secure passwords"
-      >
-        <ShieldCheck className="w-10 h-10 text-white/90 absolute" strokeWidth={1.8} />
-        <div className="relative z-10 flex flex-col items-center">
-          <Lock className="w-4 h-4 text-white mb-[-2px]" fill="white" />
-          <KeyRound className="w-5 h-5 text-white" />
-        </div>
-        <div className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-white rounded-full animate-pulse shadow-xs" />
-      </div>
-    ),
-  },
+
+  // 6 - $5 CPC
   {
     slug: "resume-builder",
     name: "ATS Resume Builder",
     shortName: "ATS Resume",
+    desc: "Build ATS-friendly resume that passes Applicant Tracking System. 100% compliant format, download as real selectable text PDF.",
+    description: "Build ATS-friendly resume that passes Applicant Tracking System. 100% compliant format, download as real selectable text PDF.",
     badge: "ATS • 100% Pass",
-    badgeColor: "bg-green-100 text-green-700 border border-green-200",
-    color: "bg-gradient-to-br from-[#0A84FF] to-[#0050D5]",
+    badgeColor: "bg-cyan-50 text-cyan-700 border border-cyan-200",
+    tag: "ATS • 100% Pass",
+    category: "Career",
+    colorIndex: 5,
+    color: "bg-gradient-to-br from-cyan-500 to-sky-500",
     icon: (
-      <div className="w-full h-full flex flex-col items-center justify-center text-white">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-          <polyline points="14 2 14 8 20 8" />
-          <polyline points="9 15 11 17 15 13" />
-        </svg>
-        <span className="text-[14px] font-black tracking-[1px] mt-1">ATS</span>
+      <div className="w-full h-full flex items-center justify-center text-white font-black text-xl" aria-label="ATS Resume Builder Icon">
+        CV
       </div>
     ),
-    desc: "Build ATS-friendly resume that passes Applicant Tracking System. 100% compliant format, download as real PDF with your name.",
-    seoTitle: "Free ATS Resume Builder - 100% ATS Compliant",
-    tag: "Builder",
-    colorIndex: 6,
+    path: "/tools/resume-builder",
+    url: "/resume-builder",
+    isPopular: true,
   },
+
+  // 7 - BILLION TRAFFIC
+  {
+    slug: "pdf-to-word",
+    name: "PDF 3X Pro (3-in-1)",
+    shortName: "PDF 3X Pro",
+    desc: "PDF to Word, Compress PDF, Word to PDF - 3 Pro Tools in 1 Suite. 100% Private, Browser-Based, No Server Upload.",
+    description: "PDF to Word, Compress PDF, Word to PDF - 3 Pro Tools in 1 Suite. 100% Private, Browser-Based, No Server Upload.",
+    badge: "NEW • 3-in-1 Suite",
+    badgeColor: "bg-purple-50 text-purple-700 border border-purple-200",
+    tag: "NEW • 3-in-1 Suite",
+    category: "PDF Tools",
+    colorIndex: 6,
+    color: "bg-gradient-to-br from-purple-500 to-violet-600",
+    icon: (
+      <div className="w-full h-full flex items-center justify-center text-white text-2xl" aria-label="PDF 3X Pro Icon">
+        📄
+      </div>
+    ),
+    path: "/tools/pdf-to-word",
+    url: "/pdf-to-word",
+    isNew: true,
+    isPopular: true,
+  },
+
+  // 8 - DAILY TRAFFIC
+  {
+    slug: "currency-gold-rates",
+    name: "Live Currency & Gold Rates - 150+ Countries",
+    shortName: "Currency & Gold",
+    desc: "USD to PKR Today + Gold Per Tola - Live 100% correct rates across 150+ countries with 60s auto-refresh.",
+    description: "USD to PKR Today + Gold Per Tola - Live 100% correct rates across 150+ countries with 60s auto-refresh.",
+    badge: "LIVE 100% CORRECT",
+    badgeColor: "bg-yellow-50 text-yellow-700 border border-yellow-200",
+    tag: "LIVE 100% CORRECT",
+    category: "Finance",
+    colorIndex: 7,
+    color: "bg-gradient-to-br from-yellow-400 to-orange-500",
+    icon: (
+      <div className="w-full h-full flex items-center justify-center text-white text-xl font-black" aria-label="Live Currency and Gold Rates Icon">
+        👑$
+      </div>
+    ),
+    path: "/tools/currency-gold-rates",
+    url: "/currency-gold-rates",
+    isFeatured: true,
+  },
+
+  // 9 - PDF Merger
+  {
+    slug: "pdf-merge",
+    name: "PDF Merger",
+    shortName: "PDF Merger",
+    desc: "Merge multiple PDFs into one single file in seconds, 100% offline.",
+    description: "Merge multiple PDFs into one single file in seconds, 100% offline.",
+    badge: "PDF Tool",
+    badgeColor: "bg-slate-100 text-slate-700 border border-slate-200",
+    tag: "PDF Tool",
+    category: "PDF Tools",
+    colorIndex: 8,
+    color: "bg-gradient-to-br from-red-400 to-red-600",
+    icon: (
+      <div className="w-full h-full flex items-center justify-center text-white text-2xl" aria-label="PDF Merger Icon">
+        📑
+      </div>
+    ),
+    path: "/tools/pdf-merge",
+    url: "/pdf-merge",
+  },
+
+  // 10 - Image to PDF
+  {
+    slug: "image-to-pdf",
+    name: "Image to PDF",
+    shortName: "Image to PDF",
+    desc: "Convert JPG/PNG images to high quality PDF, no quality loss.",
+    description: "Convert JPG/PNG images to high quality PDF, no quality loss.",
+    badge: "Convert",
+    badgeColor: "bg-slate-100 text-slate-700 border border-slate-200",
+    tag: "Convert",
+    category: "Convert",
+    colorIndex: 9,
+    color: "bg-gradient-to-br from-green-400 to-lime-500",
+    icon: (
+      <div className="w-full h-full flex items-center justify-center text-white text-2xl" aria-label="Image to PDF Icon">
+        🖼️
+      </div>
+    ),
+    path: "/tools/image-to-pdf",
+    url: "/image-to-pdf",
+  },
+
+  // 11 - QR Code Generator
+  {
+    slug: "qr-generator",
+    name: "QR Code Generator",
+    shortName: "QR Code",
+    desc: "Create QR codes for links, text, or contact info instantly.",
+    description: "Create QR codes for links, text, or contact info instantly.",
+    badge: "Generator",
+    badgeColor: "bg-slate-100 text-slate-700 border border-slate-200",
+    tag: "Generator",
+    category: "Utilities",
+    colorIndex: 10,
+    color: "bg-black",
+    icon: (
+      <div className="w-full h-full flex items-center justify-center text-white text-2xl" aria-label="QR Code Generator Icon">
+        ⚏
+      </div>
+    ),
+    path: "/tools/qr-generator",
+    url: "/qr-generator",
+  },
+
+  // 12 - Age Calculator
   {
     slug: "age-calculator",
     name: "Age Calculator",
+    shortName: "Age Calc",
     desc: "Calculate exact age from date of birth in years, months, days.",
+    description: "Calculate exact age from date of birth in years, months, days.",
+    badge: "Calc",
+    badgeColor: "bg-slate-100 text-slate-700 border border-slate-200",
     tag: "Calc",
-    colorIndex: 7,
-    color: "bg-gradient-to-br from-violet-700 to-purple-500",
+    category: "Calculators",
+    colorIndex: 11,
+    color: "bg-gradient-to-br from-pink-500 to-orange-400",
     icon: (
-      <div
-        className="w-full h-full flex items-center justify-center relative text-white"
-        aria-label="Age Calculator Icon"
-        title="Age Calculator - Calculate exact age"
-      >
-        <div className="relative flex items-center justify-center">
-          <Calendar className="w-8 h-8 text-white" />
-          <Cake className="w-4 h-4 text-white absolute -bottom-1 -right-1 bg-white/20 rounded-full p-0.5" />
-          <Clock className="w-3 h-3 text-white/90 absolute -top-1 -left-1" />
-        </div>
+      <div className="w-full h-full flex items-center justify-center text-white text-2xl" aria-label="Age Calculator Icon">
+        📅
       </div>
     ),
+    path: "/tools/age-calculator",
+    url: "/age-calculator",
   },
+
+  // 13 - Unit Converter
   {
     slug: "unit-converter",
     name: "Unit Converter",
+    shortName: "Unit Converter",
     desc: "Convert length, weight, temperature & more instantly.",
+    description: "Convert length, weight, temperature & more instantly.",
+    badge: "Convert",
+    badgeColor: "bg-slate-100 text-slate-700 border border-slate-200",
     tag: "Convert",
-    colorIndex: 8,
-    color: "bg-gradient-to-br from-orange-500 to-amber-400",
+    category: "Calculators",
+    colorIndex: 12,
+    color: "bg-gradient-to-br from-purple-600 to-fuchsia-600",
     icon: (
-      <div
-        className="w-full h-full flex items-center justify-center relative text-white"
-        aria-label="Unit Converter Icon"
-        title="Unit Converter - Length Weight Temperature"
-      >
-        <div className="relative flex items-center justify-center">
-          <Scale className="w-8 h-8 text-white" />
-          <ArrowLeftRight className="w-4 h-4 text-white/90 absolute -top-1 -right-1" />
-          <Ruler className="w-3.5 h-3.5 text-white/80 absolute -bottom-1 -left-1" />
-        </div>
+      <div className="w-full h-full flex items-center justify-center text-white text-2xl font-black" aria-label="Unit Converter Icon">
+        %
       </div>
     ),
-  },
-  {
-    slug: "usa-paycheck-calculator",
-    name: "USA Paycheck Calculator 2026",
-    shortName: "Paycheck Calc",
-    badge: "2026 IRS Brackets",
-    badgeColor: "bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800",
-    color: "bg-gradient-to-br from-emerald-600 via-teal-600 to-blue-600",
-    icon: (
-      <div
-        className="w-full h-full flex items-center justify-center text-2xl select-none"
-        aria-label="USA Paycheck Calculator 2026 Icon"
-        title="USA Paycheck Calculator 2026 - Take-Home Pay After Federal, State & FICA Taxes"
-      >
-        💵
-      </div>
-    ),
-    desc: "Calculate take-home pay after Federal, State, 401(k), and FICA taxes based on verified 2026 IRS standard deductions and tax brackets.",
-    seoTitle: "USA Paycheck Calculator 2026 - Take-Home Pay After Taxes",
-    tag: "Calc",
-    colorIndex: 3,
-  },
-  {
-    name: "Mortgage Calculator USA",
-    slug: "mortgage-calculator",
-    desc: "Calculate true monthly payment with PMI, Property Tax, Insurance & HOA - USA 2026",
-    description: "Calculate true monthly payment with PMI, Property Tax, Insurance & HOA - USA 2026",
-    icon: (
-      <div
-        className="w-full h-full flex items-center justify-center text-white"
-        aria-label="Mortgage Calculator USA Icon"
-        title="Mortgage Calculator USA - USA 2026"
-      >
-        <Home className="w-7 h-7 text-white" />
-      </div>
-    ),
-    category: "Finance",
-    path: "/tools/mortgage-calculator",
-    shortName: "Mortgage Calc",
-    badge: "PMI & Tax Ready",
-    badgeColor: "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800",
-    color: "bg-gradient-to-br from-blue-700 via-indigo-600 to-slate-900",
-    seoTitle: "Mortgage Calculator USA with PMI, Property Tax, Insurance & HOA (2026)",
-    tag: "Finance",
-    colorIndex: 0,
-  },
-  {
-    name: "Global Salary Calculator",
-    slug: "global-salary-calculator",
-    desc: "Calculate take-home pay, tax deductions, hourly & monthly wages across 192 countries for 2026.",
-    description: "Calculate take-home pay, tax deductions, hourly & monthly wages across 192 countries for 2026.",
-    icon: (
-      <div
-        className="w-full h-full flex items-center justify-center text-white"
-        aria-label="Global Salary Calculator Icon"
-        title="Global Salary Calculator - 192 Countries After Tax Calculator 2026"
-      >
-        <Globe className="w-7 h-7 text-white" />
-      </div>
-    ),
-    category: "Finance",
-    path: "/global-salary-calculator/united-states",
-    shortName: "Global Salary",
-    badge: "192 Countries",
-    badgeColor: "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800",
-    color: "bg-gradient-to-br from-blue-600 via-indigo-600 to-emerald-600",
-    seoTitle: "Global Salary Calculator - After Tax Hourly Monthly Yearly Calculator 192 Countries",
-    tag: "Finance",
-    colorIndex: 1,
-  },
-  {
-    id: "pdf-to-word",
-    slug: "pdf-to-word",
-    name: "PDF 3X Pro (3-in-1)",
-    fullTitle: "PDF 3X Pro - Convert | Compress | Create",
-    desc: "PDF to Word, Compress PDF, Word to PDF - 3 Pro Tools in 1 Suite. 100% Private, Browser-Based, No Upload.",
-    description: "PDF to Word, Compress PDF, Word to PDF - 3 Pro Tools in 1 Suite. 100% Private, Browser-Based, No Upload.",
-    shortDesc: "3 Tools in 1: Convert | Compress | Create",
-    icon: (
-      <div className="relative w-[56px] h-[56px]">
-        <div className="absolute w-9 h-11 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg shadow-lg left-0 top-0 flex flex-col items-center justify-center">
-          <span className="text-[7px] font-black text-white leading-none">PDF→</span>
-          <span className="text-[7px] font-black text-white leading-none">WORD</span>
-        </div>
-        <div className="absolute w-9 h-11 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg shadow-lg left-3.5 top-1.5 flex flex-col items-center justify-center border border-white/20">
-          <span className="text-[7px] font-black text-white leading-none">COMPRESS</span>
-          <span className="text-[10px] text-white">⇔</span>
-        </div>
-        <div className="absolute w-9 h-11 bg-gradient-to-br from-purple-500 to-violet-700 rounded-lg shadow-lg left-7 top-3 flex flex-col items-center justify-center border border-white/20">
-          <span className="text-[7px] font-black text-white leading-none">WORD→</span>
-          <span className="text-[7px] font-black text-white leading-none">PDF</span>
-        </div>
-      </div>
-    ),
-    category: "PDF Tools",
-    path: "/tools/pdf-to-word",
-    url: "/pdf-to-word",
-    shortName: "PDF 3X Pro",
-    badge: "NEW • 3-in-1 Suite",
-    badgeColor: "bg-gradient-to-r from-blue-600 via-emerald-600 to-purple-600 text-white font-extrabold border-none shadow-sm",
-    color: "bg-gradient-to-br from-blue-600 via-emerald-600 to-purple-600",
-    gradient: "from-blue-600 to-purple-600",
-    seoTitle: "PDF 3X Pro - Convert | Compress | Create - Free Client-Side 2026",
-    tag: "100% Client-Side",
-    colorIndex: 0,
-    isNew: true,
-    isPopular: true,
-    features: ["PDF to Word", "Compress PDF", "Word to PDF"],
-  },
-  {
-    name: "Live Currency & Gold Rates - 150+ Countries",
-    slug: "currency-gold-rates",
-    desc: "USD to PKR Today + Gold Per Tola - Live 100% correct rates across 150+ countries with 60s auto-refresh.",
-    description: "USD to PKR Today + Gold Per Tola - Live 100% correct rates across 150+ countries with 60s auto-refresh.",
-    icon: (
-      <div
-        className="w-full h-full flex flex-col items-center justify-center text-white relative"
-        aria-label="Crown + Dollar Live Currency and Gold Icon"
-        title="Live Currency & Gold Rates - 150+ Countries"
-      >
-        <Crown className="w-5 h-5 text-amber-300 drop-shadow-sm mb-[-2px]" />
-        <DollarSign className="w-6 h-6 text-white font-black" />
-      </div>
-    ),
-    category: "Finance & Markets",
-    path: "/currency-gold-rates",
-    shortName: "Currency & Gold",
-    badge: "LIVE 100% CORRECT",
-    badgeColor: "bg-gradient-to-r from-amber-500 to-emerald-600 text-white font-extrabold border-none shadow-sm",
-    color: "bg-gradient-to-br from-yellow-500 via-amber-600 to-green-600",
-    seoTitle: "Live USD to PKR Today - Gold Per Tola Live Rate Pakistan 2026",
-    tag: "Finance",
-    colorIndex: 2,
-    isFeatured: true,
+    path: "/tools/unit-converter",
+    url: "/unit-converter",
   },
 ];
 
 export const COLORS = [
+  { bg: "bg-purple-600", light: "bg-purple-50", border: "border-purple-100", text: "text-purple-600" },
+  { bg: "bg-green-600", light: "bg-green-50", border: "border-green-100", text: "text-green-600" },
   { bg: "bg-blue-600", light: "bg-blue-50", border: "border-blue-100", text: "text-blue-600" },
-  { bg: "bg-violet-600", light: "bg-violet-50", border: "border-violet-100", text: "text-violet-600" },
-  { bg: "bg-orange-500", light: "bg-orange-50", border: "border-orange-100", text: "text-orange-600" },
-  { bg: "bg-emerald-600", light: "bg-emerald-50", border: "border-emerald-100", text: "text-emerald-600" },
-  { bg: "bg-rose-600", light: "bg-rose-50", border: "border-rose-100", text: "text-rose-600" },
+  { bg: "bg-indigo-600", light: "bg-indigo-50", border: "border-indigo-100", text: "text-indigo-600" },
+  { bg: "bg-sky-600", light: "bg-sky-50", border: "border-sky-100", text: "text-sky-600" },
   { bg: "bg-cyan-600", light: "bg-cyan-50", border: "border-cyan-100", text: "text-cyan-600" },
+  { bg: "bg-violet-600", light: "bg-violet-50", border: "border-violet-100", text: "text-violet-600" },
+  { bg: "bg-amber-600", light: "bg-amber-50", border: "border-amber-100", text: "text-amber-600" },
+  { bg: "bg-red-600", light: "bg-red-50", border: "border-red-100", text: "text-red-600" },
+  { bg: "bg-emerald-600", light: "bg-emerald-50", border: "border-emerald-100", text: "text-emerald-600" },
+  { bg: "bg-slate-900", light: "bg-slate-100", border: "border-slate-200", text: "text-slate-900" },
+  { bg: "bg-pink-600", light: "bg-pink-50", border: "border-pink-100", text: "text-pink-600" },
+  { bg: "bg-fuchsia-600", light: "bg-fuchsia-50", border: "border-fuchsia-100", text: "text-fuchsia-600" },
 ];

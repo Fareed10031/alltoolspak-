@@ -25,7 +25,7 @@ export default function BlackFooter() {
           <ul className="space-y-3 text-sm">
             <li><a href="/currency-gold-rates" className="hover:text-white transition-colors">Dollar Rate Today</a></li>
             <li><a href="/currency-gold-rates" className="hover:text-white transition-colors">Gold Price Pakistan</a></li>
-            <li className="text-gray-400">14 Free Tools • 100% Client-Side</li>
+            <li className="text-gray-400">13 Free Tools • 100% Client-Side</li>
           </ul>
         </div>
         <div>
