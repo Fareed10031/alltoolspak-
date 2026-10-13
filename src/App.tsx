@@ -28,6 +28,7 @@ import Pdf3XProPage from '@/app/pdf-3x-pro/page';
 import { CurrencyGoldRates } from '@/components/tools/CurrencyGoldRates';
 import { OneVisaWorldTool } from '@/components/tools/OneVisaWorldTool';
 import { ImageXProTool } from '@/components/tools/ImageXProTool';
+import { EmergencyOSTool } from '@/components/tools/EmergencyOSTool';
 
 // Companion / Legacy Tools
 import { ImageCompressor } from '@/components/tools/ImageCompressor';
@@ -161,6 +162,13 @@ export function normalizeRoute(raw: string): string {
     case 'crypto-calculator':
       return 'currency-gold-rates';
 
+    case 'emergency-os':
+    case 'emergency':
+    case 'accident-calculator':
+    case 'compensation-calculator':
+    case 'accident-compensation':
+      return 'emergency-os';
+
     // Supporting utilities
     case 'image-compress':
     case 'image-compressor':
@@ -288,6 +296,7 @@ export default function App() {
         'mortgage-calculator',
         'global-salary-calculator',
         'pdf-to-word',
+        'emergency-os',
         'image-compress',
         'youtube-thumb',
         'paraphraser',
@@ -354,6 +363,8 @@ export default function App() {
         return <Pdf3XProPage />;
       case 'currency-gold-rates':
         return <CurrencyGoldRates />;
+      case 'emergency-os':
+        return <EmergencyOSTool />;
 
       // Supporting Tools
       case 'image-compress':

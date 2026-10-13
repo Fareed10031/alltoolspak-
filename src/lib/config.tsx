@@ -368,6 +368,30 @@ export const TOOLS: ToolItem[] = [
     path: "/tools/unit-converter",
     url: "/unit-converter",
   },
+
+  // 14 - Tool #14: Global Accident & Emergency Compensation Calculator OS
+  {
+    slug: "emergency-os",
+    name: "Global Accident & Emergency Compensation Calculator OS",
+    shortName: "Emergency OS",
+    desc: "195 Countries supported - Estimate insurance claim settlement, lost wages, rehab cost, and court awards.",
+    description: "195 Countries supported - Estimate insurance claim settlement, lost wages, rehab cost, and court awards.",
+    badge: "195 Countries",
+    badgeColor: "bg-red-50 text-red-700 border border-red-200",
+    tag: "Calc",
+    category: "Legal & Insurance",
+    colorIndex: 8,
+    color: "bg-gradient-to-br from-red-600 via-rose-600 to-amber-600",
+    icon: (
+      <div className="w-full h-full flex items-center justify-center text-white text-2xl" aria-label="Emergency OS Calculator Icon">
+        🚑
+      </div>
+    ),
+    path: "/tools/emergency-os",
+    url: "/emergency-os",
+    isFeatured: true,
+    isNew: true,
+  },
 ];
 
 export const COLORS = [
