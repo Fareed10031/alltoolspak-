@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 
 const allTools = [
-  { name: "ImageX Pro (AI BG & Upscale)", href: "/imagex-pro", icon: "✨", bg: "bg-purple-50" },
   { name: "Mortgage Calculator USA", href: "/mortgage-calculator", icon: "🏠", bg: "bg-blue-100" },
   { name: "USA Paycheck 2026", href: "/usa-paycheck-calculator", icon: "💵", bg: "bg-green-100" },
   { name: "Amazon EU VAT Calculator", href: "/amazon-eu-vat", icon: "🇪🇺", bg: "bg-amber-50" },

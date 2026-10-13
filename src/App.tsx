@@ -27,7 +27,6 @@ import { PdfToWordTool } from '@/components/tools/PdfToWordTool';
 import Pdf3XProPage from '@/app/pdf-3x-pro/page';
 import { CurrencyGoldRates } from '@/components/tools/CurrencyGoldRates';
 import { OneVisaWorldTool } from '@/components/tools/OneVisaWorldTool';
-import { ImageXProTool } from '@/components/tools/ImageXProTool';
 import { EmergencyOSTool } from '@/components/tools/EmergencyOSTool';
 
 // Companion / Legacy Tools
@@ -65,14 +64,6 @@ export function normalizeRoute(raw: string): string {
     case 'eu-vat-calculator':
     case 'vat-calculator':
       return 'amazon-eu-vat';
-
-    case 'imagex-pro':
-    case 'imagex':
-    case 'background-remover':
-    case 'bg-remover':
-    case 'remove-bg':
-    case 'image-upscaler':
-      return 'imagex-pro';
 
     case 'onevisa-world':
     case 'visa-eligibility':
@@ -282,7 +273,6 @@ export default function App() {
       newPath = '/currency-gold-rates';
     } else if (
       [
-        'imagex-pro',
         'amazon-eu-vat',
         'onevisa-world',
         'pdf-merge',
@@ -331,8 +321,6 @@ export default function App() {
         return <HomePage onSelectTool={navigateTo} onNavigate={navigateTo} />;
 
       // Core Pro Tools
-      case 'imagex-pro':
-        return <ImageXProTool />;
       case 'amazon-eu-vat':
         return <AmazonEuVatTool />;
       case 'onevisa-world':

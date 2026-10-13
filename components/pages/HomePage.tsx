@@ -12,7 +12,7 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTag, setActiveTag] = useState('All');
 
-  const tags = ['All', 'HERO • REAL AI', 'Finance', 'PDF Tool', 'Visa & CRS', 'Convert', 'Generator', 'Builder', 'Calc', 'EU OSS Ready'];
+  const tags = ['All', 'Finance', 'Legal & Insurance', 'PDF Tool', 'Visa & CRS', 'Convert', 'Generator', 'Builder', 'Calc', 'EU OSS Ready'];
 
   const filteredTools = useMemo(() => {
     return TOOLS.filter((tool) => {
@@ -20,7 +20,10 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
         tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         tool.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (tool.tag && tool.tag.toLowerCase().includes(searchQuery.toLowerCase()));
-      const matchesTag = activeTag === 'All' || tool.tag === activeTag || (activeTag === 'HERO • REAL AI' && tool.slug === 'imagex-pro');
+      const matchesTag =
+        activeTag === 'All' ||
+        tool.tag === activeTag ||
+        (tool.category && tool.category.toLowerCase().includes(activeTag.toLowerCase()));
       return matchesSearch && matchesTag;
     });
   }, [searchQuery, activeTag]);
@@ -29,9 +32,9 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
     <div className="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
       {/* HERO SECTION */}
       <section className="pt-16 pb-12 sm:pt-24 sm:pb-16 text-center px-4 sm:px-6 max-w-5xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 border border-violet-200/80 dark:border-violet-900/60 mb-6 shadow-xs">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200/80 dark:border-blue-900/60 mb-6 shadow-xs">
           <Sparkles className="w-3.5 h-3.5" />
-          <span>14 Free Online Tools • ImageX Pro HERO &amp; 100% Client-Side Suite</span>
+          <span>14 Free Online Tools • 100% Private Client-Side Suite</span>
         </div>
 
         <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.08] mb-5">
@@ -39,23 +42,23 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
         </h1>
 
         <p className="text-base sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed mb-10 font-normal">
-          14 professional tools, no signup, works in your browser. Fast, private, and zero-paywall utilities for documents, AI image processing, and finances.
+          Professional online tools with no signup required. Fast, private, zero-paywall utilities for financial calculations, legal compensation estimates, and documents.
         </p>
 
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center justify-center gap-3.5 mb-10">
           <a
             href="#tools-grid"
-            className="h-12 sm:h-13 px-7 rounded-2xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-violet-600/25 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center gap-2"
+            className="h-12 sm:h-13 px-7 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-blue-600/25 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center gap-2"
           >
-            <span>Explore All 14 Tools</span>
+            <span>Explore All Tools</span>
             <ArrowRight className="w-4 h-4" />
           </a>
           <button
-            onClick={() => onSelectTool('imagex-pro')}
-            className="h-12 sm:h-13 px-7 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-fuchsia-600/20 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center gap-2"
+            onClick={() => onSelectTool('emergency-os')}
+            className="h-12 sm:h-13 px-7 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-rose-600/20 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center gap-2"
           >
-            <span>✨ Try ImageX Pro HERO</span>
+            <span>🚑 Try Emergency OS</span>
           </button>
         </div>
 

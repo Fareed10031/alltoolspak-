@@ -47,33 +47,8 @@ export interface ToolItem {
   gradient?: string;
 }
 
-// EXACT 14 HIGH-EARNING TOOLS IN CPC & REVENUE PRIORITY ORDER - HERO IMAGE SUITE
+// EXACT HIGH-EARNING TOOLS IN CPC & REVENUE PRIORITY ORDER
 export const TOOLS: ToolItem[] = [
-  // HERO - 150M+ SEARCHES - REAL AI IMAGEX PRO
-  {
-    slug: "imagex-pro",
-    name: "ImageX Pro - AI Background Remover & Upscaler",
-    shortName: "ImageX Pro",
-    desc: "Remove BG with real AI, upscale 4x HD, compress 90%, convert format - 100% private browser AI, no upload.",
-    description: "Remove BG with real AI, upscale 4x HD, compress 90%, convert format - 100% private browser AI, no upload.",
-    badge: "HERO • REAL AI",
-    badgeColor: "bg-violet-50 text-violet-700 border border-violet-200",
-    tag: "HERO • REAL AI",
-    category: "AI & Media",
-    colorIndex: 0,
-    color: "bg-gradient-to-br from-violet-600 via-purple-600 to-fuchsia-600",
-    icon: (
-      <div className="w-full h-full flex items-center justify-center text-white text-2xl" aria-label="ImageX Pro Icon">
-        ✨
-      </div>
-    ),
-    path: "/tools/imagex-pro",
-    url: "/imagex-pro",
-    isFeatured: true,
-    isPopular: true,
-    isNew: true,
-  },
-
   // 1 - $10 CPC - HIGHEST EARNING
   {
     slug: "mortgage-calculator",

@@ -1,7 +1,7 @@
 import { ComponentType } from 'react';
 
 // 14 High-Earning Core Pro Tools
-import { ImageXProTool } from '@/components/tools/ImageXProTool';
+import { EmergencyOSTool } from '@/components/tools/EmergencyOSTool';
 import MortgageCalculator from '@/components/tools/MortgageCalculator';
 import { USAPaycheckCalculator2026 } from '@/components/tools/USAPaycheckCalculator2026';
 import { AmazonEuVatTool } from '@/components/tools/AmazonEuVatTool';
@@ -47,33 +47,22 @@ export interface ToolItem {
   gradient?: string;
 }
 
-// 14 High-Earning Core Suite in CPC Order - HERO Tool Included
+// 14 High-Earning Core Suite in CPC Order
 export const tools: ToolItem[] = [
-  // HERO - 150M+ Searches
+  // Tool #14: Global Accident & Emergency Compensation Calculator OS ($1000 CPC)
   {
-    id: 'imagex-pro',
-    slug: 'imagex-pro',
-    name: 'ImageX Pro - AI Background Remover & Upscaler',
-    description: 'Remove BG with real AI, upscale 4x HD, compress 90%, convert format - 100% private browser AI, no upload.',
-    component: ImageXProTool,
-    category: 'AI & Media',
-    badge: 'HERO • REAL AI',
-    path: '/tools/imagex-pro',
-    color: 'from-violet-600 via-purple-600 to-fuchsia-600',
-    tag: 'HERO • REAL AI',
+    id: 'emergency-os',
+    slug: 'emergency-os',
+    name: 'Global Accident & Emergency Compensation Calculator OS',
+    description: '195 Countries supported - Estimate insurance claim settlement, lost wages, rehab cost, and court awards.',
+    component: EmergencyOSTool,
+    category: 'Legal & Insurance',
+    badge: '195 Countries',
+    path: '/tools/emergency-os',
+    color: 'from-red-600 via-rose-600 to-amber-600',
+    tag: 'Legal & Claims',
     isNew: true,
     isPopular: true,
-  },
-  {
-    id: 'background-remover',
-    slug: 'background-remover',
-    name: 'AI Background Remover',
-    description: 'Remove BG with real AI, upscale 4x HD, compress 90%, convert format - 100% private browser AI.',
-    component: ImageXProTool,
-    category: 'AI & Media',
-    badge: 'REAL AI',
-    path: '/tools/background-remover',
-    color: 'from-violet-600 via-purple-600 to-fuchsia-600',
   },
 
   // 1 - $10 CPC
