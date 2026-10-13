@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { GlobalSEO } from './components/GlobalSEO';
 import Header from '@/components/Header';
 import MegaMenu from '@/components/MegaMenu';
 import BlackFooter from '@/components/BlackFooter';
@@ -52,6 +53,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <GlobalSEO />
+      </head>
       <body className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased">
         {children}
         <Analytics />
