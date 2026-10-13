@@ -1,7 +1,7 @@
 // CryptoConverter.tsx - Isolated Module - 100% Safe for Existing Tools
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 export interface CryptoConverterProps {
   fiatRates?: Record<string, number> | null;
@@ -16,7 +16,7 @@ const cryptoList = [
   { id: 'ripple', symbol: 'XRP', name: 'XRP', icon: '✕', defaultUsd: 0.58 },
 ];
 
-const fiatList = ['PKR', 'INR', 'USD', 'AED', 'SAR', 'GBP', 'EUR', 'TRY', 'CAD', 'AUD'];
+const defaultFiatFallback = ['PKR', 'INR', 'USD', 'AED', 'SAR', 'GBP', 'EUR', 'TRY', 'CAD', 'AUD', 'BDT', 'NPR'];
 
 export default function CryptoConverter({ fiatRates }: CryptoConverterProps) {
   const [crypto, setCrypto] = useState<string>('bitcoin');
@@ -26,6 +26,14 @@ export default function CryptoConverter({ fiatRates }: CryptoConverterProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 
+  // 150+ Countries - Dynamic from your existing rates
+  const fiatList = useMemo(() => {
+    if (fiatRates && Object.keys(fiatRates).length > 0) {
+      return Object.keys(fiatRates).sort();
+    }
+    return defaultFiatFallback;
+  }, [fiatRates]);
+
   const fetchCryptoPrice = useCallback(async () => {
     setLoading(true);
     try {
@@ -34,10 +42,15 @@ export default function CryptoConverter({ fiatRates }: CryptoConverterProps) {
       );
       if (response.ok) {
         const data = await response.json();
-        if (data[crypto] && data[crypto].usd) {
+        if (data[crypto] && typeof data[crypto].usd === 'number') {
           const usdPrice = data[crypto].usd;
-          const fiatRate = fiatRates && fiatRates[fiat] ? fiatRates[fiat] : 277.10;
-          const finalPrice = fiat === 'USD' ? usdPrice : usdPrice * fiatRate;
+          const fiatRate =
+            fiat === 'USD'
+              ? 1
+              : fiatRates && typeof fiatRates[fiat] === 'number'
+              ? fiatRates[fiat]
+              : 277.1;
+          const finalPrice = usdPrice * fiatRate;
           setPrice(finalPrice);
           setLastUpdate(new Date());
           setLoading(false);
@@ -46,12 +59,17 @@ export default function CryptoConverter({ fiatRates }: CryptoConverterProps) {
       }
       throw new Error('CoinGecko rate limited or empty data');
     } catch (error) {
-      console.warn('Crypto API Error (using reliable fallback):', error);
-      // Fallback - tool will not break
+      console.warn('Crypto API fetch fallback:', error);
+      // Fallback - doesn't break page
       const fallbackItem = cryptoList.find((c) => c.id === crypto);
       const fallbackUsd = fallbackItem ? fallbackItem.defaultUsd : 68000;
-      const fiatRate = fiatRates && fiatRates[fiat] ? fiatRates[fiat] : 277.10;
-      const finalPrice = fiat === 'USD' ? fallbackUsd : fallbackUsd * fiatRate;
+      const fiatRate =
+        fiat === 'USD'
+          ? 1
+          : fiatRates && typeof fiatRates[fiat] === 'number'
+          ? fiatRates[fiat]
+          : 277.1;
+      const finalPrice = fallbackUsd * fiatRate;
       setPrice(finalPrice);
       setLastUpdate(new Date());
     } finally {
@@ -66,100 +84,46 @@ export default function CryptoConverter({ fiatRates }: CryptoConverterProps) {
   }, [fetchCryptoPrice]);
 
   const numAmount = typeof amount === 'number' ? amount : parseFloat(amount) || 0;
+  const currentCrypto = cryptoList.find((c) => c.id === crypto) || cryptoList[0];
   const totalValue = price
     ? (price * numAmount).toLocaleString('en-US', { maximumFractionDigits: 2 })
     : '0.00';
-  const selectedCrypto = cryptoList.find((c) => c.id === crypto);
 
   return (
-    <div
-      style={{
-        padding: '20px',
-        borderRadius: '16px',
-        background: '#ffffff',
-        border: '1px solid #e2e8f0',
-        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '16px',
-          flexWrap: 'wrap',
-          gap: '8px',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '20px' }}>🪙</span>
-          <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#0f172a', margin: 0 }}>
-            Crypto Converter Live
-          </h3>
-        </div>
-        <span
-          style={{
-            fontSize: '11px',
-            fontWeight: '600',
-            color: '#15803d',
-            background: '#dcfce7',
-            padding: '4px 10px',
-            borderRadius: '20px',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '4px',
-          }}
-        >
-          ● LIVE 60s Refresh
+    <div className="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm mt-6 transition-colors">
+      <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
+        <h3 className="font-bold text-slate-800 dark:text-white text-lg flex items-center gap-2">
+          <span className="text-xl">🪙</span> Crypto Converter Live
+        </h3>
+        <span className="text-xs bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full font-semibold inline-flex items-center gap-1.5 border border-emerald-200 dark:border-emerald-800">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          LIVE 60s Refresh
         </span>
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
-          gap: '12px',
-          marginBottom: '16px',
-        }}
-      >
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
         <div>
-          <label style={{ fontSize: '12px', fontWeight: '600', color: '#475569' }}>Amount</label>
+          <label className="text-xs font-semibold text-slate-500 dark:text-slate-400 block mb-1">
+            Amount
+          </label>
           <input
             type="number"
             min="0"
             step="any"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '10px 12px',
-              borderRadius: '10px',
-              border: '1px solid #cbd5e1',
-              marginTop: '4px',
-              fontSize: '14px',
-              outline: 'none',
-              boxSizing: 'border-box',
-              fontWeight: '600',
-            }}
+            onChange={(e) => setAmount(e.target.value === '' ? '' : Number(e.target.value))}
+            className="w-full p-2.5 border border-slate-300 dark:border-slate-700 rounded-xl font-semibold outline-none focus:border-emerald-500 dark:focus:border-emerald-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-white transition-colors"
           />
         </div>
+
         <div>
-          <label style={{ fontSize: '12px', fontWeight: '600', color: '#475569' }}>Crypto</label>
+          <label className="text-xs font-semibold text-slate-500 dark:text-slate-400 block mb-1">
+            Crypto
+          </label>
           <select
             value={crypto}
             onChange={(e) => setCrypto(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '10px 12px',
-              borderRadius: '10px',
-              border: '1px solid #cbd5e1',
-              marginTop: '4px',
-              fontSize: '14px',
-              outline: 'none',
-              boxSizing: 'border-box',
-              fontWeight: '600',
-              backgroundColor: '#fff',
-            }}
+            className="w-full p-2.5 border border-slate-300 dark:border-slate-700 rounded-xl font-semibold outline-none focus:border-emerald-500 dark:focus:border-emerald-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-white transition-colors"
           >
             {cryptoList.map((c) => (
               <option key={c.id} value={c.id}>
@@ -170,25 +134,14 @@ export default function CryptoConverter({ fiatRates }: CryptoConverterProps) {
         </div>
       </div>
 
-      <div style={{ marginBottom: '16px' }}>
-        <label style={{ fontSize: '12px', fontWeight: '600', color: '#475569' }}>
+      <div className="mb-4">
+        <label className="text-xs font-semibold text-slate-500 dark:text-slate-400 block mb-1">
           Convert To (150+ Countries)
         </label>
         <select
           value={fiat}
           onChange={(e) => setFiat(e.target.value)}
-          style={{
-            width: '100%',
-            padding: '10px 12px',
-            borderRadius: '10px',
-            border: '1px solid #cbd5e1',
-            marginTop: '4px',
-            fontSize: '14px',
-            outline: 'none',
-            boxSizing: 'border-box',
-            fontWeight: '600',
-            backgroundColor: '#fff',
-          }}
+          className="w-full p-2.5 border border-slate-300 dark:border-slate-700 rounded-xl font-semibold outline-none focus:border-emerald-500 dark:focus:border-emerald-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-white transition-colors"
         >
           {fiatList.map((f) => (
             <option key={f} value={f}>
@@ -198,35 +151,19 @@ export default function CryptoConverter({ fiatRates }: CryptoConverterProps) {
         </select>
       </div>
 
-      <div
-        style={{
-          background: '#f8fafc',
-          padding: '18px',
-          borderRadius: '12px',
-          textAlign: 'center',
-          border: '1px solid #f1f5f9',
-        }}
-      >
+      <div className="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-xl text-center border border-slate-100 dark:border-slate-800">
         {loading && !price ? (
-          <p style={{ margin: 0, fontSize: '14px', color: '#64748b' }}>Loading live price...</p>
+          <p className="text-slate-400 dark:text-slate-500 text-sm py-4">Loading live price...</p>
         ) : (
           <>
-            <p style={{ fontSize: '14px', color: '#64748b', margin: '0 0 4px 0', fontWeight: '500' }}>
-              {amount} {selectedCrypto?.symbol} =
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-1 font-medium">
+              {amount || 0} {currentCrypto.symbol} =
             </p>
-            <h2
-              style={{
-                fontSize: '28px',
-                fontWeight: '800',
-                margin: '6px 0',
-                color: '#0f172a',
-                letterSpacing: '-0.5px',
-              }}
-            >
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight my-1">
               {totalValue} {fiat}
             </h2>
-            <p style={{ fontSize: '12px', color: '#64748b', margin: '4px 0 0 0' }}>
-              1 {selectedCrypto?.symbol} ={' '}
+            <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-2 font-mono">
+              1 {currentCrypto.symbol} ={' '}
               {price?.toLocaleString(undefined, { maximumFractionDigits: 2 })} {fiat} | Mid-market Rate{' '}
               {lastUpdate && `| ${lastUpdate.toLocaleTimeString()}`}
             </p>
