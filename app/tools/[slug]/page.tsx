@@ -7,10 +7,32 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
 import { getAutoLogo } from '@/lib/autoLogoSystem';
-
 export default function ToolPage({ params }: { params: { slug: string } }) {
   const currentSlug = params?.slug ? params.slug.toLowerCase().trim() : '';
-  const toolIndex = tools.findIndex((t) => t.id.toLowerCase().trim() === currentSlug);
+
+  const SLUG_ALIASES: Record<string, string> = {
+    'global-accident-emergency': 'emergency-os',
+    'accident-calculator': 'emergency-os',
+    'compensation-calculator': 'emergency-os',
+    'mortgage-calculator-usa': 'mortgage-calculator',
+    'usa-paycheck-calculator-2026': 'usa-paycheck-calculator',
+    'amazon-eu-vat-calculator': 'amazon-eu-vat',
+    'onevisa-world-visa-points': 'onevisa-world',
+    'live-currency-gold-rates': 'currency-gold-rates',
+    'qr-code-generator': 'qr-generator',
+    'pdf-3x-pro': 'pdf-to-word',
+    'pdf-merge': 'pdf-merger',
+    'ats-resume-builder': 'resume-builder',
+  };
+
+  const normalizedSlug = SLUG_ALIASES[currentSlug] || currentSlug;
+  const toolIndex = tools.findIndex(
+    (t) =>
+      String(t.id).toLowerCase().trim() === normalizedSlug ||
+      (t.slug && t.slug.toLowerCase().trim() === normalizedSlug) ||
+      String(t.id).toLowerCase().trim() === currentSlug ||
+      (t.slug && t.slug.toLowerCase().trim() === currentSlug)
+  );
   const tool = toolIndex >= 0 ? tools[toolIndex] : null;
 
   if (!tool) {
