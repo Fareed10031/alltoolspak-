@@ -25,6 +25,11 @@ app.use((_req, res, next) => {
 
 // Sitemap endpoint
 app.get('/sitemap.xml', (_req, res) => {
+  const filePath = path.resolve(process.cwd(), 'public', 'sitemap.xml');
+  if (fs.existsSync(filePath)) {
+    res.setHeader('Content-Type', 'application/xml');
+    return res.sendFile(filePath);
+  }
   const now = new Date().toISOString();
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -47,6 +52,11 @@ ${ALL_14_TOOLS.map((t) => `  <url>
 
 // Robots endpoint
 app.get('/robots.txt', (_req, res) => {
+  const filePath = path.resolve(process.cwd(), 'public', 'robots.txt');
+  if (fs.existsSync(filePath)) {
+    res.setHeader('Content-Type', 'text/plain');
+    return res.sendFile(filePath);
+  }
   res.setHeader('Content-Type', 'text/plain');
   res.send(`User-agent: *
 Allow: /
