@@ -155,6 +155,10 @@ export function normalizeRoute(raw: string): string {
     case 'gold-rates':
     case 'currency-rates':
     case 'usd-to-pkr':
+    case 'crypto-converter':
+    case 'crypto':
+    case 'bitcoin-to-pkr':
+    case 'crypto-calculator':
       return 'currency-gold-rates';
 
     // Supporting utilities

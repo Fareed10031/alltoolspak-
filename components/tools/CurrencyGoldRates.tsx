@@ -16,6 +16,7 @@ import {
   Flame,
   Award,
 } from 'lucide-react';
+import CryptoConverter from './CryptoConverter';
 
 interface CurrencyData {
   time_last_update_utc?: string;
@@ -626,6 +627,11 @@ export function CurrencyGoldRates() {
               Use our free live converter above for instant two-way conversions between US Dollar (USD), Euro (EUR), British Pound (GBP), Saudi Riyal (SAR), UAE Dirham (AED), and Pakistani Rupee (PKR). Updated every minute from State Bank of Pakistan interbank feeds & London Bullion Market Association (LBMA) spot data. 100% private processing with zero cloud data transmission.
             </p>
           </div>
+        </div>
+
+        {/* Crypto Converter Live Module - 100% Safe Isolated Component */}
+        <div className="mb-8">
+          <CryptoConverter fiatRates={currencyData?.rates} />
         </div>
 
         {/* Middle Ad Slot (250px) */}
