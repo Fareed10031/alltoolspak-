@@ -61,11 +61,13 @@ export function normalizeRoute(raw: string): string {
     case 'amazon-eu-vat':
     case 'amazon-vat':
     case 'amazon-vat-calculator':
+    case 'amazon-eu-vat-calculator':
     case 'eu-vat-calculator':
     case 'vat-calculator':
       return 'amazon-eu-vat';
 
     case 'onevisa-world':
+    case 'onevisa-world-visa-points':
     case 'visa-eligibility':
     case 'visa-calculator':
     case 'crs-calculator':
@@ -114,6 +116,7 @@ export function normalizeRoute(raw: string): string {
       return 'unit-converter';
 
     case 'usa-paycheck-calculator':
+    case 'usa-paycheck-calculator-2026':
     case 'paycheck-calculator':
     case 'paycheck':
     case 'tax-calculator':
@@ -143,6 +146,7 @@ export function normalizeRoute(raw: string): string {
       return 'pdf-3x-pro';
 
     case 'currency-gold-rates':
+    case 'live-currency-gold-rates':
     case 'currency-gold':
     case 'gold-rates':
     case 'currency-rates':
@@ -158,6 +162,7 @@ export function normalizeRoute(raw: string): string {
     case 'accident-calculator':
     case 'compensation-calculator':
     case 'accident-compensation':
+    case 'global-accident-emergency':
       return 'emergency-os';
 
     // Supporting utilities

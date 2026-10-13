@@ -4,6 +4,7 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
+import { ALL_14_TOOLS, SITE_URL } from './app/lib/seoMaster14';
 
 dotenv.config();
 
@@ -20,6 +21,39 @@ app.use((_req, res, next) => {
   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
   res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
   next();
+});
+
+// Sitemap endpoint
+app.get('/sitemap.xml', (_req, res) => {
+  const now = new Date().toISOString();
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${SITE_URL}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+${ALL_14_TOOLS.map((t) => `  <url>
+    <loc>${SITE_URL}/${t.slug}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>`).join('\n')}
+</urlset>`;
+  res.setHeader('Content-Type', 'application/xml');
+  res.send(xml);
+});
+
+// Robots endpoint
+app.get('/robots.txt', (_req, res) => {
+  res.setHeader('Content-Type', 'text/plain');
+  res.send(`User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: ${SITE_URL}/sitemap.xml
+`);
 });
 
 // API AI endpoint
