@@ -269,10 +269,12 @@ export function normalizeRoute(raw: string): string {
 
     case 'privacy':
     case 'privacy-policy':
+    case 'security':
       return 'privacy';
 
     case 'terms':
     case 'terms-of-service':
+    case 'terms-and-conditions':
       return 'terms';
 
     case 'disclaimer':
@@ -285,6 +287,9 @@ export function normalizeRoute(raw: string): string {
     case 'contact':
     case 'contact-us':
       return 'contact';
+
+    case 'blog':
+      return 'blog';
 
     default:
       return clean;
