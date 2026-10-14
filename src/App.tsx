@@ -140,6 +140,7 @@ export function normalizeRoute(raw: string): string {
     case 'global-visa-calculator':
     case 'uk-visa-points-calculator':
     case 'canada-crs-calculator':
+    case 'onevisa-world-visa-points-calculator':
       return 'onevisa-world';
 
     case 'pdf-merge':

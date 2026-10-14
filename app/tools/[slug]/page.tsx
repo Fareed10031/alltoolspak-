@@ -20,6 +20,7 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
     'usa-paycheck-calculator-2026': 'usa-paycheck-calculator',
     'amazon-eu-vat-calculator': 'amazon-eu-vat',
     'onevisa-world-visa-points': 'onevisa-world',
+    'onevisa-world-visa-points-calculator': 'onevisa-world',
     'live-currency-gold-rates': 'currency-gold-rates',
     'qr-code-generator': 'qr-generator',
     'pdf-3x-pro': 'pdf-to-word',
