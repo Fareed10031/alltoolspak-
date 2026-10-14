@@ -8,12 +8,26 @@ export default defineConfig(() => {
     base: '/',
     build: {
       outDir: 'dist',
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules/lucide-react')) {
+              return 'vendor-icons';
+            }
+            if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) {
+              return 'vendor-react';
+            }
+          },
+        },
+      },
     },
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
         'next/link': path.resolve(__dirname, 'lib/next-link.tsx'),
+        'next/dynamic': path.resolve(__dirname, 'lib/next-dynamic.tsx'),
+        'next/image': path.resolve(__dirname, 'lib/next-image.tsx'),
       },
     },
     server: {

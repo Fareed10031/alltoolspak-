@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import NextImage from 'next/image';
 import {
   Youtube,
   Download,
@@ -324,11 +325,14 @@ export function YouTubeThumb() {
 
                   {/* Thumbnail Image Display */}
                   <div className="relative aspect-video bg-slate-100 dark:bg-slate-950 flex items-center justify-center overflow-hidden">
-                    <img
+                    <NextImage
                       src={imgUrl}
                       alt={`YouTube thumbnail for ${videoId} in ${opt.name}`}
+                      width={640}
+                      height={360}
+                      loading="lazy"
                       className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
-                      onError={(e) => {
+                      onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                         // Fallback to hqdefault if maxres doesn't exist
                         if (opt.key === 'maxres') {
                           (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;

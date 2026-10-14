@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import NextImage from 'next/image';
 import QRCode from 'qrcode';
 import jsQR from 'jsqr';
 import { jsPDF } from 'jspdf';
@@ -1681,9 +1682,12 @@ export function QrGeneratorTool() {
                 {logoDataUrl ? (
                   <div className="flex items-center justify-between bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700">
                     <div className="flex items-center gap-3">
-                      <img
+                      <NextImage
                         src={logoDataUrl}
                         alt="Logo preview"
+                        width={40}
+                        height={40}
+                        loading="lazy"
                         className="w-10 h-10 object-contain rounded-lg border border-slate-200 dark:border-slate-700 p-0.5 bg-white"
                       />
                       <div>

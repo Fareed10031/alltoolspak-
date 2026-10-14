@@ -1,7 +1,12 @@
 'use client';
 
 import React from 'react';
-import MortgageCalculator from '@/components/tools/MortgageCalculator';
+import dynamic from 'next/dynamic';
+
+const MortgageCalculator = dynamic(
+  () => import('@/components/tools/MortgageCalculator'),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Mortgage Calculator...</p> }
+);
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';

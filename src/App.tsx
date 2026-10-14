@@ -11,30 +11,95 @@ import { DisclaimerPage } from '@/components/pages/DisclaimerPage';
 import { CookiesPage } from '@/components/pages/CookiesPage';
 import { ContactPage } from '@/components/pages/ContactPage';
 
-// 9 New Core Pro Tools
-import { AmazonEuVatTool } from '@/components/tools/AmazonEuVatTool';
-import { PdfMergerTool } from '@/components/tools/PdfMergerTool';
-import { ImageToPdfTool } from '@/components/tools/ImageToPdfTool';
-import { QrGeneratorTool } from '@/components/tools/QrGeneratorTool';
-import { PasswordGenTool } from '@/components/tools/PasswordGenTool';
-import { ResumeBuilderSimpleTool } from '@/components/tools/ResumeBuilderSimpleTool';
-import { AgeCalculatorTool } from '@/components/tools/AgeCalculatorTool';
-import { UnitConverterTool } from '@/components/tools/UnitConverterTool';
-import { USAPaycheckCalculator2026 } from '@/components/tools/USAPaycheckCalculator2026';
-import MortgageCalculator from '@/components/tools/MortgageCalculator';
-import GlobalSalaryCalculator from '@/components/tools/GlobalSalaryCalculator';
-import { PdfToWordTool } from '@/components/tools/PdfToWordTool';
-import Pdf3XProPage from '@/app/pdf-3x-pro/page';
-import { CurrencyGoldRates } from '@/components/tools/CurrencyGoldRates';
-import { OneVisaWorldTool } from '@/components/tools/OneVisaWorldTool';
-import { EmergencyOSTool } from '@/components/tools/EmergencyOSTool';
+import dynamic from 'next/dynamic';
+
+// 14 Core Pro Tools - Dynamically Loaded for 95+ PageSpeed
+const AmazonEuVatTool = dynamic(
+  () => import('@/components/tools/AmazonEuVatTool').then((m) => m.AmazonEuVatTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Amazon VAT...</p> }
+);
+const PdfMergerTool = dynamic(
+  () => import('@/components/tools/PdfMergerTool').then((m) => m.PdfMergerTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading PDF Merger...</p> }
+);
+const ImageToPdfTool = dynamic(
+  () => import('@/components/tools/ImageToPdfTool').then((m) => m.ImageToPdfTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Image to PDF...</p> }
+);
+const QrGeneratorTool = dynamic(
+  () => import('@/components/tools/QrGeneratorTool').then((m) => m.QrGeneratorTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading QR Generator...</p> }
+);
+const PasswordGenTool = dynamic(
+  () => import('@/components/tools/PasswordGenTool').then((m) => m.PasswordGenTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Password Generator...</p> }
+);
+const ResumeBuilderSimpleTool = dynamic(
+  () => import('@/components/tools/ResumeBuilderSimpleTool').then((m) => m.ResumeBuilderSimpleTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Resume Builder...</p> }
+);
+const AgeCalculatorTool = dynamic(
+  () => import('@/components/tools/AgeCalculatorTool').then((m) => m.AgeCalculatorTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Age Calculator...</p> }
+);
+const UnitConverterTool = dynamic(
+  () => import('@/components/tools/UnitConverterTool').then((m) => m.UnitConverterTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Unit Converter...</p> }
+);
+const USAPaycheckCalculator2026 = dynamic(
+  () => import('@/components/tools/USAPaycheckCalculator2026').then((m) => m.USAPaycheckCalculator2026),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Paycheck Calculator...</p> }
+);
+const MortgageCalculator = dynamic(
+  () => import('@/components/tools/MortgageCalculator'),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Mortgage Calculator...</p> }
+);
+const GlobalSalaryCalculator = dynamic(
+  () => import('@/components/tools/GlobalSalaryCalculator'),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Salary Calculator...</p> }
+);
+const PdfToWordTool = dynamic(
+  () => import('@/components/tools/PdfToWordTool').then((m) => m.PdfToWordTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading PDF Suite...</p> }
+);
+const Pdf3XProPage = dynamic(
+  () => import('@/app/pdf-3x-pro/page'),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading PDF 3X Pro...</p> }
+);
+const CurrencyGoldRates = dynamic(
+  () => import('@/components/tools/CurrencyGoldRates').then((m) => m.CurrencyGoldRates),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Currency & Gold...</p> }
+);
+const OneVisaWorldTool = dynamic(
+  () => import('@/components/tools/OneVisaWorldTool').then((m) => m.OneVisaWorldTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading OneVisa World...</p> }
+);
+const EmergencyOSTool = dynamic(
+  () => import('@/components/tools/EmergencyOSTool').then((m) => m.EmergencyOSTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Emergency OS...</p> }
+);
 
 // Companion / Legacy Tools
-import { ImageCompressor } from '@/components/tools/ImageCompressor';
-import { YouTubeThumb } from '@/components/tools/YouTubeThumb';
-import { Paraphraser } from '@/components/tools/Paraphraser';
-import { Detector } from '@/components/tools/Detector';
-import { HumanizeAI } from '@/components/tools/HumanizeAI';
+const ImageCompressor = dynamic(
+  () => import('@/components/tools/ImageCompressor').then((m) => m.ImageCompressor),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Image Compressor...</p> }
+);
+const YouTubeThumb = dynamic(
+  () => import('@/components/tools/YouTubeThumb').then((m) => m.YouTubeThumb),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading YouTube Thumb...</p> }
+);
+const Paraphraser = dynamic(
+  () => import('@/components/tools/Paraphraser').then((m) => m.Paraphraser),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Paraphraser...</p> }
+);
+const Detector = dynamic(
+  () => import('@/components/tools/Detector').then((m) => m.Detector),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Detector...</p> }
+);
+const HumanizeAI = dynamic(
+  () => import('@/components/tools/HumanizeAI').then((m) => m.HumanizeAI),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Humanize AI...</p> }
+);
 
 import { safeStorage, safePrefersDark, safePushState } from '@/lib/storage';
 

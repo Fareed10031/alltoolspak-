@@ -1,7 +1,12 @@
 'use client';
 
 import React from 'react';
-import Page from '@/app/pdf-3x-pro/page';
+import dynamic from 'next/dynamic';
+
+const Pdf3XProSuite = dynamic(
+  () => import('@/app/pdf-3x-pro/page'),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading PDF 3X Pro...</p> }
+);
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 
@@ -28,7 +33,7 @@ export default function Pdf3XProPage() {
         }}
       />
       <main className="flex-1 py-4">
-        <Page />
+        <Pdf3XProSuite />
       </main>
       <Footer onNavigate={navigateTo} onSelectTool={navigateTo} />
     </div>

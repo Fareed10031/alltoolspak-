@@ -1,7 +1,12 @@
 'use client';
 
 import React from 'react';
-import { Detector } from '@/components/tools/Detector';
+import dynamic from 'next/dynamic';
+
+const Detector = dynamic(
+  () => import('@/components/tools/Detector').then((m) => m.Detector),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading AI Detector...</p> }
+);
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import NextImage from 'next/image';
 import {
   Image as ImageIcon,
   Upload,
@@ -414,9 +415,11 @@ export function ImageCompressor() {
                 >
                   {/* Compressed Layer (Base) */}
                   {compressedSrc && (
-                    <img
+                    <NextImage
                       src={compressedSrc}
                       alt="Compressed"
+                      fill
+                      loading="lazy"
                       className="absolute inset-0 w-full h-full object-contain pointer-events-none"
                     />
                   )}
@@ -427,9 +430,10 @@ export function ImageCompressor() {
                       className="absolute inset-y-0 left-0 overflow-hidden pointer-events-none border-r-2 border-white shadow-2xl"
                       style={{ width: `${sliderPos}%` }}
                     >
-                      <img
+                      <NextImage
                         src={originalSrc}
                         alt="Original"
+                        loading="lazy"
                         className="absolute inset-0 w-full h-full object-contain max-w-none"
                         style={{
                           width: containerRef.current ? containerRef.current.clientWidth : '100%',

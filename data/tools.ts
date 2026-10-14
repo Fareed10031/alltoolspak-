@@ -1,29 +1,100 @@
-import { ComponentType } from 'react';
+import React, { ComponentType } from 'react';
+import dynamic from 'next/dynamic';
 
-// 14 High-Earning Core Pro Tools
-import { EmergencyOSTool } from '@/components/tools/EmergencyOSTool';
-import MortgageCalculator from '@/components/tools/MortgageCalculator';
-import { USAPaycheckCalculator2026 } from '@/components/tools/USAPaycheckCalculator2026';
-import { AmazonEuVatTool } from '@/components/tools/AmazonEuVatTool';
-import { OneVisaWorldTool } from '@/components/tools/OneVisaWorldTool';
-import GlobalSalaryCalculator from '@/components/tools/GlobalSalaryCalculator';
-import { ResumeBuilderSimpleTool } from '@/components/tools/ResumeBuilderSimpleTool';
-import { PdfToWordTool } from '@/components/tools/PdfToWordTool';
-import { CurrencyGoldRates } from '@/components/tools/CurrencyGoldRates';
-import { PdfMergerTool } from '@/components/tools/PdfMergerTool';
-import { ImageToPdfTool } from '@/components/tools/ImageToPdfTool';
-import { QrGeneratorTool } from '@/components/tools/QrGeneratorTool';
-import { AgeCalculatorTool } from '@/components/tools/AgeCalculatorTool';
-import { UnitConverterTool } from '@/components/tools/UnitConverterTool';
+const renderLoading = (name: string) => () =>
+  React.createElement(
+    'p',
+    { className: 'text-center py-8 text-slate-500 animate-pulse' },
+    `Loading ${name}...`
+  );
+
+// 14 High-Earning Core Pro Tools - Dynamically Loaded for 95+ PageSpeed Performance
+const EmergencyOSTool = dynamic(
+  () => import('@/components/tools/EmergencyOSTool').then((m) => m.EmergencyOSTool),
+  { ssr: false, loading: renderLoading('Emergency OS') }
+);
+const MortgageCalculator = dynamic(
+  () => import('@/components/tools/MortgageCalculator'),
+  { ssr: false, loading: renderLoading('Mortgage Calculator') }
+);
+const USAPaycheckCalculator2026 = dynamic(
+  () => import('@/components/tools/USAPaycheckCalculator2026').then((m) => m.USAPaycheckCalculator2026),
+  { ssr: false, loading: renderLoading('Paycheck Calculator') }
+);
+const AmazonEuVatTool = dynamic(
+  () => import('@/components/tools/AmazonEuVatTool').then((m) => m.AmazonEuVatTool),
+  { ssr: false, loading: renderLoading('Amazon VAT') }
+);
+const OneVisaWorldTool = dynamic(
+  () => import('@/components/tools/OneVisaWorldTool').then((m) => m.OneVisaWorldTool),
+  { ssr: false, loading: renderLoading('OneVisa World') }
+);
+const GlobalSalaryCalculator = dynamic(
+  () => import('@/components/tools/GlobalSalaryCalculator'),
+  { ssr: false, loading: renderLoading('Salary Calculator') }
+);
+const ResumeBuilderSimpleTool = dynamic(
+  () => import('@/components/tools/ResumeBuilderSimpleTool').then((m) => m.ResumeBuilderSimpleTool),
+  { ssr: false, loading: renderLoading('Resume Builder') }
+);
+const PdfToWordTool = dynamic(
+  () => import('@/components/tools/PdfToWordTool').then((m) => m.PdfToWordTool),
+  { ssr: false, loading: renderLoading('PDF Suite') }
+);
+const CurrencyGoldRates = dynamic(
+  () => import('@/components/tools/CurrencyGoldRates').then((m) => m.CurrencyGoldRates),
+  { ssr: false, loading: renderLoading('Currency & Gold') }
+);
+const PdfMergerTool = dynamic(
+  () => import('@/components/tools/PdfMergerTool').then((m) => m.PdfMergerTool),
+  { ssr: false, loading: renderLoading('PDF Merger') }
+);
+const ImageToPdfTool = dynamic(
+  () => import('@/components/tools/ImageToPdfTool').then((m) => m.ImageToPdfTool),
+  { ssr: false, loading: renderLoading('Image to PDF') }
+);
+const QrGeneratorTool = dynamic(
+  () => import('@/components/tools/QrGeneratorTool').then((m) => m.QrGeneratorTool),
+  { ssr: false, loading: renderLoading('QR Generator') }
+);
+const AgeCalculatorTool = dynamic(
+  () => import('@/components/tools/AgeCalculatorTool').then((m) => m.AgeCalculatorTool),
+  { ssr: false, loading: renderLoading('Age Calculator') }
+);
+const UnitConverterTool = dynamic(
+  () => import('@/components/tools/UnitConverterTool').then((m) => m.UnitConverterTool),
+  { ssr: false, loading: renderLoading('Unit Converter') }
+);
 
 // Supporting Tools
-import { ReziClonePro } from '@/components/tools/ReziClonePro';
-import { AmazonVat } from '@/components/tools/AmazonVat';
-import { ImageCompressor } from '@/components/tools/ImageCompressor';
-import { YouTubeThumb } from '@/components/tools/YouTubeThumb';
-import { Paraphraser } from '@/components/tools/Paraphraser';
-import { Detector } from '@/components/tools/Detector';
-import { HumanizeAI } from '@/components/tools/HumanizeAI';
+const ReziClonePro = dynamic(
+  () => import('@/components/tools/ReziClonePro').then((m) => m.ReziClonePro),
+  { ssr: false, loading: renderLoading('Resume Tool') }
+);
+const AmazonVat = dynamic(
+  () => import('@/components/tools/AmazonVat').then((m) => m.AmazonVat),
+  { ssr: false, loading: renderLoading('Amazon VAT') }
+);
+const ImageCompressor = dynamic(
+  () => import('@/components/tools/ImageCompressor').then((m) => m.ImageCompressor),
+  { ssr: false, loading: renderLoading('Image Compressor') }
+);
+const YouTubeThumb = dynamic(
+  () => import('@/components/tools/YouTubeThumb').then((m) => m.YouTubeThumb),
+  { ssr: false, loading: renderLoading('YouTube Thumb') }
+);
+const Paraphraser = dynamic(
+  () => import('@/components/tools/Paraphraser').then((m) => m.Paraphraser),
+  { ssr: false, loading: renderLoading('Paraphraser') }
+);
+const Detector = dynamic(
+  () => import('@/components/tools/Detector').then((m) => m.Detector),
+  { ssr: false, loading: renderLoading('Detector') }
+);
+const HumanizeAI = dynamic(
+  () => import('@/components/tools/HumanizeAI').then((m) => m.HumanizeAI),
+  { ssr: false, loading: renderLoading('Humanize AI') }
+);
 
 export interface ToolItem {
   id: string | number;

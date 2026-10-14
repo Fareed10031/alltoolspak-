@@ -1,7 +1,12 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { ImageToPdfTool } from '@/components/tools/ImageToPdfTool';
+import dynamic from 'next/dynamic';
+
+const ImageToPdfTool = dynamic(
+  () => import('@/components/tools/ImageToPdfTool').then((m) => m.ImageToPdfTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Image to PDF...</p> }
+);
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';

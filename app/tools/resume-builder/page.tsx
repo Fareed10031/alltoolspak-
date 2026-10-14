@@ -1,7 +1,12 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import ATSResumeBuilder from '@/components/tools/ATSResumeBuilder';
+import dynamic from 'next/dynamic';
+
+const ATSResumeBuilder = dynamic(
+  () => import('@/components/tools/ATSResumeBuilder'),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading ATS Resume Builder...</p> }
+);
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';

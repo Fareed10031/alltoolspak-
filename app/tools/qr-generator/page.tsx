@@ -1,7 +1,12 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { QrGeneratorTool } from '@/components/tools/QrGeneratorTool';
+import dynamic from 'next/dynamic';
+
+const QrGeneratorTool = dynamic(
+  () => import('@/components/tools/QrGeneratorTool').then((m) => m.QrGeneratorTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading QR Generator...</p> }
+);
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';

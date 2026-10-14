@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import Image from 'next/image';
 import {
   User,
   Sparkles,
@@ -208,9 +209,12 @@ export function ResumeEditorSections({ data, onChange }: ResumeEditorSectionsPro
           <div className="p-3.5 rounded-xl bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 flex flex-wrap items-center justify-between gap-4 text-xs">
             <div className="flex items-center gap-3">
               {data.contact.photoUrl ? (
-                <img
+                <Image
                   src={data.contact.photoUrl}
                   alt="Preview"
+                  width={56}
+                  height={56}
+                  loading="lazy"
                   className="w-14 h-14 rounded-full object-cover border-2 border-emerald-500 shadow-xs"
                 />
               ) : (

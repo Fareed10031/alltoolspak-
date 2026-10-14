@@ -7,7 +7,12 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { EmergencyOSTool } from '@/components/tools/EmergencyOSTool';
+import dynamic from 'next/dynamic';
+
+const EmergencyOSTool = dynamic(
+  () => import('@/components/tools/EmergencyOSTool').then((m) => m.EmergencyOSTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Emergency OS...</p> }
+);
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';

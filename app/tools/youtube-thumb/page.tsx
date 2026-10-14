@@ -1,7 +1,12 @@
 'use client';
 
 import React from 'react';
-import { YouTubeThumb } from '@/components/tools/YouTubeThumb';
+import dynamic from 'next/dynamic';
+
+const YouTubeThumb = dynamic(
+  () => import('@/components/tools/YouTubeThumb').then((m) => m.YouTubeThumb),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading YouTube Thumbnail...</p> }
+);
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';

@@ -1,5 +1,10 @@
 import React from 'react';
-import CurrencyGoldRates from '@/components/tools/CurrencyGoldRates';
+import dynamic from 'next/dynamic';
+
+const CurrencyGoldRates = dynamic(
+  () => import('@/components/tools/CurrencyGoldRates'),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Currency & Gold Rates...</p> }
+);
 
 export const metadata = {
   title:

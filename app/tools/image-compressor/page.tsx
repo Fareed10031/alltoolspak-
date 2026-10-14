@@ -1,7 +1,12 @@
 'use client';
 
 import React from 'react';
-import { ImageCompressor } from '@/components/tools/ImageCompressor';
+import dynamic from 'next/dynamic';
+
+const ImageCompressor = dynamic(
+  () => import('@/components/tools/ImageCompressor').then((m) => m.ImageCompressor),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Image Compressor...</p> }
+);
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';

@@ -5,6 +5,7 @@
 'use client';
 
 import React, { useState, useMemo, useRef, useCallback } from 'react';
+import NextImage from 'next/image';
 import {
   Car,
   ShieldCheck,
@@ -709,9 +710,12 @@ export function EmergencyOSTool() {
               ) : (
                 <div className="bg-slate-50 dark:bg-slate-800 rounded-3xl p-5 border border-slate-200 dark:border-slate-700 space-y-4">
                   <div className="relative rounded-2xl overflow-hidden max-h-80 bg-slate-900 flex items-center justify-center">
-                    <img
+                    <NextImage
                       src={evidenceImage}
                       alt="Accident Evidence"
+                      width={640}
+                      height={320}
+                      loading="lazy"
                       className="max-h-80 w-auto object-contain"
                     />
                     <div className="absolute top-3 right-3 bg-black/70 backdrop-blur-md text-white text-[10px] font-mono px-3 py-1 rounded-full">

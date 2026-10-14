@@ -1,7 +1,12 @@
 'use client';
 
 import React from 'react';
-import { PdfToWordTool } from '@/components/tools/PdfToWordTool';
+import dynamic from 'next/dynamic';
+
+const PdfToWordTool = dynamic(
+  () => import('@/components/tools/PdfToWordTool').then((m) => m.PdfToWordTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading PDF Suite...</p> }
+);
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';

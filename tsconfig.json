@@ -22,6 +22,12 @@
       ],
       "next/link": [
         "./lib/next-link.tsx"
+      ],
+      "next/dynamic": [
+        "./lib/next-dynamic.tsx"
+      ],
+      "next/image": [
+        "./lib/next-image.tsx"
       ]
     },
     "allowImportingTsExtensions": true,

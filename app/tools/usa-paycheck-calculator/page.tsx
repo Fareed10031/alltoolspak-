@@ -1,7 +1,12 @@
 'use client';
 
 import React from 'react';
-import { USAPaycheckCalculator2026 } from '@/components/tools/USAPaycheckCalculator2026';
+import dynamic from 'next/dynamic';
+
+const USAPaycheckCalculator2026 = dynamic(
+  () => import('@/components/tools/USAPaycheckCalculator2026').then((m) => m.USAPaycheckCalculator2026),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Paycheck Calculator...</p> }
+);
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';

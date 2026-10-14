@@ -1,7 +1,12 @@
 'use client';
 
 import React from 'react';
-import GlobalSalaryCalculator from '@/components/tools/GlobalSalaryCalculator';
+import dynamic from 'next/dynamic';
+
+const GlobalSalaryCalculator = dynamic(
+  () => import('@/components/tools/GlobalSalaryCalculator'),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Salary Calculator...</p> }
+);
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';

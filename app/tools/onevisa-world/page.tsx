@@ -1,7 +1,12 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { OneVisaWorldTool } from '@/components/tools/OneVisaWorldTool';
+import dynamic from 'next/dynamic';
+
+const OneVisaWorldTool = dynamic(
+  () => import('@/components/tools/OneVisaWorldTool').then((m) => m.OneVisaWorldTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading OneVisa World...</p> }
+);
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';

@@ -1,7 +1,12 @@
 'use client';
 
 import React from 'react';
-import { AmazonVat } from '@/components/tools/AmazonVat';
+import dynamic from 'next/dynamic';
+
+const AmazonVat = dynamic(
+  () => import('@/components/tools/AmazonVat').then((m) => m.AmazonVat),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Amazon VAT...</p> }
+);
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';

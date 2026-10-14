@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import QRCode from 'qrcode';
 import {
   Mail,
@@ -474,9 +475,12 @@ export function ResumePreview({ data, scale = 1 }: ResumePreviewProps) {
           {/* Optional Photo (Gulf/EU CVs) */}
           {data.contact.includePhoto && data.contact.photoUrl && (
             <div className="shrink-0">
-              <img
+              <Image
                 src={data.contact.photoUrl}
                 alt={data.contact.fullName}
+                width={96}
+                height={96}
+                loading="lazy"
                 className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-slate-300 shadow-xs"
               />
             </div>
@@ -561,9 +565,12 @@ export function ResumePreview({ data, scale = 1 }: ResumePreviewProps) {
           {/* Optional QR Code */}
           {data.contact.includeQrCode && qrCodeDataUrl && (
             <div className="shrink-0 text-center space-y-0.5 hidden sm:block">
-              <img
+              <Image
                 src={qrCodeDataUrl}
                 alt="Portfolio QR"
+                width={64}
+                height={64}
+                loading="lazy"
                 className="w-16 h-16 rounded-md border border-slate-200"
               />
               <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider block">

@@ -1,7 +1,12 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { UnitConverterTool } from '@/components/tools/UnitConverterTool';
+import dynamic from 'next/dynamic';
+
+const UnitConverterTool = dynamic(
+  () => import('@/components/tools/UnitConverterTool').then((m) => m.UnitConverterTool),
+  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Unit Converter...</p> }
+);
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';

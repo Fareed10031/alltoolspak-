@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
+import NextImage from 'next/image';
 import { jsPDF } from 'jspdf';
 import { Upload, ArrowUp, ArrowDown, CheckCircle2, ShieldCheck, Layers, Sparkles } from 'lucide-react';
 
@@ -244,9 +245,12 @@ export function ImageToPDFPro() {
                   className="bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 relative flex flex-col shadow-xs"
                 >
                   <div className="w-full h-32 bg-slate-100 dark:bg-slate-900 rounded-lg overflow-hidden flex items-center justify-center relative mb-2">
-                    <img
+                    <NextImage
                       src={img.dataUrl}
                       alt={`Page ${i + 1}`}
+                      width={160}
+                      height={128}
+                      loading="lazy"
                       className="w-full h-full object-contain"
                     />
                     <span className="absolute bottom-1 left-1 bg-black/70 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
