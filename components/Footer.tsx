@@ -6,8 +6,8 @@ export interface FooterProps {
   onSelectTool?: (toolId: string) => void;
 }
 
-export function Footer(_props: FooterProps = {}) {
-  return <BlackFooter />;
+export function Footer({ onNavigate, onSelectTool }: FooterProps = {}) {
+  return <BlackFooter onNavigate={onNavigate} onSelectTool={onSelectTool} />;
 }
 
 export default Footer;

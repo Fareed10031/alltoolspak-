@@ -137,6 +137,8 @@ export function normalizeRoute(raw: string): string {
     case 'visa-calculator':
     case 'crs-calculator':
     case 'global-visa-calculator':
+    case 'uk-visa-points-calculator':
+    case 'canada-crs-calculator':
       return 'onevisa-world';
 
     case 'pdf-merge':
@@ -166,6 +168,7 @@ export function normalizeRoute(raw: string): string {
 
     case 'resume-builder':
     case 'ats-resume-builder':
+    case 'ats-resume-checker':
     case 'resume':
     case 'cv-builder':
       return 'resume-builder';
@@ -197,6 +200,7 @@ export function normalizeRoute(raw: string): string {
     case 'global-salary':
     case 'salary-calculator':
     case 'world-salary':
+    case 'freelance-rate-calculator':
       return 'global-salary-calculator';
 
     case 'pdf-to-word':
@@ -216,6 +220,8 @@ export function normalizeRoute(raw: string): string {
     case 'gold-rates':
     case 'currency-rates':
     case 'usd-to-pkr':
+    case 'usd-to-pkr-live':
+    case 'gold-price-pakistan':
     case 'crypto-converter':
     case 'crypto':
     case 'bitcoin-to-pkr':
@@ -230,6 +236,7 @@ export function normalizeRoute(raw: string): string {
     case 'global-accident-emergency':
     case 'car-accident-settlement-calculator':
     case 'accident-settlement-calculator':
+    case 'personal-injury-compensation':
       return 'emergency-os';
 
     // Supporting utilities

@@ -25,6 +25,13 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
     'pdf-3x-pro': 'pdf-to-word',
     'pdf-merge': 'pdf-merger',
     'ats-resume-builder': 'resume-builder',
+    'ats-resume-checker': 'resume-builder',
+    'freelance-rate-calculator': 'global-salary-calculator',
+    'usd-to-pkr-live': 'currency-gold-rates',
+    'gold-price-pakistan': 'currency-gold-rates',
+    'uk-visa-points-calculator': 'onevisa-world',
+    'canada-crs-calculator': 'onevisa-world',
+    'personal-injury-compensation': 'emergency-os',
   };
 
   const normalizedSlug = SLUG_ALIASES[currentSlug] || currentSlug;
