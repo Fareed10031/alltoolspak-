@@ -10,6 +10,7 @@ import { TermsPage } from '@/components/pages/TermsPage';
 import { DisclaimerPage } from '@/components/pages/DisclaimerPage';
 import { CookiesPage } from '@/components/pages/CookiesPage';
 import { ContactPage } from '@/components/pages/ContactPage';
+import { BlogPage } from '@/components/pages/BlogPage';
 
 import dynamic from 'next/dynamic';
 
@@ -463,6 +464,8 @@ export default function App() {
         return <CookiesPage />;
       case 'contact':
         return <ContactPage />;
+      case 'blog':
+        return <BlogPage />;
 
       default:
         return (
