@@ -1,6 +1,10 @@
 import React from 'react';
 
 export const ToolIconsConfig: Record<string, { bg: string; icon: React.ReactNode }> = {
+  "car-accident-settlement-calculator": {
+    bg: "bg-gradient-to-br from-[#DC2626] to-[#E11D48]",
+    icon: <span className="text-white text-2xl">🚑</span>
+  },
   "emergency-os": {
     bg: "bg-gradient-to-br from-[#DC2626] to-[#E11D48]",
     icon: <span className="text-white text-2xl">🚑</span>

@@ -54,12 +54,20 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
             <span>Explore All Tools</span>
             <ArrowRight className="w-4 h-4" />
           </a>
-          <button
-            onClick={() => onSelectTool('emergency-os')}
-            className="h-12 sm:h-13 px-7 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-rose-600/20 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center gap-2"
+          <a 
+            href="/tools/car-accident-settlement-calculator"
+            onClick={(e) => {
+              if (onSelectTool) {
+                e.preventDefault();
+                onSelectTool('car-accident-settlement-calculator');
+              }
+            }}
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
           >
-            <span>🚑 Try Emergency OS</span>
-          </button>
+            <span className="text-xl">🚑</span>
+            <span>Car Accident Settlement Calculator</span>
+            <span className="ml-1 text-xs bg-white/20 px-2 py-1 rounded-full">195 Countries</span>
+          </a>
         </div>
 
         {/* Live Search Bar */}

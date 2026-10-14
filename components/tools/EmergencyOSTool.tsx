@@ -206,8 +206,8 @@ export function EmergencyOSTool() {
                   195 Sovereign Jurisdictions
                 </span>
               </div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-                Global Accident &amp; Emergency Compensation Calculator OS
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight">
+                Car Accident Settlement Calculator
               </h1>
             </div>
           </div>
@@ -235,8 +235,8 @@ export function EmergencyOSTool() {
           </div>
         </div>
 
-        <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base mt-4 leading-relaxed">
-          Free Estimator for Settlement, Insurance Claim &amp; Rehab Cost across 195 countries. Audited with actuarial insurance benchmarks for auto collisions, workplace injuries, and slip-and-fall claims. For educational &amp; planning purposes only.
+        <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mt-3 leading-relaxed">
+          Insurance Claim, Rehab Cost &amp; Compensation Estimator for 195 Countries
         </p>
 
         {/* Quick Highlights Bar */}
@@ -305,9 +305,9 @@ export function EmergencyOSTool() {
         {activeTab === 1 && (
           <div className="grid lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-6 space-y-5">
-              <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
-                <h2 className="text-xl font-bold flex items-center gap-2 text-slate-900 dark:text-white">
-                  <DollarSign className="w-5 h-5 text-emerald-600" />
+              <div id="input-parameters" className="border-b border-slate-100 dark:border-slate-800 pb-3 scroll-mt-24">
+                <h2 className="text-2xl font-bold flex items-center gap-2 text-slate-900 dark:text-white">
+                  <DollarSign className="w-6 h-6 text-emerald-600" />
                   Accident Settlement Input Parameters
                 </h2>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">

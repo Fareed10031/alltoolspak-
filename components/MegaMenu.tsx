@@ -15,7 +15,7 @@ const allTools = [
   { name: "PDF Merger", href: "/pdf-merge", icon: "📄", bg: "bg-red-50" },
   { name: "Image to PDF", href: "/image-to-pdf", icon: "🖼️", bg: "bg-blue-50" },
   { name: "QR Code Generator", href: "/qr-generator", icon: "🔳", bg: "bg-green-50" },
-  { name: "Emergency OS (Accident & Claims)", href: "/emergency-os", icon: "🚑", bg: "bg-rose-50" },
+  { name: "Car Accident Settlement Calculator", href: "/tools/car-accident-settlement-calculator", icon: "🚑", bg: "bg-rose-50" },
 ];
 
 export default function MegaMenu() {

@@ -120,16 +120,16 @@ export interface ToolItem {
 
 // 14 High-Earning Core Suite in CPC Order
 export const tools: ToolItem[] = [
-  // Tool #14: Global Accident & Emergency Compensation Calculator OS ($1000 CPC)
+  // Tool #14: Car Accident Settlement Calculator ($1000 CPC)
   {
-    id: 'emergency-os',
-    slug: 'emergency-os',
-    name: 'Global Accident & Emergency Compensation Calculator OS',
+    id: 'car-accident-settlement-calculator',
+    slug: 'car-accident-settlement-calculator',
+    name: 'Car Accident Settlement Calculator',
     description: '195 Countries supported - Estimate insurance claim settlement, lost wages, rehab cost, and court awards.',
     component: EmergencyOSTool,
     category: 'Legal & Insurance',
     badge: '195 Countries',
-    path: '/tools/emergency-os',
+    path: '/tools/car-accident-settlement-calculator',
     color: 'from-red-600 via-rose-600 to-amber-600',
     tag: 'Legal & Claims',
     isNew: true,

@@ -228,6 +228,8 @@ export function normalizeRoute(raw: string): string {
     case 'compensation-calculator':
     case 'accident-compensation':
     case 'global-accident-emergency':
+    case 'car-accident-settlement-calculator':
+    case 'accident-settlement-calculator':
       return 'emergency-os';
 
     // Supporting utilities

@@ -1,7 +1,7 @@
 export const SITE_URL = 'https://alltoolspk.com';
 
 export const ALL_14_TOOLS = [
-  { slug: 'global-accident-emergency', name: 'Global Accident & Emergency', keyword: 'car accident settlement calculator', countries: 195 },
+  { slug: 'tools/car-accident-settlement-calculator', name: 'Car Accident Settlement Calculator', keyword: 'car accident settlement calculator', countries: 195 },
   { slug: 'mortgage-calculator-usa', name: 'Mortgage Calculator USA', keyword: 'mortgage calculator usa', countries: 1 },
   { slug: 'usa-paycheck-calculator-2026', name: 'USA Paycheck Calculator 2026', keyword: 'usa paycheck calculator 2026', countries: 1 },
   { slug: 'amazon-eu-vat-calculator', name: 'Amazon EU VAT Calculator', keyword: 'amazon eu vat calculator', countries: 27 },

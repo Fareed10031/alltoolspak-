@@ -50,6 +50,18 @@ ${ALL_14_TOOLS.map((t) => `  <url>
   res.send(xml);
 });
 
+// 301 Redirects for Car Accident Settlement Calculator
+app.get([
+  '/tools/emergency-os',
+  '/emergency-os',
+  '/tools/global-accident-emergency',
+  '/global-accident-emergency',
+  '/tools/accident-calculator',
+  '/accident-calculator'
+], (_req, res) => {
+  return res.redirect(301, '/tools/car-accident-settlement-calculator');
+});
+
 // Robots endpoint
 app.get('/robots.txt', (_req, res) => {
   const filePath = path.resolve(process.cwd(), 'public', 'robots.txt');

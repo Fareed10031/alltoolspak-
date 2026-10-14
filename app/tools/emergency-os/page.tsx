@@ -20,12 +20,23 @@ import { CookieBanner } from '@/components/CookieBanner';
 export default function EmergencyOSPage() {
   useEffect(() => {
     document.title =
-      'Global Accident & Emergency Compensation Calculator OS (195 Countries) | AllToolsPK';
+      'Car Accident Settlement Calculator | Insurance Claim & Compensation Estimator - 195 Countries';
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       metaDesc.setAttribute(
         'content',
-        'Free 2026 Global Accident & Emergency Compensation Calculator OS for 195 countries. Estimate insurance settlement, lost wages, pain and suffering, and rehab costs.'
+        'Calculate your car accident settlement value instantly. Estimate insurance claim, rehab cost, medical bills, lost wages, visual evidence analysis, and find lawyer and hospital near you. Supports 195 countries. 100% Private, Browser-Based.'
+      );
+    }
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute('content', 'Car Accident Settlement Calculator - 195 Countries');
+    }
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) {
+      ogDesc.setAttribute(
+        'content',
+        'Free settlement estimator, insurance claim checker, rehab cost calculator, and lawyer finder.'
       );
     }
   }, []);

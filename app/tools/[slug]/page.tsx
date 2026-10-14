@@ -11,6 +11,8 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
   const currentSlug = params?.slug ? params.slug.toLowerCase().trim() : '';
 
   const SLUG_ALIASES: Record<string, string> = {
+    'car-accident-settlement-calculator': 'emergency-os',
+    'accident-settlement-calculator': 'emergency-os',
     'global-accident-emergency': 'emergency-os',
     'accident-calculator': 'emergency-os',
     'compensation-calculator': 'emergency-os',

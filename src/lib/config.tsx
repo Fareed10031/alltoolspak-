@@ -344,11 +344,11 @@ export const TOOLS: ToolItem[] = [
     url: "/unit-converter",
   },
 
-  // 14 - Tool #14: Global Accident & Emergency Compensation Calculator OS
+  // 14 - Tool #14: Car Accident Settlement Calculator
   {
-    slug: "emergency-os",
-    name: "Global Accident & Emergency Compensation Calculator OS",
-    shortName: "Emergency OS",
+    slug: "car-accident-settlement-calculator",
+    name: "Car Accident Settlement Calculator",
+    shortName: "Car Accident Calc",
     desc: "195 Countries supported - Estimate insurance claim settlement, lost wages, rehab cost, and court awards.",
     description: "195 Countries supported - Estimate insurance claim settlement, lost wages, rehab cost, and court awards.",
     badge: "195 Countries",
@@ -358,12 +358,12 @@ export const TOOLS: ToolItem[] = [
     colorIndex: 8,
     color: "bg-gradient-to-br from-red-600 via-rose-600 to-amber-600",
     icon: (
-      <div className="w-full h-full flex items-center justify-center text-white text-2xl" aria-label="Emergency OS Calculator Icon">
+      <div className="w-full h-full flex items-center justify-center text-white text-2xl" aria-label="Car Accident Settlement Calculator Icon">
         🚑
       </div>
     ),
-    path: "/tools/emergency-os",
-    url: "/emergency-os",
+    path: "/tools/car-accident-settlement-calculator",
+    url: "/tools/car-accident-settlement-calculator",
     isFeatured: true,
     isNew: true,
   },
