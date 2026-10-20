@@ -17,6 +17,7 @@ import {
   Award,
 } from 'lucide-react';
 import CryptoConverter from './CryptoConverter';
+import { LiveRatesWidget } from './LiveRatesWidget';
 
 interface CurrencyData {
   time_last_update_utc?: string;
@@ -192,6 +193,22 @@ export function CurrencyGoldRates() {
 
       const now = new Date();
       setLastRefreshed(now);
+
+      // Dynamic SEO Title & Meta Description - Fixes Indexing Issue
+      const usdToPkr = rates['PKR'] || 278.5;
+      const goldPerOunceUSD = goldPrice;
+      const perTolaPKR = (goldPerOunceUSD * usdToPkr / 31.1035) * 11.664;
+      const per10GramPKR = (perTolaPKR / 11.664) * 10;
+      const sarafaTola = perTolaPKR * 1.025;
+      const formattedDate = now.toLocaleDateString('en-PK', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Karachi' });
+
+      const newTitle = `USD to PKR Today ${usdToPkr.toFixed(2)} - 500 USD = ${Math.round(usdToPkr * 500).toLocaleString('en-US')} PKR | Gold Per Tola Rs.${Math.round(sarafaTola).toLocaleString('en-US')} - ${formattedDate}`;
+      document.title = newTitle;
+
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute('content', `Live USD to PKR today ${usdToPkr.toFixed(2)}, 500 USD = ${Math.round(usdToPkr * 500).toLocaleString('en-US')} PKR. Gold per tola Rs.${Math.round(sarafaTola).toLocaleString('en-US')}, 10 gram Rs.${Math.round(per10GramPKR).toLocaleString('en-US')}. Updated ${formattedDate}.`);
+      }
 
       // Save to localStorage for instant offline access
       if (typeof window !== 'undefined') {
@@ -393,6 +410,9 @@ export function CurrencyGoldRates() {
           Advertisement • Top Banner Slot (728x90 / Responsive)
         </div>
 
+        {/* AllToolsPK - Live USD to PKR & Gold Rate - 100% Auto Update Box */}
+        <LiveRatesWidget />
+
         {/* Hero Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 text-xs font-semibold mb-3 animate-pulse">
@@ -400,12 +420,10 @@ export function CurrencyGoldRates() {
             LIVE - Updated Just Now - 100% Correct Mid-Market Data
           </div>
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
-            USD to PKR Live Today - 1 USD = 277.10 PKR | Gold Rate Per Tola Rs.431,673 - 6 October 2026
+            USD to PKR Live Today - 1 USD = {goldMetrics.usdToPkr.toFixed(2)} PKR | Gold Rate Per Tola Rs.{Math.round(goldMetrics.tola.pkr * 1.025).toLocaleString()}
           </h1>
           <p className="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            Live USD to PKR today 277.10, 500 USD = 138,547 PKR. Gold per tola Rs.431,673, 10 gram
-            Rs.370,090, per ounce $4,154. Check dollar rate Karachi, Lahore, Peshawar + Sarafa gold
-            rates. Updates every 60 seconds.
+            Live USD to PKR today {goldMetrics.usdToPkr.toFixed(2)}, 500 USD = {Math.round(goldMetrics.usdToPkr * 500).toLocaleString()} PKR. Gold per tola Rs.{Math.round(goldMetrics.tola.pkr * 1.025).toLocaleString()}, 10 gram Rs.{Math.round(goldMetrics.tenGram.pkr * 1.025).toLocaleString()}, per ounce ${Math.round(goldMetrics.ounce.usd).toLocaleString()}. Check dollar rate Karachi, Lahore, Peshawar + Sarafa gold rates. Updates every 60 seconds.
           </p>
           <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-xs text-slate-500">
             <span className="flex items-center gap-1.5 font-medium px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300">
