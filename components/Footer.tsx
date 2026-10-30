@@ -31,7 +31,7 @@ export function Footer({ onNavigate, onSelectTool }: FooterProps = {}) {
             <li><Link href="/tools/mortgage-calculator-usa" onClick={(e) => handleClick(e, '/tools/mortgage-calculator-usa')} className="hover:text-white transition">Mortgage Calculator USA</Link></li>
             <li><Link href="/tools/usa-paycheck-calculator-2026" onClick={(e) => handleClick(e, '/tools/usa-paycheck-calculator-2026')} className="hover:text-white transition">USA Paycheck Calculator 2026</Link></li>
             <li><Link href="/tools/amazon-eu-vat-calculator" onClick={(e) => handleClick(e, '/tools/amazon-eu-vat-calculator')} className="hover:text-white transition">Amazon EU VAT Calculator</Link></li>
-            <li><Link href="/tools/live-currency-gold-rates" onClick={(e) => handleClick(e, '/tools/live-currency-gold-rates')} className="hover:text-white transition">Live Currency &amp; Gold Rates - USD to PKR &amp; Gold Price</Link></li>
+            <li><Link href="/currency-gold-rates/" onClick={(e) => handleClick(e, '/currency-gold-rates/')} className="hover:text-white transition">Live Currency &amp; Gold Rates - USD to PKR &amp; Gold Price</Link></li>
             <li><Link href="/tools/global-salary-calculator" onClick={(e) => handleClick(e, '/tools/global-salary-calculator')} className="hover:text-white transition">Global Salary Calculator - 192 Countries</Link></li>
           </ul>
         </div>
