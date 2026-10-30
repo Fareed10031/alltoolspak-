@@ -1,41 +1,25 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
-
-const CurrencyGoldRates = dynamic(
-  () => import('@/components/tools/CurrencyGoldRates'),
-  { ssr: false, loading: () => (
-    <div id="live-rates-container" style={{ fontFamily: 'Inter, sans-serif', maxWidth: '700px', margin: 'auto' }} className="py-8">
-      <div id="live-gold-pkr-box" style={{ border: '1.5px solid #e5e7eb', padding: '20px', borderRadius: '16px', background: '#ffffff', textAlign: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
-        <p style={{ color: '#6b7280' }}>Loading Live Market Data...</p>
-      </div>
-    </div>
-  ) }
-);
+import CurrencyGoldRates from '@/components/tools/CurrencyGoldRates';
+import AllToolsSEO from '../components/AllToolsSEO';
 
 export const metadata = {
-  title:
-    'USD to PKR Today | Live Dollar Rate Pakistan + Gold Price Per Tola | AllToolsPK',
-  description:
-    'Live USD to PKR today rate, 500 USD to PKR conversion, Gold per tola and 10 gram Sarafa rates in Pakistan. Updates every 60 seconds.',
-  keywords:
-    'usd to pkr, dollar to pkr, 1 dollar in pkr, 500 usd to pkr, gold rate today pakistan, gold per tola, sone ka rate, dollar rate today',
+  title: "Free Currency & Gold Rates Pakistan - USD to PKR & Sarafa Gold",
+  description: "Free Currency & Gold Rates Pakistan with live USD to PKR interbank rates and 24K Sarafa gold rates per tola and 10 grams in Pakistan.",
+  alternates: {
+    canonical: "https://alltoolspk.com/currency-gold-rates/",
+  },
 };
 
-export default function CurrencyGoldRatesPage() {
+export default function Page() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "CurrencyConversionService",
-            "name": "USD to PKR Live Rate",
-            "description": "Live USD to PKR and Gold Rate in Pakistan"
-          })
-        }}
-      />
       <CurrencyGoldRates />
+      <AllToolsSEO
+        toolName="Currency & Gold Rates"
+        slug="/currency-gold-rates"
+        keyword="Free Currency Gold Rate Pakistan"
+        desc="Real-time interbank USD to PKR exchange rates and authentic 24K Sarafa gold prices per tola, 10 grams, and 1 gram in Pakistan."
+      />
     </>
   );
 }

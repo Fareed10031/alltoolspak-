@@ -1,8 +1,5 @@
-'use client';
-
-import React from 'react';
-import CurrencyGoldRatesPage from '@/app/currency-gold-rates/page';
+import { redirect } from 'next/navigation';
 
 export default function Page() {
-  return <CurrencyGoldRatesPage />;
+  redirect('/currency-gold-rates/');
 }

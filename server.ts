@@ -50,16 +50,19 @@ ${ALL_14_TOOLS.map((t) => `  <url>
   res.send(xml);
 });
 
-// 301 Redirects for Car Accident Settlement Calculator
+// 301 Redirect for duplicate live-currency-gold-rates to currency-gold-rates
+app.get(['/live-currency-gold-rates', '/live-currency-gold-rates/*'], (_req, res) => {
+  return res.redirect(301, '/currency-gold-rates/');
+});
+
+// 301 Redirects for emergency-os to car-accident-settlement-calculator
 app.get([
   '/tools/emergency-os',
   '/emergency-os',
-  '/tools/global-accident-emergency',
-  '/global-accident-emergency',
   '/tools/accident-calculator',
   '/accident-calculator'
 ], (_req, res) => {
-  return res.redirect(301, '/tools/car-accident-settlement-calculator');
+  return res.redirect(301, '/global-accident-emergency');
 });
 
 // Robots endpoint

@@ -17,23 +17,23 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/tools/global-accident-emergency",
-        destination: "/tools/car-accident-settlement-calculator",
+        source: "/live-currency-gold-rates",
+        destination: "/currency-gold-rates/",
         permanent: true,
       },
       {
-        source: "/global-accident-emergency",
-        destination: "/tools/car-accident-settlement-calculator",
+        source: "/live-currency-gold-rates/:path*",
+        destination: "/currency-gold-rates/",
         permanent: true,
       },
       {
         source: "/tools/accident-calculator",
-        destination: "/tools/car-accident-settlement-calculator",
+        destination: "/global-accident-emergency",
         permanent: true,
       },
       {
         source: "/accident-calculator",
-        destination: "/tools/car-accident-settlement-calculator",
+        destination: "/global-accident-emergency",
         permanent: true,
       },
     ];
