@@ -1,6 +1,6 @@
-// File: app/emergency-os/page.tsx
-'use client';
+import React from 'react';
+import EmergencyOSTool from '@/components/tools/EmergencyOSTool';
 
-import EmergencyOSPage from '@/app/tools/emergency-os/page';
-
-export default EmergencyOSPage;
+export default function Page() {
+  return <EmergencyOSTool />;
+}

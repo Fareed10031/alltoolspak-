@@ -1,8 +1,6 @@
-'use client';
-
 import React from 'react';
-import ResumeBuilderPage from '@/app/tools/resume-builder/page';
+import ATSResumeBuilder from '@/components/tools/ATSResumeBuilder';
 
 export default function Page() {
-  return <ResumeBuilderPage />;
+  return <ATSResumeBuilder />;
 }

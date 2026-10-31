@@ -1,8 +1,6 @@
-'use client';
-
 import React from 'react';
-import QrGeneratorPage from '@/app/tools/qr-generator/page';
+import QrGeneratorTool from '@/components/tools/QrGeneratorTool';
 
 export default function Page() {
-  return <QrGeneratorPage />;
+  return <QrGeneratorTool />;
 }
