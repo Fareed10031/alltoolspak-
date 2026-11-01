@@ -41,6 +41,19 @@ export default function Footer(_props) {
           <a href="/" className="text-2xl font-bold">AllTools<span className="text-blue-500">PK</span></a>
           <p className="text-gray-400 mt-3 text-sm">Free Online Tools for Finance, Documents, Salary, Visa and Daily Use. Fast, Free and Easy to Use for Everyone.</p>
           <p className="text-gray-500 text-sm mt-4">© 2026 AllToolsPK. All Rights Reserved.</p>
+          
+          {/* Separate Bottom Legal Bar (iLovePDF style) */}
+          <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 mt-4 text-xs text-gray-400">
+            <a href="/privacy-policy" className="hover:text-white transition">Privacy Policy</a>
+            <span className="text-gray-600 hidden sm:inline">•</span>
+            <a href="/terms-of-service" className="hover:text-white transition">Terms of Service</a>
+            <span className="text-gray-600 hidden sm:inline">•</span>
+            <a href="/about-us" className="hover:text-white transition">About Us</a>
+            <span className="text-gray-600 hidden sm:inline">•</span>
+            <a href="/contact-us" className="hover:text-white transition">Contact Us</a>
+            <span className="text-gray-600 hidden sm:inline">•</span>
+            <a href="/disclaimer" className="hover:text-white transition">Disclaimer</a>
+          </div>
         </div>
       </div>
     </footer>

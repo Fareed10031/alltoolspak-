@@ -1,74 +1,100 @@
 import React from 'react';
-import { AlertTriangle, ExternalLink, ShieldCheck, HelpCircle } from 'lucide-react';
 
-export function DisclaimerPage() {
+export default function DisclaimerPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
-      {/* Breadcrumbs */}
-      <nav className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-6">
-        <a href="/" className="hover:underline hover:text-blue-600">Home</a>
-        <span>/</span>
-        <span className="text-slate-800 dark:text-slate-200 font-medium">Disclaimer &amp; Tax Notice</span>
-      </nav>
-
-      {/* Header */}
-      <div className="space-y-3 mb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-red-50 dark:bg-red-950/50 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-900/60">
-          <AlertTriangle className="w-3.5 h-3.5" />
-          <span>Statutory Tax &amp; AI Advisory Notice</span>
-        </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-          Disclaimer &amp; Financial Notice
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 text-slate-800 dark:text-slate-200 font-sans leading-relaxed">
+      <div className="border-b border-slate-200 dark:border-slate-800 pb-6 mb-8">
+        <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-3 py-1 rounded-full">
+          Legal & Regulatory Notice
+        </span>
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-3 tracking-tight">
+          Disclaimer - AllToolsPK
         </h1>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
-          Last Updated: September 2026 &bull; alltoolspk.com
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
+          Last Updated: November 1, 2026 • Official Legal Notice for alltoolspk.com
         </p>
       </div>
 
-      {/* Critical Red Callout Box */}
-      <div className="p-6 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/80 mb-8 space-y-3">
-        <div className="flex items-center gap-2 text-red-700 dark:text-red-300 font-bold text-base">
-          <AlertTriangle className="w-5 h-5 shrink-0" />
-          <span>Not Tax, Accounting, or Legal Advice</span>
-        </div>
-        <p className="text-xs sm:text-sm text-red-800 dark:text-red-200 leading-relaxed font-medium">
-          The information, formulas, calculations, and software tools provided on alltoolspk.com (including but not limited to the Amazon EU VAT Calculator) are intended strictly for educational, informational, and computational convenience purposes. <strong>They do not constitute formal tax, legal, or accounting advice.</strong>
-        </p>
-        <p className="text-xs text-red-700 dark:text-red-300 leading-relaxed">
-          Cross-border e-commerce tax regulations in the European Union (One-Stop Shop OSS) and third-party countries are subject to periodic legislative amendments and administrative interpretations. Always consult with a certified tax consultant, chartered accountant, or legal counsel before submitting statutory VAT returns.
-        </p>
-      </div>
-
-      <div className="space-y-6 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-        <section className="space-y-2">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-            1. No Professional-Client Relationship
+      <div className="space-y-8 text-sm sm:text-base">
+        {/* 1. General Disclaimer */}
+        <section className="space-y-3">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+            1. General Disclaimer
           </h2>
           <p>
-            Your access to or transmission of information through alltoolspk.com does not establish an attorney-client, accountant-client, or fiduciary relationship between you and alltoolspk.com or its operators.
+            The information, calculators, converters, software utilities, estimations, rates, and materials provided on <strong>AllToolsPK</strong> (&ldquo;alltoolspk.com&rdquo;) are published in good faith and are intended strictly for <strong>general informational, educational, simulation, and personal productivity purposes</strong>.
+          </p>
+          <p>
+            AllToolsPK is developed and maintained by <strong>Fareed Ullah</strong> in Peshawar, Pakistan. While we make every reasonable effort to keep the content, computational formulas, and market rates current, accurate, and mathematically sound, we make no representations or warranties of any kind, express or implied, regarding the completeness, accuracy, reliability, suitability, or availability of the website, tools, or related graphics.
+          </p>
+          <p>
+            Any reliance you place on such information or computational outputs is strictly at your own risk. AllToolsPK and Fareed Ullah disclaim all liability for any loss, damage, or legal dispute arising directly or indirectly from your reliance on our tools.
           </p>
         </section>
 
-        <section className="space-y-2">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-            2. Heuristic and Probabilistic Processing
+        {/* 2. Financial Calculators Disclaimer */}
+        <section className="space-y-3">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+            2. Financial Calculators &amp; Market Rates Disclaimer
           </h2>
           <p>
-            Our utilities utilize deterministic and probabilistic heuristics. Output files, calculations, and conversions represent mathematical processing based on input data; they should be reviewed and verified by qualified professionals before formal submission.
+            AllToolsPK features multiple specialized financial calculators, including:
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-slate-700 dark:text-slate-300">
+            <li><strong>Mortgage Calculator USA:</strong> Monthly amortization breakdowns (PITI, PMI, property tax estimates) are mathematical projections. Actual mortgage lending terms depend on individual credit scores, lender underwriting criteria, local county tax assessments, and fluctuating hazard insurance premiums. Our tool does not constitute a formal loan pre-qualification or mortgage pre-approval offer.</li>
+            <li><strong>USA Paycheck Calculator 2026:</strong> Computes estimated federal withholding, FICA, and state deductions based on standard tax brackets. Individual payrolls may differ due to municipal taxes, pre-tax 401(k) contributions, health savings accounts (HSA), or special employer withholdings.</li>
+            <li><strong>Car Accident Settlement Calculator:</strong> Personal injury damages calculations are mathematical estimates utilizing standard insurance settlement multiplier formulas. They do not constitute formal legal demand evaluations or guaranteed insurer payouts.</li>
+            <li><strong>Amazon EU VAT Calculator:</strong> Computes statutory European Value Added Tax under OSS/IOSS rules. Sellers remain legally responsible for consulting licensed tax advisors or European fiscal representatives for official VAT filings.</li>
+            <li><strong>Currency &amp; Gold Rates:</strong> Foreign exchange rates and Sarafa gold prices are derived from public market API feeds. They reflect mid-market indicative benchmarks and may vary from retail bank exchange counters, open market dealers, or local jewelry shop buy/sell spreads.</li>
+          </ul>
+        </section>
+
+        {/* 3. No Professional Advice */}
+        <section className="space-y-3">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+            3. No Professional Advice (Financial, Legal, Tax, or Immigration)
+          </h2>
+          <p>
+            None of the content, results, outputs, or guidance provided on AllToolsPK constitutes professional legal, financial, accounting, medical, architectural, or immigration advice:
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-slate-700 dark:text-slate-300">
+            <li><strong>No Legal Advice:</strong> Use of our accident compensation estimator or terms generators does not establish an attorney-client relationship. Always consult a licensed attorney in your state or country for binding legal representation.</li>
+            <li><strong>No Tax or Accounting Advice:</strong> You should never base business tax filings or international corporate tax structures solely on online calculators. Consult a certified public accountant (CPA) or chartered accountant.</li>
+            <li><strong>No Immigration Advice:</strong> The OneVisa World Points Calculator provides educational scoring based on publicly accessible immigration matrices. We are not immigration attorneys or registered migration agents (MARA / RCIC). Official visa decisions rest solely with government ministries (IRCC, UK Home Office, Australian Home Affairs, German BAMF).</li>
+          </ul>
+        </section>
+
+        {/* 4. External Links Disclaimer */}
+        <section className="space-y-3">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+            4. External Links &amp; Third-Party Resources Disclaimer
+          </h2>
+          <p>
+            From time to time, AllToolsPK may include hyperlinks to external third-party websites, resources, or regulatory portals (such as official IRS, SBP, or immigration ministry websites).
+          </p>
+          <p>
+            While we strive to link only to reputable, authoritative, and ethical websites, we have no control over the content, operational availability, privacy policies, or practices of external sites. The inclusion of any external link does not imply a formal recommendation or endorsement of the views, products, or services offered on those third-party domains.
           </p>
         </section>
 
-        <section className="space-y-2">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-            3. Limitation of Liability
+        {/* 5. Accuracy Disclaimer */}
+        <section className="space-y-3 bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+            5. Accuracy Disclaimer &amp; Technical Limitations
           </h2>
-          <p>
-            Under no circumstances shall alltoolspk.com, its founder Fareed Ullah, or its affiliates be held liable for any direct, indirect, incidental, consequential, special, or punitive damages arising from the use or inability to use our tools, including financial losses, tax penalties, audit adjustments, or missed employment opportunities.
+          <p className="text-slate-700 dark:text-slate-300">
+            We continually test, refine, and audit the computational logic of all 15 tools on alltoolspk.com to maintain maximum fidelity. However, because mathematical algorithms run inside client browser environments, variances in device hardware, operating system rounding precision, browser JavaScript engines, or third-party browser extensions (such as script blockers) may occasionally affect tool execution or visual rendering.
           </p>
+          <p className="text-slate-700 dark:text-slate-300 mt-2">
+            AllToolsPK does not warrant that the website will operate uninterrupted, error-free, or completely free of software bugs. If you notice any discrepancy or bug in any calculation, please notify us immediately at <strong>contact@alltoolspk.com</strong> so we can promptly audit and update the code.
+          </p>
+          <div className="pt-4 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
+            <p>Direct Inquiries: Fareed Ullah, Founder • Peshawar, KPK, Pakistan • Email: contact@alltoolspk.com</p>
+          </div>
         </section>
       </div>
     </div>
   );
 }
 
-export default DisclaimerPage;
+export { DisclaimerPage };
