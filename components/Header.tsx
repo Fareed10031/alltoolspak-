@@ -28,7 +28,7 @@ export default function Header({ onNavigate }: HeaderProps) {
         <Link
           href="/"
           onClick={(e) => handleLinkClick(e, 'home')}
-          className="flex items-center gap-2.5 group cursor-pointer"
+          className="flex items-center gap-2.5 group cursor-pointer min-h-[40px]"
           aria-label="AllToolsPK - Home"
         >
           <div className="grid grid-cols-2 gap-1 w-7 h-7 shrink-0 p-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 group-hover:scale-105 transition-transform">
@@ -37,17 +37,17 @@ export default function Header({ onNavigate }: HeaderProps) {
             <span className="rounded-xs bg-rose-500" />
             <span className="rounded-xs bg-amber-500" />
           </div>
-          <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+          <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white leading-none">
             AllTools<span className="text-blue-600">PK</span>
           </span>
         </Link>
 
         {/* Right = ONE Explore Tools blue button + ONE MegaMenu component only */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 shrink-0">
           <Link
             href="/#tools-grid"
             onClick={(e) => handleLinkClick(e, 'home')}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-md shadow-blue-600/20 transition-all cursor-pointer"
+            className="bg-blue-600 hover:bg-blue-700 text-white h-[38px] sm:h-[40px] min-w-[108px] inline-flex items-center justify-center px-4 sm:px-5 rounded-xl text-xs sm:text-sm font-bold shadow-md shadow-blue-600/20 transition-all cursor-pointer whitespace-nowrap"
           >
             Explore Tools
           </Link>

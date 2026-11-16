@@ -327,6 +327,7 @@ export function YouTubeThumb() {
                   <div className="relative aspect-video bg-slate-100 dark:bg-slate-950 flex items-center justify-center overflow-hidden">
                     <NextImage
                       src={imgUrl}
+                      mobileWebpSrc={`https://i.ytimg.com/vi_webp/${videoId}/mqdefault.webp`}
                       alt={`YouTube thumbnail for ${videoId} in ${opt.name}`}
                       width={640}
                       height={360}

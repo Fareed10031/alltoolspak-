@@ -2,6 +2,7 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
+import zlib from "zlib";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import { GoogleGenAI } from "@google/genai";
@@ -9,19 +10,19 @@ import { GoogleGenAI } from "@google/genai";
 // app/lib/seoMaster14.ts
 var SITE_URL = "https://alltoolspk.com";
 var ALL_14_TOOLS = [
-  { slug: "global-accident-emergency", name: "Global Accident & Emergency", keyword: "car accident settlement calculator", countries: 195 },
+  { slug: "global-accident-emergency", name: "Global Accident Emergency", keyword: "car accident settlement calculator", countries: 195 },
   { slug: "mortgage-calculator-usa", name: "Mortgage Calculator USA", keyword: "mortgage calculator usa", countries: 1 },
   { slug: "usa-paycheck-calculator-2026", name: "USA Paycheck Calculator 2026", keyword: "usa paycheck calculator 2026", countries: 1 },
   { slug: "amazon-eu-vat-calculator", name: "Amazon EU VAT Calculator", keyword: "amazon eu vat calculator", countries: 27 },
-  { slug: "onevisa-world-visa-points", name: "OneVisa World Visa Points", keyword: "canada crs points calculator", countries: 10 },
+  { slug: "currency-gold-rates", name: "Currency & Gold Rates", keyword: "usd to pkr today", countries: 150 },
   { slug: "global-salary-calculator", name: "Global Salary Calculator", keyword: "global salary calculator", countries: 192 },
   { slug: "ats-resume-builder", name: "ATS Resume Builder", keyword: "ats resume builder", countries: 195 },
   { slug: "pdf-3x-pro", name: "PDF 3X Pro", keyword: "pdf to word suite", countries: 195 },
-  { slug: "live-currency-gold-rates", name: "Live Currency Gold Rates", keyword: "usd to pkr today", countries: 150 },
   { slug: "pdf-merger", name: "PDF Merger", keyword: "merge pdf", countries: 195 },
   { slug: "image-to-pdf", name: "Image to PDF", keyword: "jpg to pdf", countries: 195 },
   { slug: "qr-code-generator", name: "QR Code Generator", keyword: "qr code generator", countries: 195 },
   { slug: "age-calculator", name: "Age Calculator", keyword: "age calculator", countries: 195 },
+  { slug: "onevisa-world-visa-points", name: "OneVisa World Visa Points", keyword: "canada crs points calculator", countries: 10 },
   { slug: "unit-converter", name: "Unit Converter", keyword: "unit converter", countries: 195 }
 ];
 
@@ -61,6 +62,17 @@ ${ALL_14_TOOLS.map((t) => `  <url>
 </urlset>`;
   res.setHeader("Content-Type", "application/xml");
   res.send(xml);
+});
+app.get(["/live-currency-gold-rates", "/live-currency-gold-rates/*"], (_req, res) => {
+  return res.redirect(301, "/currency-gold-rates/");
+});
+app.get([
+  "/tools/emergency-os",
+  "/emergency-os",
+  "/tools/accident-calculator",
+  "/accident-calculator"
+], (_req, res) => {
+  return res.redirect(301, "/global-accident-emergency");
 });
 app.get("/robots.txt", (_req, res) => {
   const filePath = path.resolve(process.cwd(), "public", "robots.txt");
@@ -150,9 +162,70 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distPath = path.resolve(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (_req, res) => {
-      res.sendFile(path.resolve(distPath, "index.html"));
+    const gzipCache = /* @__PURE__ */ new Map();
+    const compressibleMime = {
+      ".html": "text/html; charset=utf-8",
+      ".js": "application/javascript; charset=utf-8",
+      ".css": "text/css; charset=utf-8",
+      ".svg": "image/svg+xml",
+      ".json": "application/json; charset=utf-8",
+      ".xml": "application/xml; charset=utf-8",
+      ".txt": "text/plain; charset=utf-8"
+    };
+    app.use((req, res, next) => {
+      if (req.method !== "GET" && req.method !== "HEAD") return next();
+      const acceptEncoding = String(req.headers["accept-encoding"] || "");
+      if (!acceptEncoding.includes("gzip")) return next();
+      const cleanUrl = req.path === "/" ? "/index.html" : req.path;
+      const ext = path.extname(cleanUrl);
+      const mime = compressibleMime[ext];
+      if (!mime) return next();
+      const resolvedFile = path.resolve(distPath, `.${cleanUrl}`);
+      if (!resolvedFile.startsWith(distPath) || !fs.existsSync(resolvedFile) || fs.statSync(resolvedFile).isDirectory()) {
+        return next();
+      }
+      let compressed = gzipCache.get(resolvedFile);
+      if (!compressed) {
+        compressed = zlib.gzipSync(fs.readFileSync(resolvedFile), { level: 6 });
+        gzipCache.set(resolvedFile, compressed);
+      }
+      res.setHeader("Content-Encoding", "gzip");
+      res.setHeader("Vary", "Accept-Encoding");
+      res.setHeader("Content-Type", mime);
+      if (ext === ".html") {
+        res.setHeader("Cache-Control", "public, max-age=0, must-revalidate");
+      } else {
+        res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+      }
+      return res.send(compressed);
+    });
+    app.use(
+      express.static(distPath, {
+        maxAge: "1y",
+        immutable: true,
+        setHeaders(res, filePath) {
+          if (filePath.endsWith(".html")) {
+            res.setHeader("Cache-Control", "public, max-age=0, must-revalidate");
+          }
+        }
+      })
+    );
+    app.get("*", (req, res) => {
+      res.setHeader("Cache-Control", "public, max-age=0, must-revalidate");
+      const indexHtmlPath = path.resolve(distPath, "index.html");
+      const acceptEncoding = String(req.headers["accept-encoding"] || "");
+      if (acceptEncoding.includes("gzip") && fs.existsSync(indexHtmlPath)) {
+        let compressed = gzipCache.get(indexHtmlPath);
+        if (!compressed) {
+          compressed = zlib.gzipSync(fs.readFileSync(indexHtmlPath), { level: 6 });
+          gzipCache.set(indexHtmlPath, compressed);
+        }
+        res.setHeader("Content-Encoding", "gzip");
+        res.setHeader("Vary", "Accept-Encoding");
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+        return res.send(compressed);
+      }
+      res.sendFile(indexHtmlPath);
     });
   }
   app.listen(PORT, "0.0.0.0", () => {

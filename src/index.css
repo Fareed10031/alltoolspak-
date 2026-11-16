@@ -1,1 +1,34 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: "Plus Jakarta Sans Fallback";
+  src: local("Arial"), local("Helvetica Neue"), local("Roboto");
+  size-adjust: 103%;
+  ascent-override: 98%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+}
+
+@layer base {
+  body {
+    font-family: "Plus Jakarta Sans", "Plus Jakarta Sans Fallback", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  @media (min-width: 768px) {
+    body {
+      font-family: "Plus Jakarta Sans", "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .mobile-defer-card {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 190px;
+  }
+
+  .mobile-defer-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 320px;
+  }
+}

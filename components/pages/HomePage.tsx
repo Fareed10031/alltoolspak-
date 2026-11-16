@@ -49,10 +49,10 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
         <div className="flex flex-wrap items-center justify-center gap-3.5 mb-10">
           <a
             href="#tools-grid"
-            className="h-12 sm:h-13 px-7 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-blue-600/25 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center gap-2"
+            className="h-12 sm:h-13 min-w-[190px] px-7 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-blue-600/25 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer inline-flex items-center justify-center gap-2"
           >
             <span>Explore All Tools</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 shrink-0" width={16} height={16} />
           </a>
           <a 
             href="/tools/car-accident-settlement-calculator"
@@ -62,18 +62,18 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
                 onSelectTool('car-accident-settlement-calculator');
               }
             }}
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
+            className="inline-flex items-center justify-center gap-2 min-h-[56px] min-w-[260px] px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
           >
-            <span className="text-xl">🚑</span>
+            <span className="inline-flex items-center justify-center w-6 h-6 text-xl leading-none shrink-0">🚑</span>
             <span>Car Accident Settlement Calculator</span>
-            <span className="ml-1 text-xs bg-white/20 px-2 py-1 rounded-full">195 Countries</span>
+            <span className="ml-1 text-xs bg-white/20 px-2 py-1 rounded-full whitespace-nowrap">195 Countries</span>
           </a>
         </div>
 
         {/* Live Search Bar */}
         <div className="max-w-xl mx-auto relative">
           <div className="relative flex items-center">
-            <Search className="w-5 h-5 absolute left-4 text-slate-400" />
+            <Search className="w-5 h-5 absolute left-4 text-slate-400" width={20} height={20} />
             <input
               type="text"
               value={searchQuery}
@@ -83,8 +83,9 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
             />
             {searchQuery && (
               <button
+                type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-4 text-xs font-semibold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                className="absolute right-4 h-7 min-w-[44px] inline-flex items-center justify-center text-xs font-semibold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
               >
                 Clear
               </button>
@@ -98,9 +99,10 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none justify-start md:justify-center">
           {tags.map((tag) => (
             <button
+              type="button"
               key={tag}
               onClick={() => setActiveTag(tag)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
+              className={`h-8 min-w-[44px] px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer inline-flex items-center justify-center shrink-0 ${
                 activeTag === tag
                   ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm'
                   : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:border-blue-400'
@@ -145,11 +147,11 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
       </section>
 
       {/* VALUE HIGHLIGHTS */}
-      <section className="bg-white dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 py-16 px-4 sm:px-6 mb-20">
+      <section className="mobile-defer-section bg-white dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 py-16 px-4 sm:px-6 mb-20">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 flex items-center justify-center shrink-0">
-              <ShieldCheck className="w-6 h-6" />
+              <ShieldCheck className="w-6 h-6" width={24} height={24} />
             </div>
             <div>
               <h4 className="font-bold text-slate-900 dark:text-white text-base mb-1">
@@ -163,7 +165,7 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
 
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center shrink-0">
-              <Zap className="w-6 h-6" />
+              <Zap className="w-6 h-6" width={24} height={24} />
             </div>
             <div>
               <h4 className="font-bold text-slate-900 dark:text-white text-base mb-1">
@@ -177,7 +179,7 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
 
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 flex items-center justify-center shrink-0">
-              <Lock className="w-6 h-6" />
+              <Lock className="w-6 h-6" width={24} height={24} />
             </div>
             <div>
               <h4 className="font-bold text-slate-900 dark:text-white text-base mb-1">
@@ -192,7 +194,7 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
       </section>
 
       {/* 400+ WORDS SEO EDITORIAL ARTICLE (Mandatory for AdSense Approval) */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 mb-20 text-slate-700 dark:text-slate-300">
+      <section className="mobile-defer-section max-w-4xl mx-auto px-4 sm:px-6 mb-20 text-slate-700 dark:text-slate-300">
         <div className="p-8 sm:p-12 rounded-[28px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
           <div className="space-y-2">
             <span className="text-xs font-bold uppercase tracking-wider text-blue-600">

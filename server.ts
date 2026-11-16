@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
 import fs from 'fs';
+import zlib from 'zlib';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
@@ -190,6 +191,49 @@ async function startServer() {
   } else {
     // Find valid dist folder whether running via `tsx server.ts` or `node dist/server.js` or `node server.ts`
     const distPath = path.resolve(process.cwd(), 'dist');
+    const gzipCache = new Map<string, Buffer>();
+    const compressibleMime: Record<string, string> = {
+      '.html': 'text/html; charset=utf-8',
+      '.js': 'application/javascript; charset=utf-8',
+      '.css': 'text/css; charset=utf-8',
+      '.svg': 'image/svg+xml',
+      '.json': 'application/json; charset=utf-8',
+      '.xml': 'application/xml; charset=utf-8',
+      '.txt': 'text/plain; charset=utf-8',
+    };
+
+    app.use((req, res, next) => {
+      if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+      const acceptEncoding = String(req.headers['accept-encoding'] || '');
+      if (!acceptEncoding.includes('gzip')) return next();
+
+      const cleanUrl = req.path === '/' ? '/index.html' : req.path;
+      const ext = path.extname(cleanUrl);
+      const mime = compressibleMime[ext];
+      if (!mime) return next();
+
+      const resolvedFile = path.resolve(distPath, `.${cleanUrl}`);
+      if (!resolvedFile.startsWith(distPath) || !fs.existsSync(resolvedFile) || fs.statSync(resolvedFile).isDirectory()) {
+        return next();
+      }
+
+      let compressed = gzipCache.get(resolvedFile);
+      if (!compressed) {
+        compressed = zlib.gzipSync(fs.readFileSync(resolvedFile), { level: 6 });
+        gzipCache.set(resolvedFile, compressed);
+      }
+
+      res.setHeader('Content-Encoding', 'gzip');
+      res.setHeader('Vary', 'Accept-Encoding');
+      res.setHeader('Content-Type', mime);
+      if (ext === '.html') {
+        res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+      } else {
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      }
+      return res.send(compressed);
+    });
+
     app.use(
       express.static(distPath, {
         maxAge: '1y',
@@ -201,9 +245,22 @@ async function startServer() {
         },
       })
     );
-    app.get('*', (_req, res) => {
+    app.get('*', (req, res) => {
       res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
-      res.sendFile(path.resolve(distPath, 'index.html'));
+      const indexHtmlPath = path.resolve(distPath, 'index.html');
+      const acceptEncoding = String(req.headers['accept-encoding'] || '');
+      if (acceptEncoding.includes('gzip') && fs.existsSync(indexHtmlPath)) {
+        let compressed = gzipCache.get(indexHtmlPath);
+        if (!compressed) {
+          compressed = zlib.gzipSync(fs.readFileSync(indexHtmlPath), { level: 6 });
+          gzipCache.set(indexHtmlPath, compressed);
+        }
+        res.setHeader('Content-Encoding', 'gzip');
+        res.setHeader('Vary', 'Accept-Encoding');
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        return res.send(compressed);
+      }
+      res.sendFile(indexHtmlPath);
     });
   }
 

@@ -9,6 +9,8 @@ export interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   priority?: boolean;
   quality?: number;
   unoptimized?: boolean;
+  mobileWebpSrc?: string;
+  mobileSrc?: string;
 }
 
 export function Image({
@@ -22,9 +24,11 @@ export function Image({
   decoding = 'async',
   className = '',
   style = {},
+  mobileWebpSrc,
+  mobileSrc,
   ...props
 }: ImageProps) {
-  const computedLoading = priority ? 'eager' : (loading || 'lazy');
+  const computedLoading = loading || 'lazy';
   const computedStyle: React.CSSProperties = fill
     ? {
         position: 'absolute',
@@ -39,7 +43,7 @@ export function Image({
       }
     : style;
 
-  return (
+  const imgElement = (
     <img
       src={src}
       alt={alt}
@@ -49,10 +53,27 @@ export function Image({
       decoding={decoding}
       style={computedStyle}
       className={className}
-      {...(priority ? { fetchPriority: 'high' } : {})}
+      {...(priority && !loading ? { fetchPriority: 'high' } : {})}
       {...props}
     />
   );
+
+  if (mobileWebpSrc || mobileSrc) {
+    return (
+      <picture className={fill ? 'block w-full h-full' : 'contents'}>
+        {mobileWebpSrc && (
+          <source media="(max-width: 767px)" srcSet={mobileWebpSrc} type="image/webp" />
+        )}
+        {mobileSrc && (
+          <source media="(max-width: 767px)" srcSet={mobileSrc} />
+        )}
+        {imgElement}
+      </picture>
+    );
+  }
+
+  return imgElement;
 }
 
 export default Image;
+

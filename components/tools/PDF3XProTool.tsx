@@ -41,30 +41,50 @@ export function PDF3XProTool() {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Dynamic script loader for pdf.js, mammoth, and docx
-  useEffect(() => {
-    const loadScript = (src: string, id: string) => {
-      if (document.getElementById(id)) return;
+  const loadExternalScript = (src: string, id: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const existing = document.getElementById(id) as HTMLScriptElement | null;
+      if (existing) {
+        if (existing.dataset.loaded === 'true') {
+          resolve();
+          return;
+        }
+        existing.addEventListener('load', () => resolve(), { once: true });
+        existing.addEventListener('error', () => reject(new Error(`Failed to load ${id}`)), { once: true });
+        return;
+      }
       const script = document.createElement('script');
       script.id = id;
       script.src = src;
       script.async = true;
+      script.onload = () => {
+        script.dataset.loaded = 'true';
+        resolve();
+      };
+      script.onerror = () => reject(new Error(`Failed to load ${id}`));
       document.head.appendChild(script);
-    };
+    });
+  };
 
-    loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js', 'pdfjs-script');
-    loadScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js', 'mammoth-script');
-    loadScript('https://unpkg.com/docx@8.5.0/build/index.js', 'docx-script');
+  const ensurePdfEngineScripts = async () => {
+    await Promise.allSettled([
+      loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js', 'pdfjs-script'),
+      loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js', 'mammoth-script'),
+      loadExternalScript('https://unpkg.com/docx@8.5.0/build/index.umd.js', 'docx-script'),
+    ]);
 
-    const timer = setInterval(() => {
-      if ((window as any).pdfjsLib && !(window as any).pdfjsLib.GlobalWorkerOptions?.workerSrc) {
-        (window as any).pdfjsLib.GlobalWorkerOptions.workerSrc =
-          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        clearInterval(timer);
-      }
-    }, 500);
+    const pdfjs = (window as any).pdfjsLib;
+    if (pdfjs && !pdfjs.GlobalWorkerOptions?.workerSrc) {
+      pdfjs.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+  };
 
-    return () => clearInterval(timer);
+  // Dynamic script loader for pdf.js, mammoth, and docx (only loads when PDF3XProTool opens)
+  useEffect(() => {
+    ensurePdfEngineScripts().catch(() => {
+      // Errors handled gracefully when processing starts
+    });
   }, []);
 
   const handleTabSwitch = (tab: ToolMode) => {
@@ -106,10 +126,11 @@ export function PDF3XProTool() {
     setSelectedFiles(files);
     setIsProcessing(true);
     setProgress(15);
-    setStatusMessage('100% Private Browser Sandbox • Reading file buffer...');
+    setStatusMessage('100% Private Browser Sandbox • Initializing engine...');
     setResult(null);
 
     try {
+      await ensurePdfEngineScripts();
       if (currentTab === 'pdf2word') {
         await processPdfToWord(file);
       } else if (currentTab === 'compress') {

@@ -1,23 +1,4 @@
 import React from 'react';
-import {
-  Files,
-  FileCheck,
-  ImageIcon,
-  ArrowRight,
-  FileText,
-  QrCode,
-  Calendar,
-  Cake,
-  Clock,
-  Ruler,
-  Scale,
-  ArrowLeftRight,
-  Home,
-  Globe,
-  Coins,
-  DollarSign,
-  Crown,
-} from 'lucide-react';
 
 export const SITE_NAME = "AllToolsPK";
 

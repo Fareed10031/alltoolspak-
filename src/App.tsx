@@ -1,18 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { CookieBanner } from '@/components/CookieBanner';
-import { Analytics } from '@vercel/analytics/react';
 import { HomePage } from '@/components/pages/HomePage';
-import { AboutPage } from '@/components/pages/AboutPage';
-import { PrivacyPage } from '@/components/pages/PrivacyPage';
-import { TermsPage } from '@/components/pages/TermsPage';
-import { DisclaimerPage } from '@/components/pages/DisclaimerPage';
-import { CookiesPage } from '@/components/pages/CookiesPage';
-import { ContactPage } from '@/components/pages/ContactPage';
-import { BlogPage } from '@/components/pages/BlogPage';
-
 import dynamic from 'next/dynamic';
+
+const CookieBanner = dynamic<{ onNavigate?: (path: string) => void }>(
+  () => import('@/components/CookieBanner').then((m) => m.CookieBanner),
+  { ssr: false, loading: () => null }
+);
+const Analytics = dynamic(
+  () => import('@vercel/analytics/react').then((m) => m.Analytics),
+  { ssr: false, loading: () => null }
+);
+const AboutPage = dynamic(
+  () => import('@/components/pages/AboutPage').then((m) => m.AboutPage),
+  { ssr: false }
+);
+const PrivacyPage = dynamic(
+  () => import('@/components/pages/PrivacyPage').then((m) => m.PrivacyPage),
+  { ssr: false }
+);
+const TermsPage = dynamic(
+  () => import('@/components/pages/TermsPage').then((m) => m.TermsPage),
+  { ssr: false }
+);
+const DisclaimerPage = dynamic(
+  () => import('@/components/pages/DisclaimerPage').then((m) => m.DisclaimerPage),
+  { ssr: false }
+);
+const CookiesPage = dynamic(
+  () => import('@/components/pages/CookiesPage').then((m) => m.CookiesPage),
+  { ssr: false }
+);
+const ContactPage = dynamic(
+  () => import('@/components/pages/ContactPage').then((m) => m.ContactPage),
+  { ssr: false }
+);
+const BlogPage = dynamic(
+  () => import('@/components/pages/BlogPage').then((m) => m.BlogPage),
+  { ssr: false }
+);
 
 // 14 Core Pro Tools - Dynamically Loaded for 95+ PageSpeed
 const AmazonEuVatTool = dynamic(
@@ -301,6 +328,28 @@ export function normalizeRoute(raw: string): string {
 export default function App() {
   const [currentPage, setCurrentPage] = useState<string>('home');
   const [isDark, setIsDark] = useState<boolean>(false);
+  const [deferredReady, setDeferredReady] = useState<boolean>(false);
+
+  // Defer non-critical scripts (Analytics & CookieBanner) until idle or user interaction on mobile
+  useEffect(() => {
+    let activated = false;
+    const activate = () => {
+      if (activated) return;
+      activated = true;
+      setDeferredReady(true);
+    };
+
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const timer = setTimeout(activate, isMobile ? 2500 : 800);
+
+    const events = ['scroll', 'touchstart', 'pointerdown', 'keydown'];
+    events.forEach((evt) => window.addEventListener(evt, activate, { passive: true, once: true }));
+
+    return () => {
+      clearTimeout(timer);
+      events.forEach((evt) => window.removeEventListener(evt, activate));
+    };
+  }, []);
 
   // Initialize theme and handle path from URL
   useEffect(() => {
@@ -501,8 +550,12 @@ export default function App() {
       </main>
 
       <Footer onNavigate={navigateTo} onSelectTool={navigateTo} />
-      <CookieBanner onNavigate={navigateTo} />
-      <Analytics />
+      {deferredReady && (
+        <>
+          <CookieBanner onNavigate={navigateTo} />
+          <Analytics />
+        </>
+      )}
     </div>
   );
 }

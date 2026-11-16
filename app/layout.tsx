@@ -1,9 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { GlobalSEO } from './components/GlobalSEO';
-import Header from '@/components/Header';
-import MegaMenu from '@/components/MegaMenu';
-import BlackFooter from '@/components/BlackFooter';
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {

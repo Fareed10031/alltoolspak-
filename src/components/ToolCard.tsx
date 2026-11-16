@@ -20,21 +20,21 @@ export function ToolCard({ tool, onClick }: ToolCardProps) {
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-[20px] p-5 border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all h-[190px] flex flex-col justify-between cursor-pointer group"
+      className="mobile-defer-card bg-white rounded-[20px] p-5 border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all h-[190px] flex flex-col justify-between cursor-pointer group"
     >
       <div>
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center justify-between mb-3 h-[56px]">
           {isPdf3X ? (
             /* PDF 3X Pro keeps custom 3-tool stacked icon badge */
             <div className="w-[56px] h-[56px] rounded-[14px] bg-gradient-to-br from-[#FF416C] via-[#8E2DE2] to-[#4A00E0] shadow-lg flex items-center justify-center shrink-0">
-              <span className="text-white text-xl">📄🗜️📝</span>
+              <span className="text-white text-xl leading-none">📄🗜️📝</span>
             </div>
           ) : (
             <ToolIconBox toolKey={tool.slug} />
           )}
 
           {badgeLabel && (
-            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200">
+            <span className="text-[10px] font-semibold px-2 py-0.5 h-5 inline-flex items-center rounded-full bg-gray-100 text-gray-700 border border-gray-200 whitespace-nowrap">
               {badgeLabel}
             </span>
           )}

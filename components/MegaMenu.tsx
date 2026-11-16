@@ -25,10 +25,10 @@ export default function MegaMenu() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors"
+        className="w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-lg cursor-pointer transition-colors shrink-0"
         aria-label="All Tools Menu"
       >
-        <div className="grid grid-cols-3 gap-1">
+        <div className="grid grid-cols-3 gap-1 w-6 h-6">
           {[...Array(9)].map((_, i) => (
             <div key={i} className="w-1.5 h-1.5 bg-gray-900 rounded-full"></div>
           ))}
