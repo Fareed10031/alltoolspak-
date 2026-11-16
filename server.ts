@@ -115,6 +115,26 @@ app.get('/robots.txt', (_req, res) => {
   return res.status(200).send(`User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 });
 
+// Ads.txt endpoint with guaranteed fallback
+app.get('/ads.txt', (_req, res) => {
+  const fallbackAdsTxt = 'google.com, pub-7765776011144949, DIRECT, f08c47fec0942fa0\n';
+  try {
+    const filePath = path.resolve(process.cwd(), 'public', 'ads.txt');
+    if (fs.existsSync(filePath)) {
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      return res.sendFile(filePath, (err) => {
+        if (err && !res.headersSent) {
+          res.status(200).type('text/plain').send(fallbackAdsTxt);
+        }
+      });
+    }
+  } catch (err) {
+    console.warn('[Server] ads.txt read fallback:', err);
+  }
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  return res.status(200).send(fallbackAdsTxt);
+});
+
 function buildHeuristicResponse(prompt: string, tool?: string, mode?: string, context?: string) {
   if (tool === 'paraphraser') {
     let rewritten = prompt;
