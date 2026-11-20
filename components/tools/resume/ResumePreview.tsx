@@ -477,7 +477,7 @@ export function ResumePreview({ data, scale = 1 }: ResumePreviewProps) {
             <div className="shrink-0">
               <Image
                 src={data.contact.photoUrl}
-                alt={data.contact.fullName}
+                alt={data.contact.fullName?.trim() || 'Candidate Profile Photo'}
                 width={96}
                 height={96}
                 loading="lazy"

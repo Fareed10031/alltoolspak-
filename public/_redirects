@@ -1,5 +1,8 @@
-# Clean Canonical 301 Redirects (.html, trailing slashes, /tools/*, legacy aliases)
+# Clean Canonical 301 Redirects (.html, /index.html, trailing slashes, /tools/*, legacy aliases)
 /index.html  /  301!
+/index  /  301!
+/*/index.html  /:splat  301!
+/*/index  /:splat  301!
 /age-calculator.html  /age-calculator  301!
 /*.html  /:splat  301!
 

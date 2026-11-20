@@ -2,6 +2,9 @@
   "trailingSlash": false,
   "redirects": [
     { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/index", "destination": "/", "permanent": true },
+    { "source": "/:slug/index.html", "destination": "/:slug", "permanent": true },
+    { "source": "/:slug/index", "destination": "/:slug", "permanent": true },
     { "source": "/age-calculator.html", "destination": "/age-calculator", "permanent": true },
     { "source": "/:slug.html", "destination": "/:slug", "permanent": true },
     { "source": "/tools/amazon-eu-vat", "destination": "/amazon-eu-vat-calculator", "permanent": true },

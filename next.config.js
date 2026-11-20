@@ -3,6 +3,9 @@ const nextConfig = {
   async redirects() {
     return [
       { source: '/index.html', destination: '/', permanent: true },
+      { source: '/index', destination: '/', permanent: true },
+      { source: '/:slug/index.html', destination: '/:slug', permanent: true },
+      { source: '/:slug/index', destination: '/:slug', permanent: true },
       { source: '/:slug.html', destination: '/:slug', permanent: true },
       { source: '/tools/amazon-eu-vat', destination: '/amazon-eu-vat-calculator', permanent: true },
       { source: '/tools/onevisa-world', destination: '/onevisa-world-visa-points', permanent: true },

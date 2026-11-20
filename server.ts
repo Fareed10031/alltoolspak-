@@ -415,6 +415,38 @@ function isPageNavigationRequest(req: Request): boolean {
   return true;
 }
 
+function hasDuplicateQueryParams(req: Request): string | null {
+  const query = req.query as Record<string, unknown> | undefined;
+  if (!query || Object.keys(query).length === 0) return null;
+
+  const duplicateKeys = ['fbclid', 'gclid', 'msclkid', 'page', 'mc_cid', 'mc_eid', 'ref'];
+  const keys = Object.keys(query);
+  const foundDuplicate = keys.some(
+    (k) => k.toLowerCase().startsWith('utm_') || duplicateKeys.includes(k.toLowerCase())
+  );
+  if (!foundDuplicate) return null;
+
+  const cleanParams = new URLSearchParams();
+  for (const k of keys) {
+    const lk = k.toLowerCase();
+    if (lk.startsWith('utm_') || duplicateKeys.includes(lk)) continue;
+    const val = query[k];
+    if (typeof val === 'string') cleanParams.set(k, val);
+  }
+  const resolved = resolveSeoPath(req.path);
+  const baseDest =
+    resolved.kind === 'redirect'
+      ? resolved.destination
+      : resolved.kind === 'page'
+        ? resolved.page.slug
+          ? `/${resolved.page.slug}`
+          : '/'
+        : null;
+  if (!baseDest) return null;
+  const qs = cleanParams.toString();
+  return qs ? `${baseDest}?${qs}` : baseDest;
+}
+
 async function startServer() {
   const distPath = path.resolve(process.cwd(), 'dist');
   const rootIndexPath = path.resolve(process.cwd(), 'index.html');
@@ -460,6 +492,10 @@ async function startServer() {
         return next();
       }
       try {
+        const dupRedirect = hasDuplicateQueryParams(req);
+        if (dupRedirect) {
+          return res.redirect(301, dupRedirect);
+        }
         const resolved = resolveSeoPath(req.path);
         if (resolved.kind === 'redirect') {
           return res.redirect(301, resolved.destination);
@@ -544,6 +580,10 @@ async function startServer() {
         return next();
       }
       try {
+        const dupRedirect = hasDuplicateQueryParams(req);
+        if (dupRedirect) {
+          return res.redirect(301, dupRedirect);
+        }
         const resolved = resolveSeoPath(req.path);
         if (resolved.kind === 'redirect') {
           return res.redirect(301, resolved.destination);

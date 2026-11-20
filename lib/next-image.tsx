@@ -46,7 +46,7 @@ export function Image({
   const imgElement = (
     <img
       src={src}
-      alt={alt}
+      alt={alt && alt.trim().length > 0 ? alt : 'AllToolsPK utility preview'}
       width={fill ? undefined : width}
       height={fill ? undefined : height}
       loading={computedLoading}

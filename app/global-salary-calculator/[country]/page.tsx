@@ -186,7 +186,7 @@ export default function CountrySalaryCalculatorPage({ params }: PageProps) {
             Home
           </Link>
           <span>/</span>
-          <Link href="/tools" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+          <Link href="/#tools-grid" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
             Tools
           </Link>
           <span>/</span>

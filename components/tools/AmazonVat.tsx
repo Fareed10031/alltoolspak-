@@ -409,7 +409,7 @@ export function AmazonVat() {
       <nav className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-4">
         <a href="/" className="hover:underline hover:text-blue-600">Home</a>
         <span>/</span>
-        <a href="/tools" className="hover:underline hover:text-blue-600">Tools</a>
+        <a href="/#tools-grid" className="hover:underline hover:text-blue-600">Tools</a>
         <span>/</span>
         <span className="text-slate-800 dark:text-slate-200 font-semibold">Amazon VAT Calculator</span>
       </nav>

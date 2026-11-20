@@ -4,8 +4,11 @@ import { GlobalSEO } from './components/GlobalSEO';
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
-  title: 'All Tools PK - Free Online Tools',
-  description: 'All Tools PK provides free online tools for everyone.',
+  title: 'AllToolsPK - 14 Free Private Online Tools (Finance, PDF, Visa & Utilities)',
+  description: 'Use 14 free client-side tools on AllToolsPK: Car Accident Settlement Calculator, Mortgage USA, Paycheck 2026, Amazon EU VAT, OneVisa World, ATS Resume & PDF Suite.',
+  alternates: {
+    canonical: 'https://alltoolspk.com/',
+  },
   verification: {
     google: 'n4DI-NIEzgWwTABe2MkNVUkqVC8569OB-wX2uJ1nIRg',
   },
@@ -27,19 +30,20 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    'max-image-preview': 'large',
   },
   openGraph: {
-    title: 'alltoolspk.com - Free Web Tools',
-    description: '100% Free & Client-Side: PDF Tools, Image Compressor, Amazon VAT, QR Code Generator & ATS Resume Builder.',
-    url: 'https://alltoolspk.com',
-    siteName: 'alltoolspk.com',
+    title: 'AllToolsPK - 14 Free Private Online Tools (Finance, PDF, Visa & Utilities)',
+    description: 'Use 14 free client-side tools on AllToolsPK: Car Accident Settlement Calculator, Mortgage USA, Paycheck 2026, Amazon EU VAT, OneVisa World, ATS Resume & PDF Suite.',
+    url: 'https://alltoolspk.com/',
+    siteName: 'AllToolsPK',
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'alltoolspk.com - Free Web Tools',
-    description: 'Fast, client-side, zero-paywall utility suite built in Pakistan by Fareed Ullah.',
+    title: 'AllToolsPK - 14 Free Private Online Tools',
+    description: 'Fast, client-side, zero-paywall utility suite on AllToolsPK.',
   },
 };
 

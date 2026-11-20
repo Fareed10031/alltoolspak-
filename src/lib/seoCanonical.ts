@@ -460,17 +460,26 @@ export type SeoResolution =
 export function resolveSeoPath(rawPath: string): SeoResolution {
   const pathOnly = (rawPath || '/').split('?')[0].split('#')[0];
 
-  // Redirect .html extension -> clean path
-  if (/\.html$/i.test(pathOnly)) {
-    const withoutHtml = pathOnly.replace(/\.html$/i, '');
-    if (withoutHtml === '/index' || withoutHtml === '' || withoutHtml === '/') {
-      return { kind: 'redirect', destination: '/' };
+  // Redirect /index.html, /index, /tool/index.html, /tool/index -> clean canonical path
+  if (/\/index(\.html)?$/i.test(pathOnly)) {
+    const strippedIndex = pathOnly.replace(/\/index(\.html)?$/i, '') || '/';
+    const inner = strippedIndex === '/' ? { kind: 'page' as const, page: CANONICAL_PAGES.home } : resolveSeoPath(strippedIndex);
+    if (inner.kind === 'redirect') return inner;
+    if (inner.kind === 'page') {
+      return { kind: 'redirect', destination: inner.page.slug ? `/${inner.page.slug}` : '/' };
     }
-    const cleanSlug = withoutHtml.replace(/^\/+/, '').toLowerCase();
-    const mapped = ROUTE_ALIASES[cleanSlug] ?? cleanSlug;
-    if (mapped === '') return { kind: 'redirect', destination: '/' };
-    if (CANONICAL_PAGES[mapped]) return { kind: 'redirect', destination: `/${mapped}` };
-    return { kind: 'redirect', destination: withoutHtml.replace(/\/+$/, '') || '/' };
+    return { kind: 'not-found' };
+  }
+
+  // Redirect .html extension -> clean path (return 404 if underlying route does not exist)
+  if (/\.html$/i.test(pathOnly)) {
+    const withoutHtml = pathOnly.replace(/\.html$/i, '') || '/';
+    const inner = resolveSeoPath(withoutHtml);
+    if (inner.kind === 'redirect') return inner;
+    if (inner.kind === 'page') {
+      return { kind: 'redirect', destination: inner.page.slug ? `/${inner.page.slug}` : '/' };
+    }
+    return { kind: 'not-found' };
   }
 
   // Redirect trailing slash -> non-trailing slash (except root '/')
@@ -481,7 +490,7 @@ export function resolveSeoPath(rawPath: string): SeoResolution {
     if (inner.kind === 'page') {
       return { kind: 'redirect', destination: inner.page.slug ? `/${inner.page.slug}` : '/' };
     }
-    return { kind: 'redirect', destination: stripped };
+    return { kind: 'not-found' };
   }
 
   const trimmed = pathOnly.replace(/^\/+|\/+$/g, '').toLowerCase();
