@@ -1,6 +1,10 @@
 import React from 'react';
 
 export const ToolIconsConfig: Record<string, { bg: string; icon: React.ReactNode }> = {
+  "global-accident-emergency": {
+    bg: "bg-gradient-to-br from-[#DC2626] to-[#E11D48]",
+    icon: <span className="text-white text-2xl">🚑</span>
+  },
   "car-accident-settlement-calculator": {
     bg: "bg-gradient-to-br from-[#DC2626] to-[#E11D48]",
     icon: <span className="text-white text-2xl">🚑</span>
@@ -21,6 +25,10 @@ export const ToolIconsConfig: Record<string, { bg: string; icon: React.ReactNode
     bg: "bg-gradient-to-br from-[#0052D4] to-[#4364F7]",
     icon: <span className="text-white font-black text-xl">VAT</span>
   },
+  "onevisa-world-visa-points": {
+    bg: "bg-gradient-to-br from-[#1E3A8A] to-[#3B82F6]",
+    icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+  },
   "onevisa-world": {
     bg: "bg-gradient-to-br from-[#1E3A8A] to-[#3B82F6]",
     icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
@@ -40,6 +48,10 @@ export const ToolIconsConfig: Record<string, { bg: string; icon: React.ReactNode
   "image-to-pdf": {
     bg: "bg-gradient-to-br from-[#00B09B] to-[#96C93D]",
     icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M4 4h7v7H4z M14 4h6v3h-6z M14 8h6v3h-6z M4 14h7v6H4z M14 14h3v6h-3z M18 14h2v6h-2z"/></svg>
+  },
+  "qr-code-generator": {
+    bg: "bg-gradient-to-br from-[#000000] to-[#434343]",
+    icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="2" height="2"/></svg>
   },
   "qr-generator": {
     bg: "bg-gradient-to-br from-[#000000] to-[#434343]",
@@ -69,6 +81,10 @@ export const ToolIconsConfig: Record<string, { bg: string; icon: React.ReactNode
     bg: "bg-gradient-to-br from-[#7F00FF] to-[#E100FF]",
     icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M12 3v18M3 7h3M18 7h3M3 17h3M18 17h3"/><circle cx="6" cy="7" r="2" fill="white"/><circle cx="18" cy="17" r="2" fill="white"/></svg>
   },
+  "usa-paycheck-calculator-2026": {
+    bg: "bg-gradient-to-br from-[#11998e] to-[#38ef7d]",
+    icon: <span className="text-white font-black text-lg">$</span>
+  },
   "usa-paycheck": {
     bg: "bg-gradient-to-br from-[#11998e] to-[#38ef7d]",
     icon: <span className="text-white font-black text-lg">$</span>
@@ -76,6 +92,10 @@ export const ToolIconsConfig: Record<string, { bg: string; icon: React.ReactNode
   "usa-paycheck-calculator": {
     bg: "bg-gradient-to-br from-[#11998e] to-[#38ef7d]",
     icon: <span className="text-white font-black text-lg">$</span>
+  },
+  "mortgage-calculator-usa": {
+    bg: "bg-gradient-to-br from-[#667eea] to-[#764ba2]",
+    icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="white" strokeWidth="1.5"/><text x="12" y="16" fontSize="7" fontWeight="bold" fill="white" textAnchor="middle">$</text></svg>
   },
   "mortgage-calculator": {
     bg: "bg-gradient-to-br from-[#667eea] to-[#764ba2]",

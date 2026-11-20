@@ -6,7 +6,12 @@ export const metadata = {
   title: "Free Accident Settlement Calculator Pakistan - Injury Claim Estimator",
   description: "Free Accident Settlement Calculator Pakistan for road collisions, injury claims, medical expenses, and court multipliers across 195 countries.",
   alternates: {
-    canonical: "https://alltoolspk.com/global-accident-emergency/",
+    canonical: "https://alltoolspk.com/global-accident-emergency",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
   },
 };
 

@@ -1,0 +1,13 @@
+/*
+  X-Robots-Tag: index, follow
+  Cache-Control: public, max-age=3600
+
+/404.html
+  X-Robots-Tag: noindex, follow
+  Cache-Control: public, max-age=300
+
+/blog
+  X-Robots-Tag: noindex, follow
+
+/cookies
+  X-Robots-Tag: noindex, follow

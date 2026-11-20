@@ -6,7 +6,12 @@ export const metadata = {
   title: "Free Age Calculator Pakistan - Exact Age for Nadra & B-Form",
   description: "Free Age Calculator Pakistan for B-Form, school admission, and Nadra CNIC. Calculate exact age in years, months, days, hours, and live seconds.",
   alternates: {
-    canonical: "https://alltoolspk.com/age-calculator/",
+    canonical: "https://alltoolspk.com/age-calculator",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
   },
 };
 

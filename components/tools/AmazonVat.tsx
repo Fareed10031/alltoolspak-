@@ -799,16 +799,16 @@ export function AmazonVat() {
 
         {/* Quick links */}
         <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex flex-wrap gap-2">
-          <a href="/tools/amazon-eu-vat" className="px-3.5 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-full text-xs font-semibold">
+          <a href="/amazon-eu-vat-calculator" className="px-3.5 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-full text-xs font-semibold">
             Amazon EU VAT
           </a>
-          <a href="/tools/pdf-merge" className="px-3.5 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-full text-xs font-semibold">
+          <a href="/pdf-merger" className="px-3.5 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-full text-xs font-semibold">
             PDF Merger
           </a>
-          <a href="/tools/image-to-pdf" className="px-3.5 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-full text-xs font-semibold">
+          <a href="/image-to-pdf" className="px-3.5 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-full text-xs font-semibold">
             Image to PDF
           </a>
-          <a href="/tools/unit-converter" className="px-3.5 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-full text-xs font-semibold">
+          <a href="/unit-converter" className="px-3.5 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-full text-xs font-semibold">
             Unit Converter
           </a>
         </div>

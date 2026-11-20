@@ -1,48 +1,18 @@
-'use client';
-
 import React from 'react';
-import { CookiesPage } from '@/components/pages/CookiesPage';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
-import { CookieBanner } from '@/components/CookieBanner';
+import CookiesClientPage from './CookiesClientPage';
+
+export const metadata = {
+  title: 'Cookie Policy & Storage Audit | AllToolsPK',
+  description: 'Audit inventory of local storage keys and optional cookies on AllToolsPK.',
+  alternates: {
+    canonical: 'https://alltoolspk.com/cookies',
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export default function Page() {
-  const navigateTo = (page: string) => {
-    if (page === 'home') {
-      window.location.href = '/';
-    } else if (
-      [
-        'pdf-tools',
-        'image-compress',
-        'youtube-thumb',
-        'amazon-vat',
-        'paraphraser',
-        'detector',
-        'resume-builder',
-      ].includes(page)
-    ) {
-      window.location.href = `/tools/${page}`;
-    } else {
-      window.location.href = `/${page}`;
-    }
-  };
-
-  return (
-    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
-      <Header
-        activeTool="cookies"
-        onSelectTool={navigateTo}
-        onNavigate={navigateTo}
-        isDark={false}
-        onToggleTheme={() => {
-          document.documentElement.classList.toggle('dark');
-        }}
-      />
-      <main className="flex-1">
-        <CookiesPage />
-      </main>
-      <Footer onNavigate={navigateTo} onSelectTool={navigateTo} />
-      <CookieBanner onNavigate={navigateTo} />
-    </div>
-  );
+  return <CookiesClientPage />;
 }

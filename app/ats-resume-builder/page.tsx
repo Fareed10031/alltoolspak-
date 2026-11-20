@@ -6,7 +6,12 @@ export const metadata = {
   title: "Free ATS Resume Builder Pakistan - 100% Pass Machine Readable CV",
   description: "Free ATS Resume Builder Pakistan for software developers and remote professionals. Build single-column ATS compliant CVs without paywalls or watermarks.",
   alternates: {
-    canonical: "https://alltoolspk.com/ats-resume-builder/",
+    canonical: "https://alltoolspk.com/ats-resume-builder",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
   },
 };
 

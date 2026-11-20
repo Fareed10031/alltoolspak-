@@ -18,26 +18,8 @@ export default function Page() {
       window.location.href = '/';
       return;
     }
-    const allSlugs = [
-      ...TOOLS.map((t) => t.slug),
-      'pdf-tools',
-      'image-compress',
-      'image-compressor',
-      'youtube-thumb',
-      'youtube-thumbnail',
-      'amazon-vat',
-      'visa-eligibility',
-      'paraphraser',
-      'detector',
-      'ai-detector',
-      'ats-resume-builder',
-      'humanize-ai-text',
-    ];
-    if (allSlugs.includes(page)) {
-      window.location.href = `/tools/${page}`;
-    } else {
-      window.location.href = `/${page}`;
-    }
+    const clean = page.replace(/^\/+|\/+$/g, '').replace(/^tools\//, '');
+    window.location.href = `/${clean}`;
   };
 
   return (

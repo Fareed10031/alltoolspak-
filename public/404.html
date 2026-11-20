@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - Page Not Found | AllToolsPK</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="The requested page was not found on AllToolsPK. Search our 14 free online tools or return to the homepage." />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2310b981'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>" />
+    <style>
+      *{box-sizing:border-box}
+      body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f8fafc;color:#0f172a;min-height:100vh;display:flex;flex-direction:column}
+      header{background:#fff;border-bottom:1px solid #e2e8f0;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+      .logo{font-size:22px;font-weight:900;text-decoration:none;color:#0f172a;letter-spacing:-.02em}
+      .logo span{color:#2563eb}
+      .home-btn{background:#2563eb;color:#fff;text-decoration:none;padding:10px 18px;border-radius:12px;font-size:13px;font-weight:700}
+      main{flex:1;max-width:780px;width:100%;margin:40px auto;padding:0 20px;text-align:center}
+      .badge{display:inline-block;padding:6px 14px;border-radius:999px;background:#fee2e2;color:#b91c1c;font-size:12px;font-weight:800;margin-bottom:16px}
+      h1{font-size:36px;line-height:1.15;margin:0 0 12px;font-weight:900}
+      p{color:#475569;font-size:15px;line-height:1.6;margin:0 0 28px}
+      .search-box{display:flex;gap:8px;max-width:520px;margin:0 auto 28px}
+      .search-box input{flex:1;height:46px;padding:0 16px;border:1px solid #cbd5e1;border-radius:12px;font-size:14px;background:#fff;color:#0f172a}
+      .search-box button{height:46px;padding:0 20px;border:0;border-radius:12px;background:#0f172a;color:#fff;font-weight:700;font-size:14px;cursor:pointer}
+      .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;text-align:left;margin-top:24px}
+      .card{display:block;background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:14px 16px;text-decoration:none;color:#0f172a;font-size:14px;font-weight:700;transition:border-color .15s}
+      .card:hover{border-color:#2563eb}
+      .card small{display:block;font-weight:500;font-size:12px;color:#64748b;margin-top:4px}
+      footer{background:#0f172a;color:#94a3b8;text-align:center;padding:24px 16px;font-size:13px;margin-top:40px}
+    </style>
+  </head>
+  <body>
+    <header>
+      <a class="logo" href="/">AllTools<span>PK</span></a>
+      <a class="home-btn" href="/">Back to Home</a>
+    </header>
+    <main>
+      <div class="badge">404 Error</div>
+      <h1>Page Not Found</h1>
+      <p>The page or URL you requested does not exist or has moved to a clean canonical URL. Search our free tools below or jump directly to our top utilities.</p>
+
+      <form class="search-box" id="notfound-search-form" action="/" method="get">
+        <input id="tool-search" type="search" placeholder="Search tools (e.g. Age, Mortgage, PDF, VAT, QR)..." aria-label="Search tools" />
+        <button type="submit">Find Tool</button>
+      </form>
+
+      <div class="grid" id="tool-links">
+        <a class="card" href="/">Home - All 14 Tools<small>Browse the complete AllToolsPK suite</small></a>
+        <a class="card" href="/age-calculator">Age Calculator<small>Exact years, months &amp; days</small></a>
+        <a class="card" href="/mortgage-calculator-usa">Mortgage Calculator USA<small>Monthly PITI, PMI, Tax &amp; HOA</small></a>
+        <a class="card" href="/usa-paycheck-calculator-2026">USA Paycheck Calculator 2026<small>Federal, State &amp; FICA taxes</small></a>
+        <a class="card" href="/global-accident-emergency">Car Accident Settlement Calculator<small>195 countries injury estimator</small></a>
+        <a class="card" href="/amazon-eu-vat-calculator">Amazon EU VAT Calculator<small>27 EU member states &amp; OSS</small></a>
+        <a class="card" href="/currency-gold-rates">Live Currency &amp; Gold Rates<small>USD to PKR &amp; 24K Gold per Tola</small></a>
+        <a class="card" href="/pdf-3x-pro">PDF 3X Pro Suite<small>PDF to Word, Compress &amp; DOCX to PDF</small></a>
+        <a class="card" href="/ats-resume-builder">ATS Resume Builder<small>Create ATS-ready PDF resumes</small></a>
+        <a class="card" href="/qr-code-generator">QR Code Generator<small>Custom QR codes in PNG &amp; JPG</small></a>
+        <a class="card" href="/onevisa-world-visa-points">OneVisa World Visa Points<small>Canada CRS, UK, AU &amp; Germany</small></a>
+        <a class="card" href="/unit-converter">Unit Converter<small>Length, Weight, Temp &amp; Marla/Sqft</small></a>
+      </div>
+    </main>
+    <footer>© 2026 AllToolsPK. All Rights Reserved.</footer>
+    <script>
+      (function () {
+        var input = document.getElementById('tool-search');
+        var cards = Array.prototype.slice.call(document.querySelectorAll('#tool-links .card'));
+        var form = document.getElementById('notfound-search-form');
+        function filterCards() {
+          var q = (input.value || '').toLowerCase().trim();
+          cards.forEach(function (card) {
+            card.style.display = !q || card.textContent.toLowerCase().indexOf(q) !== -1 ? 'block' : 'none';
+          });
+        }
+        input.addEventListener('input', filterCards);
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var visible = cards.find(function (c) { return c.style.display !== 'none'; });
+          window.location.href = visible ? visible.getAttribute('href') : '/';
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -6,7 +6,12 @@ export const metadata = {
   title: "Free Currency & Gold Rates Pakistan - USD to PKR & Sarafa Gold",
   description: "Free Currency & Gold Rates Pakistan with live USD to PKR interbank rates and 24K Sarafa gold rates per tola and 10 grams in Pakistan.",
   alternates: {
-    canonical: "https://alltoolspk.com/currency-gold-rates/",
+    canonical: "https://alltoolspk.com/currency-gold-rates",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
   },
 };
 

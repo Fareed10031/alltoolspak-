@@ -1,1 +1,75 @@
-/*    /index.html   200
+# Clean Canonical 301 Redirects (.html, trailing slashes, /tools/*, legacy aliases)
+/index.html  /  301!
+/age-calculator.html  /age-calculator  301!
+/*.html  /:splat  301!
+
+/tools/global-accident-emergency  /global-accident-emergency  301!
+/tools/mortgage-calculator-usa  /mortgage-calculator-usa  301!
+/tools/mortgage-calculator  /mortgage-calculator-usa  301!
+/tools/usa-paycheck-calculator-2026  /usa-paycheck-calculator-2026  301!
+/tools/usa-paycheck-calculator  /usa-paycheck-calculator-2026  301!
+/tools/amazon-eu-vat-calculator  /amazon-eu-vat-calculator  301!
+/tools/amazon-eu-vat  /amazon-eu-vat-calculator  301!
+/tools/currency-gold-rates  /currency-gold-rates  301!
+/tools/global-salary-calculator  /global-salary-calculator  301!
+/tools/ats-resume-builder  /ats-resume-builder  301!
+/tools/resume-builder  /ats-resume-builder  301!
+/tools/pdf-3x-pro  /pdf-3x-pro  301!
+/tools/pdf-to-word  /pdf-3x-pro  301!
+/tools/pdf-merger  /pdf-merger  301!
+/tools/pdf-merge  /pdf-merger  301!
+/tools/image-to-pdf  /image-to-pdf  301!
+/tools/qr-code-generator  /qr-code-generator  301!
+/tools/qr-generator  /qr-code-generator  301!
+/tools/age-calculator  /age-calculator  301!
+/tools/onevisa-world-visa-points  /onevisa-world-visa-points  301!
+/tools/onevisa-world  /onevisa-world-visa-points  301!
+/tools/unit-converter  /unit-converter  301!
+/tools/car-accident-settlement-calculator  /global-accident-emergency  301!
+/tools/emergency-os  /global-accident-emergency  301!
+
+/live-currency-gold-rates  /currency-gold-rates  301!
+/live-currency-gold-rates/*  /currency-gold-rates  301!
+/mortgage-calculator  /mortgage-calculator-usa  301!
+/usa-paycheck-calculator  /usa-paycheck-calculator-2026  301!
+/amazon-eu-vat  /amazon-eu-vat-calculator  301!
+/resume-builder  /ats-resume-builder  301!
+/pdf-to-word  /pdf-3x-pro  301!
+/pdf-merge  /pdf-merger  301!
+/qr-generator  /qr-code-generator  301!
+/onevisa-world  /onevisa-world-visa-points  301!
+/visa-eligibility  /onevisa-world-visa-points  301!
+/car-accident-settlement-calculator  /global-accident-emergency  301!
+/emergency-os  /global-accident-emergency  301!
+/about  /about-us  301!
+/privacy  /privacy-policy  301!
+/security  /privacy-policy  301!
+/terms  /terms-of-service  301!
+/terms-and-conditions  /terms-of-service  301!
+/contact  /contact-us  301!
+
+# Valid SPA Routes (200 OK)
+/  /index.html  200
+/global-accident-emergency  /index.html  200
+/mortgage-calculator-usa  /index.html  200
+/usa-paycheck-calculator-2026  /index.html  200
+/amazon-eu-vat-calculator  /index.html  200
+/currency-gold-rates  /index.html  200
+/global-salary-calculator  /index.html  200
+/global-salary-calculator/*  /index.html  200
+/ats-resume-builder  /index.html  200
+/pdf-3x-pro  /index.html  200
+/pdf-merger  /index.html  200
+/image-to-pdf  /index.html  200
+/qr-code-generator  /index.html  200
+/age-calculator  /index.html  200
+/onevisa-world-visa-points  /index.html  200
+/unit-converter  /index.html  200
+/privacy-policy  /index.html  200
+/terms-of-service  /index.html  200
+/contact-us  /index.html  200
+/about-us  /index.html  200
+/disclaimer  /index.html  200
+
+# Real 404 for unknown URLs (prevents Soft 404)
+/*  /404.html  404

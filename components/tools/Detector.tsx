@@ -170,7 +170,7 @@ export function Detector() {
       ),
       '====================================================',
       'Audited with AllToolsPK 100% Client-Side Detection Suite',
-      'https://alltoolspk.com/tools/detector',
+      'https://alltoolspk.com/detector',
       '====================================================',
     ].join('\n');
 

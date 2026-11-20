@@ -8,6 +8,11 @@ export const metadata = {
   alternates: {
     canonical: "https://alltoolspk.com/qr-code-generator",
   },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
+  },
 };
 
 export default function Page() {

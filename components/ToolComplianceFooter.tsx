@@ -58,7 +58,7 @@ export default function ToolComplianceFooter({ toolName }: Props) {
           <span className="text-slate-400">•</span>
           <a href="/about-us" className="hover:text-blue-600 dark:hover:text-blue-400">About Us</a>
           <span className="text-slate-400">•</span>
-          <a href="/contact" className="hover:text-blue-600 dark:hover:text-blue-400">Contact</a>
+          <a href="/contact-us" className="hover:text-blue-600 dark:hover:text-blue-400">Contact</a>
         </div>
         <p className="text-[12.5px] text-slate-400 dark:text-slate-400 max-w-3xl mx-auto mt-4 leading-relaxed">
           Client-side browser computing suite. No confidential data, documents, or photographs are ever uploaded or stored on our servers.

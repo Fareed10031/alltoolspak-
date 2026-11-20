@@ -6,7 +6,12 @@ export const metadata = {
   title: "Free Global Salary Calculator Pakistan - Take-Home Pay in 192 Countries",
   description: "Free Global Salary Calculator Pakistan for freelancers, developers, and remote contractors. Calculate take-home pay, purchasing power, and hourly rates.",
   alternates: {
-    canonical: "https://alltoolspk.com/global-salary-calculator/",
+    canonical: "https://alltoolspk.com/global-salary-calculator",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
   },
 };
 

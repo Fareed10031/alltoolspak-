@@ -1,8 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { HomePage } from '@/components/pages/HomePage';
 import dynamic from 'next/dynamic';
+import { safeStorage, safePrefersDark, safePushState } from '@/lib/storage';
+import { TOOLS } from '@/lib/config';
+import {
+  CANONICAL_PAGES,
+  resolveSeoPath,
+  buildSoftwareApplicationJsonLd,
+  SITE_URL,
+  type CanonicalPageMeta,
+} from '@/src/lib/seoCanonical';
 
 const CookieBanner = dynamic<{ onNavigate?: (path: string) => void }>(
   () => import('@/components/CookieBanner').then((m) => m.CookieBanner),
@@ -86,10 +95,6 @@ const GlobalSalaryCalculator = dynamic(
   () => import('@/components/tools/GlobalSalaryCalculator'),
   { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Salary Calculator...</p> }
 );
-const PdfToWordTool = dynamic(
-  () => import('@/components/tools/PdfToWordTool').then((m) => m.PdfToWordTool),
-  { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading PDF Suite...</p> }
-);
 const Pdf3XProPage = dynamic(
   () => import('@/app/pdf-3x-pro/page'),
   { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading PDF 3X Pro...</p> }
@@ -107,7 +112,7 @@ const EmergencyOSTool = dynamic(
   { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Emergency OS...</p> }
 );
 
-// Companion / Legacy Tools
+// Companion Tools
 const ImageCompressor = dynamic(
   () => import('@/components/tools/ImageCompressor').then((m) => m.ImageCompressor),
   { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Image Compressor...</p> }
@@ -129,206 +134,92 @@ const HumanizeAI = dynamic(
   { ssr: false, loading: () => <p className="text-center py-8 text-slate-500 animate-pulse">Loading Humanize AI...</p> }
 );
 
-import { safeStorage, safePrefersDark, safePushState } from '@/lib/storage';
-
 export function normalizeRoute(raw: string): string {
   if (!raw) return 'home';
-  let clean = raw.toLowerCase().trim();
-  // Strip protocol and origin if full URL passed
+  let clean = raw.trim();
   clean = clean.replace(/^https?:\/\/[^/]+/i, '');
-  // Strip query params and hashes
-  clean = clean.split('?')[0].split('#')[0];
-  // Strip leading and trailing slashes
-  clean = clean.replace(/^\/+|\/+$/g, '');
+  const pathCandidate = clean.startsWith('/') ? clean : `/${clean}`;
+  const resolved = resolveSeoPath(pathCandidate);
 
-  if (!clean || clean === '' || clean === 'home') {
+  if (resolved.kind === 'redirect') {
+    const targetSlug = resolved.destination.replace(/^\/+|\/+$/g, '').toLowerCase();
+    return targetSlug === '' ? 'home' : targetSlug;
+  }
+  if (resolved.kind === 'page') {
+    return resolved.page.slug === '' ? 'home' : resolved.page.slug;
+  }
+  return 'not-found';
+}
+
+function getInitialRoute(): string {
+  if (typeof window === 'undefined') return 'home';
+  try {
+    return normalizeRoute(window.location.pathname);
+  } catch {
     return 'home';
-  }
-
-  if (clean.startsWith('tools/')) {
-    clean = clean.replace(/^tools\//, '');
-  }
-
-  // Canonical mapping & aliases
-  switch (clean) {
-    case 'amazon-eu-vat':
-    case 'amazon-vat':
-    case 'amazon-vat-calculator':
-    case 'amazon-eu-vat-calculator':
-    case 'eu-vat-calculator':
-    case 'vat-calculator':
-      return 'amazon-eu-vat';
-
-    case 'onevisa-world':
-    case 'onevisa-world-visa-points':
-    case 'visa-eligibility':
-    case 'visa-calculator':
-    case 'crs-calculator':
-    case 'global-visa-calculator':
-    case 'uk-visa-points-calculator':
-    case 'canada-crs-calculator':
-    case 'onevisa-world-visa-points-calculator':
-      return 'onevisa-world';
-
-    case 'pdf-merge':
-    case 'pdf-merger':
-    case 'pdf-tools':
-    case 'pdf':
-    case 'pdf-suite':
-      return 'pdf-merge';
-
-    case 'image-to-pdf':
-    case 'img-to-pdf':
-    case 'jpg-to-pdf':
-    case 'png-to-pdf':
-      return 'image-to-pdf';
-
-    case 'qr-generator':
-    case 'qr-code':
-    case 'qr-code-generator':
-    case 'qr':
-      return 'qr-generator';
-
-    case 'password-gen':
-    case 'password-generator':
-    case 'pass-gen':
-    case 'password':
-      return 'password-gen';
-
-    case 'resume-builder':
-    case 'ats-resume-builder':
-    case 'ats-resume-checker':
-    case 'resume':
-    case 'cv-builder':
-      return 'resume-builder';
-
-    case 'age-calculator':
-    case 'age-calc':
-    case 'age':
-      return 'age-calculator';
-
-    case 'unit-converter':
-    case 'unit-convert':
-    case 'converter':
-      return 'unit-converter';
-
-    case 'usa-paycheck-calculator':
-    case 'usa-paycheck-calculator-2026':
-    case 'paycheck-calculator':
-    case 'paycheck':
-    case 'tax-calculator':
-      return 'usa-paycheck-calculator';
-
-    case 'mortgage-calculator':
-    case 'mortgage-calculator-usa':
-    case 'mortgage':
-    case 'mortgage-calc':
-      return 'mortgage-calculator';
-
-    case 'global-salary-calculator':
-    case 'global-salary':
-    case 'salary-calculator':
-    case 'world-salary':
-    case 'freelance-rate-calculator':
-      return 'global-salary-calculator';
-
-    case 'pdf-to-word':
-    case 'pdf-to-word-converter':
-    case 'pdf2word':
-    case 'pdftoword':
-      return 'pdf-to-word';
-
-    case 'pdf-3x-pro':
-    case 'pdf3xpro':
-    case 'pdf-3x':
-      return 'pdf-3x-pro';
-
-    case 'currency-gold-rates':
-    case 'live-currency-gold-rates':
-    case 'currency-gold':
-    case 'gold-rates':
-    case 'currency-rates':
-    case 'usd-to-pkr':
-    case 'usd-to-pkr-live':
-    case 'gold-price-pakistan':
-    case 'crypto-converter':
-    case 'crypto':
-    case 'bitcoin-to-pkr':
-    case 'crypto-calculator':
-      return 'currency-gold-rates';
-
-    case 'emergency-os':
-    case 'emergency':
-    case 'accident-calculator':
-    case 'compensation-calculator':
-    case 'accident-compensation':
-    case 'global-accident-emergency':
-    case 'car-accident-settlement-calculator':
-    case 'accident-settlement-calculator':
-    case 'personal-injury-compensation':
-      return 'emergency-os';
-
-    // Supporting utilities
-    case 'image-compress':
-    case 'image-compressor':
-      return 'image-compress';
-
-    case 'youtube-thumb':
-    case 'youtube-thumbnail':
-      return 'youtube-thumb';
-
-    case 'paraphraser':
-    case 'ai-paraphraser':
-      return 'paraphraser';
-
-    case 'detector':
-    case 'ai-detector':
-      return 'detector';
-
-    case 'humanize-ai-text':
-    case 'humanize-ai':
-      return 'humanize-ai-text';
-
-    case 'tools':
-      return 'tools';
-
-    case 'about':
-    case 'about-us':
-      return 'about';
-
-    case 'privacy':
-    case 'privacy-policy':
-    case 'security':
-      return 'privacy';
-
-    case 'terms':
-    case 'terms-of-service':
-    case 'terms-and-conditions':
-      return 'terms';
-
-    case 'disclaimer':
-      return 'disclaimer';
-
-    case 'cookies':
-    case 'cookie-policy':
-      return 'cookies';
-
-    case 'contact':
-    case 'contact-us':
-      return 'contact';
-
-    case 'blog':
-      return 'blog';
-
-    default:
-      return clean;
   }
 }
 
+function upsertMetaTag(attrName: 'name' | 'property', attrValue: string, content: string) {
+  let tag = document.querySelector(`meta[${attrName}="${attrValue}"]`) as HTMLMetaElement | null;
+  if (!tag) {
+    tag = document.createElement('meta');
+    tag.setAttribute(attrName, attrValue);
+    document.head.appendChild(tag);
+  }
+  tag.setAttribute('content', content);
+}
+
+function upsertCanonicalLink(href: string) {
+  const existing = Array.from(document.querySelectorAll('link[rel="canonical"]')) as HTMLLinkElement[];
+  if (existing.length > 1) {
+    existing.slice(1).forEach((el) => el.remove());
+  }
+  let link = existing[0];
+  if (!link) {
+    link = document.createElement('link');
+    link.setAttribute('rel', 'canonical');
+    document.head.appendChild(link);
+  }
+  link.setAttribute('href', href);
+}
+
+function upsertJsonLd(id: string, data: object | null) {
+  const existing = document.getElementById(id);
+  if (!data) {
+    existing?.remove();
+    return;
+  }
+  let script = existing as HTMLScriptElement | null;
+  if (!script) {
+    script = document.createElement('script');
+    script.id = id;
+    script.type = 'application/ld+json';
+    document.head.appendChild(script);
+  }
+  script.textContent = JSON.stringify(data);
+}
+
+function getPageMetaForRoute(route: string): CanonicalPageMeta | null {
+  if (route === 'home') return CANONICAL_PAGES.home;
+  if (route === 'not-found') return null;
+  if (CANONICAL_PAGES[route]) return CANONICAL_PAGES[route];
+  const resolved = resolveSeoPath(`/${route}`);
+  if (resolved.kind === 'page') return resolved.page;
+  if (resolved.kind === 'redirect') {
+    const target = resolved.destination.replace(/^\/+/, '');
+    return CANONICAL_PAGES[target || 'home'] ?? null;
+  }
+  return null;
+}
+
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<string>('home');
+  const [currentPage, setCurrentPage] = useState<string>(getInitialRoute);
   const [isDark, setIsDark] = useState<boolean>(false);
   const [deferredReady, setDeferredReady] = useState<boolean>(false);
+  const [notFoundSearch, setNotFoundSearch] = useState<string>('');
+
+  const activeMeta = useMemo(() => getPageMetaForRoute(currentPage), [currentPage]);
 
   // Defer non-critical scripts (Analytics & CookieBanner) until idle or user interaction on mobile
   useEffect(() => {
@@ -351,9 +242,8 @@ export default function App() {
     };
   }, []);
 
-  // Initialize theme and handle path from URL
+  // Initialize theme and sync URL/popstate
   useEffect(() => {
-    // Theme initialization
     const storedTheme = safeStorage.getItem('theme');
     const systemPrefersDark = safePrefersDark();
     if (storedTheme === 'dark' || (!storedTheme && systemPrefersDark)) {
@@ -364,34 +254,79 @@ export default function App() {
       document.documentElement.classList.remove('dark');
     }
 
-    // Path initialization
-    try {
-      const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
-      const resolved = normalizeRoute(pathname);
-      setCurrentPage(resolved);
-    } catch {
-      setCurrentPage('home');
-    }
-
-    // Browser back/forward event listener
-    const handlePopState = () => {
+    const syncFromLocation = () => {
       try {
-        const resolved = normalizeRoute(window.location.pathname);
-        setCurrentPage(resolved);
+        const pathname = window.location.pathname || '/';
+        const resolved = resolveSeoPath(pathname);
+        if (resolved.kind === 'redirect') {
+          safePushState(resolved.destination);
+          const nextSlug = resolved.destination.replace(/^\/+|\/+$/g, '').toLowerCase();
+          setCurrentPage(nextSlug || 'home');
+        } else if (resolved.kind === 'page') {
+          setCurrentPage(resolved.page.slug || 'home');
+        } else {
+          setCurrentPage('not-found');
+        }
       } catch {
         setCurrentPage('home');
       }
     };
 
-    if (typeof window !== 'undefined') {
-      window.addEventListener('popstate', handlePopState);
-      return () => window.removeEventListener('popstate', handlePopState);
-    }
+    syncFromLocation();
+    window.addEventListener('popstate', syncFromLocation);
+    return () => window.removeEventListener('popstate', syncFromLocation);
   }, []);
+
+  // Dynamically sync <head> metadata, canonical URL, robots directives, and SoftwareApplication JSON-LD
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    if (!activeMeta) {
+      document.title = 'Page Not Found (404) | AllToolsPK';
+      upsertMetaTag(
+        'name',
+        'description',
+        'The page you requested could not be found on AllToolsPK. Search or browse our 14 free online tools.'
+      );
+      upsertMetaTag('name', 'robots', 'noindex, follow');
+      const canonicalExisting = document.querySelector('link[rel="canonical"]');
+      canonicalExisting?.remove();
+      upsertJsonLd('seo-software-schema', null);
+      upsertJsonLd('seo-breadcrumb-schema', null);
+      return;
+    }
+
+    document.title = activeMeta.title;
+    upsertMetaTag('name', 'description', activeMeta.description);
+    upsertMetaTag('name', 'robots', activeMeta.robots);
+    upsertCanonicalLink(activeMeta.canonical);
+    upsertMetaTag('property', 'og:title', activeMeta.title);
+    upsertMetaTag('property', 'og:description', activeMeta.description);
+    upsertMetaTag('property', 'og:url', activeMeta.canonical);
+    upsertMetaTag('name', 'twitter:title', activeMeta.title);
+    upsertMetaTag('name', 'twitter:description', activeMeta.description);
+
+    if (activeMeta.isTool) {
+      upsertJsonLd('seo-software-schema', buildSoftwareApplicationJsonLd(activeMeta));
+      upsertJsonLd('seo-breadcrumb-schema', {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` },
+          { '@type': 'ListItem', position: 2, name: activeMeta.category, item: `${SITE_URL}/` },
+          { '@type': 'ListItem', position: 3, name: activeMeta.name, item: activeMeta.canonical },
+        ],
+      });
+    } else {
+      upsertJsonLd('seo-software-schema', null);
+      upsertJsonLd('seo-breadcrumb-schema', null);
+    }
+  }, [activeMeta]);
 
   const navigateTo = (page: string) => {
     const resolved = normalizeRoute(page);
     setCurrentPage(resolved);
+    setNotFoundSearch('');
 
     try {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -399,41 +334,7 @@ export default function App() {
       // ignore
     }
 
-    let newPath = '/';
-    if (resolved === 'home') {
-      newPath = '/';
-    } else if (resolved === 'tools') {
-      newPath = '/tools';
-    } else if (resolved === 'currency-gold-rates') {
-      newPath = '/currency-gold-rates';
-    } else if (
-      [
-        'amazon-eu-vat',
-        'onevisa-world',
-        'pdf-merge',
-        'image-to-pdf',
-        'qr-generator',
-        'password-gen',
-        'resume-builder',
-        'age-calculator',
-        'unit-converter',
-        'usa-paycheck-calculator',
-        'mortgage-calculator',
-        'global-salary-calculator',
-        'pdf-to-word',
-        'emergency-os',
-        'image-compress',
-        'youtube-thumb',
-        'paraphraser',
-        'detector',
-        'humanize-ai-text',
-      ].includes(resolved)
-    ) {
-      newPath = `/tools/${resolved}`;
-    } else {
-      newPath = `/${resolved}`;
-    }
-
+    const newPath = resolved === 'home' ? '/' : resolved === 'not-found' ? '/404' : `/${resolved}`;
     safePushState(newPath);
   };
 
@@ -449,47 +350,59 @@ export default function App() {
     }
   };
 
+  const filteredNotFoundTools = useMemo(() => {
+    const q = notFoundSearch.trim().toLowerCase();
+    if (!q) return TOOLS;
+    return TOOLS.filter(
+      (t) =>
+        t.name.toLowerCase().includes(q) ||
+        (t.description ?? '').toLowerCase().includes(q) ||
+        (t.category ?? '').toLowerCase().includes(q)
+    );
+  }, [notFoundSearch]);
+
   const renderContent = () => {
+    if (currentPage.startsWith('global-salary-calculator/')) {
+      return <GlobalSalaryCalculator />;
+    }
+
     switch (currentPage) {
       case 'home':
-      case 'tools':
         return <HomePage onSelectTool={navigateTo} onNavigate={navigateTo} />;
 
-      // Core Pro Tools
-      case 'amazon-eu-vat':
+      // Core 14 Canonical Tools
+      case 'global-accident-emergency':
+        return <EmergencyOSTool />;
+      case 'mortgage-calculator-usa':
+        return <MortgageCalculator />;
+      case 'usa-paycheck-calculator-2026':
+        return <USAPaycheckCalculator2026 />;
+      case 'amazon-eu-vat-calculator':
         return <AmazonEuVatTool />;
-      case 'onevisa-world':
-        return <OneVisaWorldTool />;
-      case 'pdf-merge':
+      case 'currency-gold-rates':
+        return <CurrencyGoldRates />;
+      case 'global-salary-calculator':
+        return <GlobalSalaryCalculator />;
+      case 'ats-resume-builder':
+        return <ResumeBuilderSimpleTool />;
+      case 'pdf-3x-pro':
+        return <Pdf3XProPage />;
+      case 'pdf-merger':
         return <PdfMergerTool />;
       case 'image-to-pdf':
         return <ImageToPdfTool />;
-      case 'qr-generator':
+      case 'qr-code-generator':
         return <QrGeneratorTool />;
-      case 'password-gen':
-        return <PasswordGenTool />;
-      case 'resume-builder':
-        return <ResumeBuilderSimpleTool />;
       case 'age-calculator':
         return <AgeCalculatorTool />;
+      case 'onevisa-world-visa-points':
+        return <OneVisaWorldTool />;
       case 'unit-converter':
         return <UnitConverterTool />;
-      case 'usa-paycheck-calculator':
-        return <USAPaycheckCalculator2026 />;
-      case 'mortgage-calculator':
-        return <MortgageCalculator />;
-      case 'global-salary-calculator':
-        return <GlobalSalaryCalculator />;
-      case 'pdf-to-word':
-        return <PdfToWordTool />;
-      case 'pdf-3x-pro':
-        return <Pdf3XProPage />;
-      case 'currency-gold-rates':
-        return <CurrencyGoldRates />;
-      case 'emergency-os':
-        return <EmergencyOSTool />;
 
-      // Supporting Tools
+      // Companion Tools
+      case 'password-gen':
+        return <PasswordGenTool />;
       case 'image-compress':
         return <ImageCompressor />;
       case 'youtube-thumb':
@@ -501,36 +414,85 @@ export default function App() {
       case 'humanize-ai-text':
         return <HumanizeAI />;
 
-      // Legal & Mandatory Pages (300+ words each)
-      case 'about':
+      // Legal & Info Pages
+      case 'about-us':
         return <AboutPage />;
-      case 'privacy':
+      case 'privacy-policy':
         return <PrivacyPage />;
-      case 'terms':
+      case 'terms-of-service':
         return <TermsPage />;
       case 'disclaimer':
         return <DisclaimerPage />;
       case 'cookies':
         return <CookiesPage />;
-      case 'contact':
+      case 'contact-us':
         return <ContactPage />;
       case 'blog':
         return <BlogPage />;
 
+      case 'not-found':
       default:
         return (
-          <div className="max-w-xl mx-auto py-24 text-center space-y-4 px-4">
-            <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white">Page Not Found</h2>
-            <p className="text-sm text-slate-500">
-              The requested page or tool does not exist. Please return to the homepage.
+          <section className="max-w-3xl mx-auto py-16 px-4 text-center space-y-6">
+            <div className="inline-block px-3 py-1 rounded-full bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 text-xs font-bold uppercase tracking-wider">
+              HTTP 404
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              Page Not Found
+            </h1>
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
+              The URL you requested does not exist or has moved to a clean canonical address. Search our free tools below or jump to a popular tool.
             </p>
-            <button
-              onClick={() => navigateTo('home')}
-              className="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold cursor-pointer shadow-md shadow-blue-600/20"
-            >
-              Return to All Tools
-            </button>
-          </div>
+
+            <div className="max-w-md mx-auto">
+              <label htmlFor="not-found-tool-search" className="sr-only">
+                Search tools
+              </label>
+              <input
+                id="not-found-tool-search"
+                type="search"
+                value={notFoundSearch}
+                onChange={(e) => setNotFoundSearch(e.target.value)}
+                placeholder="Search tools (e.g. Age Calculator, Mortgage, PDF)..."
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
+              />
+            </div>
+
+            <div className="flex justify-center">
+              <a
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateTo('home');
+                }}
+                className="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold shadow-md shadow-blue-600/20"
+              >
+                Go to Homepage (All Tools)
+              </a>
+            </div>
+
+            <div className="pt-4 text-left">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3 text-center">
+                Top Free Tools on AllToolsPK
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {filteredNotFoundTools.map((tool) => (
+                  <a
+                    key={tool.id}
+                    href={`/${tool.slug}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateTo(tool.slug);
+                    }}
+                    className="flex items-center justify-between px-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-500 text-sm font-semibold text-slate-800 dark:text-slate-200 transition-colors"
+                  >
+                    <span>{tool.name}</span>
+                    <span className="text-xs text-blue-600 dark:text-blue-400">{tool.category} &rarr;</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
         );
     }
   };
@@ -546,6 +508,29 @@ export default function App() {
       />
 
       <main className="flex-1">
+        {activeMeta?.isTool && (
+          <div className="bg-white/80 dark:bg-slate-900/80 border-b border-slate-200/70 dark:border-slate-800/70">
+            <nav
+              aria-label="Breadcrumb"
+              className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 overflow-x-auto whitespace-nowrap"
+            >
+              <a
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateTo('home');
+                }}
+                className="font-semibold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              >
+                Home
+              </a>
+              <span aria-hidden="true">/</span>
+              <span className="text-slate-600 dark:text-slate-300">{activeMeta.category}</span>
+              <span aria-hidden="true">/</span>
+              <span className="font-semibold text-blue-600 dark:text-blue-400">{activeMeta.name}</span>
+            </nav>
+          </div>
+        )}
         {renderContent()}
       </main>
 

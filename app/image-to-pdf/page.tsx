@@ -6,7 +6,12 @@ export const metadata = {
   title: "Free Image to PDF Converter Pakistan - JPG to PDF No Upload",
   description: "Free Image to PDF Converter Pakistan for CNIC, academic degrees, and job forms. Fast client-side JPG, PNG, and WebP to PDF conversion with zero server uploads.",
   alternates: {
-    canonical: "https://alltoolspk.com/image-to-pdf/",
+    canonical: "https://alltoolspk.com/image-to-pdf",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
   },
 };
 

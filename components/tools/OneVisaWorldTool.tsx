@@ -155,7 +155,7 @@ Target: ${calculation.countryLabel}
 Total Score: ${calculation.total} / Required: ${calculation.required}
 Status: ${calculation.pass ? 'ELIGIBLE (PASS)' : 'NOT ELIGIBLE (Needs Improvement)'}
 Breakdown: Education (${calculation.eduP}), Age (${calculation.ageP}), IELTS (${calculation.langP}), Work Exp (${calculation.workP}), Job Offer (${calculation.jobP}), Spouse (${calculation.spouseP})
-Check free at: https://alltoolspk.com/tools/onevisa-world`;
+Check free at: https://alltoolspk.com/onevisa-world-visa-points`;
 
     navigator.clipboard.writeText(text);
     setCopied(true);

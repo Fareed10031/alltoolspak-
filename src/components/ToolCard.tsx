@@ -17,10 +17,18 @@ export function ToolCard({ tool, onClick }: ToolCardProps) {
   const badgeLabel = tool.badge || tool.tag;
   const isPdf3X = tool.slug === 'pdf-to-word' || tool.slug === 'pdf-3x-pro';
 
+  const href = `/${tool.slug}`;
+
   return (
-    <div
-      onClick={onClick}
-      className="mobile-defer-card bg-white rounded-[20px] p-5 border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all h-[190px] flex flex-col justify-between cursor-pointer group"
+    <a
+      href={href}
+      onClick={(e) => {
+        if (onClick) {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+      className="mobile-defer-card bg-white rounded-[20px] p-5 border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all h-[190px] flex flex-col justify-between cursor-pointer group text-left"
     >
       <div>
         <div className="flex items-center justify-between mb-3 h-[56px]">
@@ -50,7 +58,7 @@ export function ToolCard({ tool, onClick }: ToolCardProps) {
           {tool.desc}
         </p>
       </div>
-    </div>
+    </a>
   );
 }
 

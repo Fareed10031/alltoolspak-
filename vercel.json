@@ -1,19 +1,39 @@
 {
+  "trailingSlash": false,
   "redirects": [
-    {
-      "source": "/live-currency-gold-rates",
-      "destination": "/currency-gold-rates/",
-      "permanent": true
-    },
-    {
-      "source": "/live-currency-gold-rates/:path*",
-      "destination": "/currency-gold-rates/",
-      "permanent": true
-    }
+    { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/age-calculator.html", "destination": "/age-calculator", "permanent": true },
+    { "source": "/:slug.html", "destination": "/:slug", "permanent": true },
+    { "source": "/tools/amazon-eu-vat", "destination": "/amazon-eu-vat-calculator", "permanent": true },
+    { "source": "/tools/onevisa-world", "destination": "/onevisa-world-visa-points", "permanent": true },
+    { "source": "/tools/pdf-merge", "destination": "/pdf-merger", "permanent": true },
+    { "source": "/tools/qr-generator", "destination": "/qr-code-generator", "permanent": true },
+    { "source": "/tools/resume-builder", "destination": "/ats-resume-builder", "permanent": true },
+    { "source": "/tools/usa-paycheck-calculator", "destination": "/usa-paycheck-calculator-2026", "permanent": true },
+    { "source": "/tools/mortgage-calculator", "destination": "/mortgage-calculator-usa", "permanent": true },
+    { "source": "/tools/pdf-to-word", "destination": "/pdf-3x-pro", "permanent": true },
+    { "source": "/tools/emergency-os", "destination": "/global-accident-emergency", "permanent": true },
+    { "source": "/tools/car-accident-settlement-calculator", "destination": "/global-accident-emergency", "permanent": true },
+    { "source": "/tools/:slug", "destination": "/:slug", "permanent": true },
+    { "source": "/amazon-eu-vat", "destination": "/amazon-eu-vat-calculator", "permanent": true },
+    { "source": "/onevisa-world", "destination": "/onevisa-world-visa-points", "permanent": true },
+    { "source": "/visa-eligibility", "destination": "/onevisa-world-visa-points", "permanent": true },
+    { "source": "/qr-generator", "destination": "/qr-code-generator", "permanent": true },
+    { "source": "/resume-builder", "destination": "/ats-resume-builder", "permanent": true },
+    { "source": "/emergency-os", "destination": "/global-accident-emergency", "permanent": true },
+    { "source": "/car-accident-settlement-calculator", "destination": "/global-accident-emergency", "permanent": true },
+    { "source": "/live-currency-gold-rates", "destination": "/currency-gold-rates", "permanent": true },
+    { "source": "/live-currency-gold-rates/:path*", "destination": "/currency-gold-rates", "permanent": true },
+    { "source": "/about", "destination": "/about-us", "permanent": true },
+    { "source": "/privacy", "destination": "/privacy-policy", "permanent": true },
+    { "source": "/security", "destination": "/privacy-policy", "permanent": true },
+    { "source": "/terms", "destination": "/terms-of-service", "permanent": true },
+    { "source": "/terms-and-conditions", "destination": "/terms-of-service", "permanent": true },
+    { "source": "/contact", "destination": "/contact-us", "permanent": true }
   ],
   "rewrites": [
     {
-      "source": "/((?!api/|assets/|sitemap\\.xml|robots\\.txt|ads\\.txt).*)",
+      "source": "/((?!api/|assets/|sitemap\\.xml|robots\\.txt|ads\\.txt|404\\.html).*)",
       "destination": "/index.html"
     }
   ],
@@ -21,6 +41,8 @@
     {
       "source": "/(.*)",
       "headers": [
+        { "key": "X-Robots-Tag", "value": "index, follow" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "X-XSS-Protection", "value": "1; mode=block" },
@@ -28,7 +50,12 @@
         { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains" },
         { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://va.vercel-scripts.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://cdnjs.cloudflare.com https://unpkg.com https://cdn.jsdelivr.net; worker-src 'self' blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://ep2.adtrafficquality.google; connect-src 'self' https://open.er-api.com https://api.gold-api.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://cdnjs.cloudflare.com https://unpkg.com https://cdn.jsdelivr.net https://vitals.vercel-insights.com; frame-ancestors 'none'" }
       ]
+    },
+    {
+      "source": "/(404\\.html|blog|cookies)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, follow" }
+      ]
     }
   ]
 }
-

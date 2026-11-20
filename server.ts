@@ -5,14 +5,19 @@ import zlib from 'zlib';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
-import { ALL_14_TOOLS, SITE_URL } from './app/lib/seoMaster14';
+import {
+  CANONICAL_PAGES,
+  SITE_URL,
+  resolveSeoPath,
+  buildSoftwareApplicationJsonLd,
+  type CanonicalPageMeta,
+} from './src/lib/seoCanonical';
 
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Prevent process crashes from unexpected async rejections or uncaught exceptions
 process.on('uncaughtException', (err) => {
   console.error('[Server] Caught uncaughtException (prevented crash):', err);
 });
@@ -27,7 +32,7 @@ const PORT = Number(process.env.PORT) || 3000;
 app.disable('x-powered-by');
 app.use(express.json({ limit: '1mb' }));
 
-// Health check endpoint for uptime & load balancers
+// Health check endpoint
 app.get('/api/health', (_req, res) => {
   res.status(200).json({ ok: true, status: 'healthy' });
 });
@@ -43,7 +48,188 @@ app.use((_req, res, next) => {
   next();
 });
 
-// Sitemap endpoint with guaranteed fallback
+function escapeHtmlAttr(val: string): string {
+  return val
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function injectSeoIntoHtml(html: string, page: CanonicalPageMeta): string {
+  const safeTitle = escapeHtmlAttr(page.title);
+  const safeDesc = escapeHtmlAttr(page.description);
+  const safeCanonical = escapeHtmlAttr(page.canonical);
+  const safeRobots = escapeHtmlAttr(page.robots);
+
+  let updated = html;
+
+  // Replace <title>
+  if (/<title>[\s\S]*?<\/title>/i.test(updated)) {
+    updated = updated.replace(/<title>[\s\S]*?<\/title>/i, `<title>${safeTitle}</title>`);
+  } else {
+    updated = updated.replace('</head>', `  <title>${safeTitle}</title>\n  </head>`);
+  }
+
+  // Replace or add <meta name="robots">
+  if (/<meta\b[^>]*\bname=["']robots["'][^>]*>/i.test(updated)) {
+    updated = updated.replace(
+      /<meta\b[^>]*\bname=["']robots["'][^>]*>/i,
+      `<meta name="robots" content="${safeRobots}" />`
+    );
+  } else {
+    updated = updated.replace('</head>', `  <meta name="robots" content="${safeRobots}" />\n  </head>`);
+  }
+
+  // Replace or add single <link rel="canonical">
+  updated = updated.replace(/<link\b[^>]*\brel=["']canonical["'][^>]*>\s*/gi, '');
+  updated = updated.replace('</head>', `  <link rel="canonical" href="${safeCanonical}" />\n  </head>`);
+
+  // Replace or add <meta name="description">
+  if (/<meta\b[^>]*\bname=["']description["'][^>]*>/i.test(updated)) {
+    updated = updated.replace(
+      /<meta\b[^>]*\bname=["']description["'][^>]*>/i,
+      `<meta name="description" content="${safeDesc}" />`
+    );
+  } else {
+    updated = updated.replace('</head>', `  <meta name="description" content="${safeDesc}" />\n  </head>`);
+  }
+
+  // Replace Open Graph and Twitter tags
+  updated = updated.replace(
+    /<meta\b[^>]*\bproperty=["']og:title["'][^>]*>/i,
+    `<meta property="og:title" content="${safeTitle}" />`
+  );
+  updated = updated.replace(
+    /<meta\b[^>]*\bproperty=["']og:description["'][^>]*>/i,
+    `<meta property="og:description" content="${safeDesc}" />`
+  );
+  updated = updated.replace(
+    /<meta\b[^>]*\bproperty=["']og:url["'][^>]*>/i,
+    `<meta property="og:url" content="${safeCanonical}" />`
+  );
+  updated = updated.replace(
+    /<meta\b[^>]*\bname=["']twitter:title["'][^>]*>/i,
+    `<meta name="twitter:title" content="${safeTitle}" />`
+  );
+  updated = updated.replace(
+    /<meta\b[^>]*\bname=["']twitter:description["'][^>]*>/i,
+    `<meta name="twitter:description" content="${safeDesc}" />`
+  );
+
+  // Inject SoftwareApplication + BreadcrumbList schema on tool pages
+  updated = updated.replace(/<script\s+id=["']seo-software-schema["'][\s\S]*?<\/script>\s*/gi, '');
+  updated = updated.replace(/<script\s+id=["']seo-breadcrumb-schema["'][\s\S]*?<\/script>\s*/gi, '');
+
+  if (page.isTool) {
+    const swSchema = JSON.stringify(buildSoftwareApplicationJsonLd(page));
+    const bcSchema = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` },
+        { '@type': 'ListItem', position: 2, name: page.category, item: `${SITE_URL}/` },
+        { '@type': 'ListItem', position: 3, name: page.name, item: page.canonical },
+      ],
+    });
+    updated = updated.replace(
+      '</head>',
+      `  <script id="seo-software-schema" type="application/ld+json">${swSchema}</script>\n  <script id="seo-breadcrumb-schema" type="application/ld+json">${bcSchema}</script>\n  </head>`
+    );
+  }
+
+  return updated;
+}
+
+const SITEMAP_TOOL_SLUGS = [
+  'global-accident-emergency',
+  'mortgage-calculator-usa',
+  'usa-paycheck-calculator-2026',
+  'amazon-eu-vat-calculator',
+  'currency-gold-rates',
+  'global-salary-calculator',
+  'ats-resume-builder',
+  'pdf-3x-pro',
+  'pdf-merger',
+  'image-to-pdf',
+  'qr-code-generator',
+  'age-calculator',
+  'onevisa-world-visa-points',
+  'unit-converter',
+];
+
+const SITEMAP_LEGAL_SLUGS = [
+  'privacy-policy',
+  'terms-of-service',
+  'about-us',
+  'contact-us',
+  'disclaimer',
+];
+
+function buildFallbackSitemap(): string {
+  const now = '2026-11-20';
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${SITE_URL}/</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+${SITEMAP_TOOL_SLUGS.map(
+  (slug) => `  <url>
+    <loc>${SITE_URL}/${slug}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>`
+).join('\n')}
+${SITEMAP_LEGAL_SLUGS.map(
+  (slug) => `  <url>
+    <loc>${SITE_URL}/${slug}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>`
+).join('\n')}
+</urlset>`;
+}
+
+const FALLBACK_ROBOTS = `User-agent: *
+Allow: /
+Disallow: /search
+Disallow: /*?*
+Disallow: /admin
+
+Sitemap: ${SITE_URL}/sitemap.xml
+`;
+
+// Explicit 404.html route must return HTTP 404 with noindex header (never Soft 404 200 OK)
+function sendReal404(res: Response, distPath: string) {
+  res.status(404);
+  res.setHeader('X-Robots-Tag', 'noindex, follow');
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+
+  const candidates = [
+    path.resolve(distPath, '404.html'),
+    path.resolve(process.cwd(), 'public', '404.html'),
+  ];
+  for (const candidate of candidates) {
+    try {
+      if (fs.existsSync(candidate)) {
+        return res.send(fs.readFileSync(candidate, 'utf-8'));
+      }
+    } catch {
+      // try next candidate
+    }
+  }
+  return res.send(
+    '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex, follow"><title>Page Not Found (404) | AllToolsPK</title></head><body><h1>Page Not Found</h1><p>Return to <a href="/">AllToolsPK Home</a>.</p></body></html>'
+  );
+}
+
+// Sitemap endpoint
 app.get('/sitemap.xml', (_req, res) => {
   try {
     const filePath = path.resolve(process.cwd(), 'public', 'sitemap.xml');
@@ -62,41 +248,7 @@ app.get('/sitemap.xml', (_req, res) => {
   return res.status(200).send(buildFallbackSitemap());
 });
 
-function buildFallbackSitemap(): string {
-  const now = new Date().toISOString().split('T')[0];
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${SITE_URL}/</loc>
-    <lastmod>${now}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-${ALL_14_TOOLS.map((t) => `  <url>
-    <loc>${SITE_URL}/${t.slug}</loc>
-    <lastmod>${now}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>`).join('\n')}
-</urlset>`;
-}
-
-// 301 Redirect for duplicate live-currency-gold-rates to currency-gold-rates
-app.get(['/live-currency-gold-rates', '/live-currency-gold-rates/*'], (_req, res) => {
-  return res.redirect(301, '/currency-gold-rates/');
-});
-
-// 301 Redirects for emergency-os to car-accident-settlement-calculator
-app.get([
-  '/tools/emergency-os',
-  '/emergency-os',
-  '/tools/accident-calculator',
-  '/accident-calculator',
-], (_req, res) => {
-  return res.redirect(301, '/global-accident-emergency');
-});
-
-// Robots endpoint with guaranteed fallback
+// Robots endpoint
 app.get('/robots.txt', (_req, res) => {
   try {
     const filePath = path.resolve(process.cwd(), 'public', 'robots.txt');
@@ -104,7 +256,7 @@ app.get('/robots.txt', (_req, res) => {
       res.setHeader('Content-Type', 'text/plain; charset=utf-8');
       return res.sendFile(filePath, (err) => {
         if (err && !res.headersSent) {
-          res.status(200).type('text/plain').send(`User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
+          res.status(200).type('text/plain').send(FALLBACK_ROBOTS);
         }
       });
     }
@@ -112,10 +264,10 @@ app.get('/robots.txt', (_req, res) => {
     console.warn('[Server] Robots read fallback:', err);
   }
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-  return res.status(200).send(`User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
+  return res.status(200).send(FALLBACK_ROBOTS);
 });
 
-// Ads.txt endpoint with guaranteed fallback
+// Ads.txt endpoint
 app.get('/ads.txt', (_req, res) => {
   const fallbackAdsTxt = 'google.com, pub-7765776011144949, DIRECT, f08c47fec0942fa0\n';
   try {
@@ -187,7 +339,7 @@ function buildHeuristicResponse(prompt: string, tool?: string, mode?: string, co
   return { text: prompt, source: 'echo' };
 }
 
-// API AI endpoint with timeout protection so slow upstream APIs never overload server
+// API AI endpoint
 app.post('/api/ai', async (req: Request, res: Response) => {
   try {
     const { prompt, tool, mode, context } = req.body || {};
@@ -241,12 +393,33 @@ app.post('/api/ai', async (req: Request, res: Response) => {
   }
 });
 
-// Setup Vite middlewares in development or static serving in production
+function isPageNavigationRequest(req: Request): boolean {
+  if (req.method !== 'GET' && req.method !== 'HEAD') return false;
+  const reqPath = req.path || '/';
+  if (
+    reqPath.startsWith('/api/') ||
+    reqPath.startsWith('/assets/') ||
+    reqPath.startsWith('/@') ||
+    reqPath.startsWith('/src/') ||
+    reqPath.startsWith('/components/') ||
+    reqPath.startsWith('/app/') ||
+    reqPath.startsWith('/lib/') ||
+    reqPath.startsWith('/node_modules/')
+  ) {
+    return false;
+  }
+  const ext = path.extname(reqPath).toLowerCase();
+  if (ext && ext !== '.html') {
+    return false;
+  }
+  return true;
+}
+
 async function startServer() {
   const distPath = path.resolve(process.cwd(), 'dist');
   const rootIndexPath = path.resolve(process.cwd(), 'index.html');
 
-  const serveHtmlFallback = (res: Response) => {
+  const serveHtmlFallback = (res: Response, page: CanonicalPageMeta = CANONICAL_PAGES.home) => {
     try {
       const targetHtml =
         process.env.NODE_ENV === 'production' && fs.existsSync(path.resolve(distPath, 'index.html'))
@@ -254,8 +427,11 @@ async function startServer() {
           : rootIndexPath;
 
       if (fs.existsSync(targetHtml)) {
-        res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
-        return res.status(200).sendFile(targetHtml);
+        const raw = fs.readFileSync(targetHtml, 'utf-8');
+        const seoHtml = injectSeoIntoHtml(raw, page);
+        res.setHeader('Cache-Control', 'public, max-age=3600');
+        res.setHeader('X-Robots-Tag', page.robots === 'noindex, follow' ? 'noindex, follow' : 'index, follow');
+        return res.status(200).type('text/html; charset=utf-8').send(seoHtml);
       }
     } catch (err) {
       console.error('[Server] HTML fallback read error:', err);
@@ -266,12 +442,48 @@ async function startServer() {
       .send('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="1"><title>AllToolsPK</title></head><body><p>Loading AllToolsPK...</p></body></html>');
   };
 
+  // Explicit 404.html route (never 200 OK)
+  app.get('/404.html', (_req, res) => {
+    return sendReal404(res, distPath);
+  });
+
   if (process.env.NODE_ENV !== 'production') {
     const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true },
-      appType: 'spa',
+      appType: 'custom',
     });
+
+    // SEO routing guard (301 redirects, real 404s, per-route canonical injection) BEFORE Vite
+    app.use(async (req, res, next) => {
+      if (!isPageNavigationRequest(req)) {
+        return next();
+      }
+      try {
+        const resolved = resolveSeoPath(req.path);
+        if (resolved.kind === 'redirect') {
+          return res.redirect(301, resolved.destination);
+        }
+        if (resolved.kind === 'not-found') {
+          return sendReal404(res, distPath);
+        }
+
+        const rawHtml = fs.readFileSync(rootIndexPath, 'utf-8');
+        const transformed = await vite.transformIndexHtml(req.originalUrl, rawHtml);
+        const seoHtml = injectSeoIntoHtml(transformed, resolved.page);
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader(
+          'X-Robots-Tag',
+          resolved.page.robots === 'noindex, follow' ? 'noindex, follow' : 'index, follow'
+        );
+        return res.status(200).send(seoHtml);
+      } catch (err) {
+        console.warn('[Server] Dev SEO HTML handler error:', err);
+        return next(err);
+      }
+    });
+
     app.use((req, res, next) => {
       try {
         vite.middlewares(req, res, next);
@@ -282,10 +494,9 @@ async function startServer() {
     });
   } else {
     const gzipCache = new Map<string, Buffer>();
-    const MAX_GZIP_CACHE_ENTRIES = 100;
+    const MAX_GZIP_CACHE_ENTRIES = 128;
     const MAX_COMPRESS_BYTES = 2 * 1024 * 1024;
     const compressibleMime: Record<string, string> = {
-      '.html': 'text/html; charset=utf-8',
       '.js': 'application/javascript; charset=utf-8',
       '.css': 'text/css; charset=utf-8',
       '.svg': 'image/svg+xml',
@@ -294,7 +505,7 @@ async function startServer() {
       '.txt': 'text/plain; charset=utf-8',
     };
 
-    const sendCompressedFile = (req: Request, res: Response, filePath: string, mime: string, isHtml: boolean) => {
+    const sendCompressedStatic = (req: Request, res: Response, filePath: string, mime: string) => {
       try {
         const acceptEncoding = String(req.headers['accept-encoding'] || '');
         if (!acceptEncoding.includes('gzip')) {
@@ -318,10 +529,7 @@ async function startServer() {
         res.setHeader('Content-Encoding', 'gzip');
         res.setHeader('Vary', 'Accept-Encoding');
         res.setHeader('Content-Type', mime);
-        res.setHeader(
-          'Cache-Control',
-          isHtml ? 'public, max-age=0, must-revalidate' : 'public, max-age=31536000, immutable'
-        );
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
         res.status(200).send(compressed);
         return true;
       } catch (err) {
@@ -330,6 +538,61 @@ async function startServer() {
       }
     };
 
+    // Handle all page navigations FIRST (301 redirects, real 404, per-route canonical HTML)
+    app.use((req, res, next) => {
+      if (!isPageNavigationRequest(req)) {
+        return next();
+      }
+      try {
+        const resolved = resolveSeoPath(req.path);
+        if (resolved.kind === 'redirect') {
+          return res.redirect(301, resolved.destination);
+        }
+        if (resolved.kind === 'not-found') {
+          return sendReal404(res, distPath);
+        }
+
+        const indexHtmlPath = path.resolve(distPath, 'index.html');
+        if (!fs.existsSync(indexHtmlPath)) {
+          return serveHtmlFallback(res, resolved.page);
+        }
+
+        const cacheKey = `html:${resolved.page.canonical}`;
+        res.setHeader('Cache-Control', 'public, max-age=3600');
+        res.setHeader(
+          'X-Robots-Tag',
+          resolved.page.robots === 'noindex, follow' ? 'noindex, follow' : 'index, follow'
+        );
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+
+        const acceptEncoding = String(req.headers['accept-encoding'] || '');
+        if (acceptEncoding.includes('gzip')) {
+          let compressed = gzipCache.get(cacheKey);
+          if (!compressed) {
+            const rawHtml = fs.readFileSync(indexHtmlPath, 'utf-8');
+            const seoHtml = injectSeoIntoHtml(rawHtml, resolved.page);
+            compressed = zlib.gzipSync(Buffer.from(seoHtml, 'utf-8'), { level: 6 });
+            if (gzipCache.size >= MAX_GZIP_CACHE_ENTRIES) {
+              const firstKey = gzipCache.keys().next().value;
+              if (firstKey) gzipCache.delete(firstKey);
+            }
+            gzipCache.set(cacheKey, compressed);
+          }
+          res.setHeader('Content-Encoding', 'gzip');
+          res.setHeader('Vary', 'Accept-Encoding');
+          return res.status(200).send(compressed);
+        }
+
+        const rawHtml = fs.readFileSync(indexHtmlPath, 'utf-8');
+        const seoHtml = injectSeoIntoHtml(rawHtml, resolved.page);
+        return res.status(200).send(seoHtml);
+      } catch (err) {
+        console.warn('[Server] Production SEO handler error:', err);
+        return serveHtmlFallback(res);
+      }
+    });
+
+    // Compress non-HTML static assets
     app.use((req, res, next) => {
       try {
         if (req.method !== 'GET' && req.method !== 'HEAD') return next();
@@ -340,18 +603,16 @@ async function startServer() {
         } catch {
           return next();
         }
-
-        const cleanUrl = decodedPath === '/' ? '/index.html' : decodedPath;
-        const ext = path.extname(cleanUrl);
+        const ext = path.extname(decodedPath);
         const mime = compressibleMime[ext];
         if (!mime) return next();
 
-        const resolvedFile = path.resolve(distPath, `.${cleanUrl}`);
+        const resolvedFile = path.resolve(distPath, `.${decodedPath}`);
         if (!resolvedFile.startsWith(distPath) || !fs.existsSync(resolvedFile)) {
           return next();
         }
 
-        if (sendCompressedFile(req, res, resolvedFile, mime, ext === '.html')) {
+        if (sendCompressedStatic(req, res, resolvedFile, mime)) {
           return;
         }
       } catch (err) {
@@ -366,34 +627,19 @@ async function startServer() {
         immutable: true,
         setHeaders(res, filePath) {
           if (filePath.endsWith('.html')) {
-            res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+            res.setHeader('Cache-Control', 'public, max-age=3600');
           }
         },
       })
     );
 
-    app.get('*', (req, res) => {
-      try {
-        res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
-        const indexHtmlPath = path.resolve(distPath, 'index.html');
-        if (fs.existsSync(indexHtmlPath)) {
-          if (sendCompressedFile(req, res, indexHtmlPath, 'text/html; charset=utf-8', true)) {
-            return;
-          }
-          return res.sendFile(indexHtmlPath, (err) => {
-            if (err && !res.headersSent) {
-              serveHtmlFallback(res);
-            }
-          });
-        }
-      } catch (err) {
-        console.warn('[Server] Catch-all route fallback triggered:', err);
-      }
-      return serveHtmlFallback(res);
+    // Anything left over is a real 404 (never return 200 OK Soft 404)
+    app.get('*', (_req, res) => {
+      return sendReal404(res, distPath);
     });
   }
 
-  // Global error-handling middleware: NEVER expose a raw 500 "Page is unavailable" page
+  // Global error-handling middleware
   app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
     console.error('[Server] Express error middleware recovered request:', req.originalUrl, err);
     if (res.headersSent) return;
@@ -408,7 +654,6 @@ async function startServer() {
     console.log(`Server listening on http://0.0.0.0:${PORT}`);
   });
 
-  // Tune timeouts so slow mobile connections don't drop or hang worker threads
   server.keepAliveTimeout = 65000;
   server.headersTimeout = 66000;
 }
@@ -416,4 +661,3 @@ async function startServer() {
 startServer().catch((err) => {
   console.error('[Server] Startup error:', err);
 });
-

@@ -32,7 +32,7 @@ export interface ToolItem {
 export const TOOLS: ToolItem[] = [
   // 1 - $10 CPC - HIGHEST EARNING
   {
-    slug: "mortgage-calculator",
+    slug: "mortgage-calculator-usa",
     name: "Mortgage Calculator USA",
     shortName: "Mortgage USA",
     desc: "Calculate true monthly payment with PMI, Property Tax, Insurance & HOA - USA 2026",
@@ -48,15 +48,15 @@ export const TOOLS: ToolItem[] = [
         🏠
       </div>
     ),
-    path: "/tools/mortgage-calculator",
-    url: "/mortgage-calculator",
+    path: "/mortgage-calculator-usa",
+    url: "/mortgage-calculator-usa",
     isFeatured: true,
     isPopular: true,
   },
 
   // 2 - $8 CPC
   {
-    slug: "usa-paycheck-calculator",
+    slug: "usa-paycheck-calculator-2026",
     name: "USA Paycheck Calculator 2026",
     shortName: "USA Paycheck",
     desc: "Calculate take-home pay after Federal, State, 401(k), and FICA taxes based on verified 2026 IRS standard deductions and tax brackets.",
@@ -72,15 +72,15 @@ export const TOOLS: ToolItem[] = [
         $
       </div>
     ),
-    path: "/tools/usa-paycheck-calculator",
-    url: "/usa-paycheck-calculator",
+    path: "/usa-paycheck-calculator-2026",
+    url: "/usa-paycheck-calculator-2026",
     isFeatured: true,
     isPopular: true,
   },
 
   // 3 - $6 CPC
   {
-    slug: "amazon-eu-vat",
+    slug: "amazon-eu-vat-calculator",
     name: "Amazon EU VAT Calculator",
     shortName: "Amazon VAT",
     desc: "Calculate destination EU VAT rates, net turnover amounts, and generate bulk PDF invoices and ZIP packages for Amazon sellers.",
@@ -96,13 +96,13 @@ export const TOOLS: ToolItem[] = [
         VAT
       </div>
     ),
-    path: "/tools/amazon-eu-vat",
-    url: "/amazon-eu-vat",
+    path: "/amazon-eu-vat-calculator",
+    url: "/amazon-eu-vat-calculator",
   },
 
   // 4 - $5 CPC
   {
-    slug: "onevisa-world",
+    slug: "onevisa-world-visa-points",
     name: "OneVisa World - Visa Points Calculator",
     shortName: "OneVisa World",
     desc: "Free Global Visa Eligibility & Points Calculator 2026. Check Canada CRS, UK Points, Australia 65, Germany Opportunity Card.",
@@ -118,8 +118,8 @@ export const TOOLS: ToolItem[] = [
         🌐
       </div>
     ),
-    path: "/tools/onevisa-world",
-    url: "/onevisa-world",
+    path: "/onevisa-world-visa-points",
+    url: "/onevisa-world-visa-points",
     isNew: true,
   },
 
@@ -141,13 +141,13 @@ export const TOOLS: ToolItem[] = [
         🌍
       </div>
     ),
-    path: "/tools/global-salary-calculator",
+    path: "/global-salary-calculator",
     url: "/global-salary-calculator",
   },
 
   // 6 - $5 CPC
   {
-    slug: "resume-builder",
+    slug: "ats-resume-builder",
     name: "ATS Resume Builder",
     shortName: "ATS Resume",
     desc: "Build ATS-friendly resume that passes Applicant Tracking System. 100% compliant format, download as real selectable text PDF.",
@@ -163,14 +163,14 @@ export const TOOLS: ToolItem[] = [
         CV
       </div>
     ),
-    path: "/tools/resume-builder",
-    url: "/resume-builder",
+    path: "/ats-resume-builder",
+    url: "/ats-resume-builder",
     isPopular: true,
   },
 
   // 7 - BILLION TRAFFIC
   {
-    slug: "pdf-to-word",
+    slug: "pdf-3x-pro",
     name: "PDF 3X Pro (3-in-1)",
     shortName: "PDF 3X Pro",
     desc: "PDF to Word, Compress PDF, Word to PDF - 3 Pro Tools in 1 Suite. 100% Private, Browser-Based, No Server Upload.",
@@ -186,8 +186,8 @@ export const TOOLS: ToolItem[] = [
         📄
       </div>
     ),
-    path: "/tools/pdf-to-word",
-    url: "/pdf-to-word",
+    path: "/pdf-3x-pro",
+    url: "/pdf-3x-pro",
     isNew: true,
     isPopular: true,
   },
@@ -210,14 +210,14 @@ export const TOOLS: ToolItem[] = [
         👑$
       </div>
     ),
-    path: "/tools/currency-gold-rates",
+    path: "/currency-gold-rates",
     url: "/currency-gold-rates",
     isFeatured: true,
   },
 
   // 9 - PDF Merger
   {
-    slug: "pdf-merge",
+    slug: "pdf-merger",
     name: "PDF Merger",
     shortName: "PDF Merger",
     desc: "Merge multiple PDFs into one single file in seconds, 100% offline.",
@@ -233,8 +233,8 @@ export const TOOLS: ToolItem[] = [
         📑
       </div>
     ),
-    path: "/tools/pdf-merge",
-    url: "/pdf-merge",
+    path: "/pdf-merger",
+    url: "/pdf-merger",
   },
 
   // 10 - Image to PDF
@@ -255,13 +255,13 @@ export const TOOLS: ToolItem[] = [
         🖼️
       </div>
     ),
-    path: "/tools/image-to-pdf",
+    path: "/image-to-pdf",
     url: "/image-to-pdf",
   },
 
   // 11 - QR Code Generator
   {
-    slug: "qr-generator",
+    slug: "qr-code-generator",
     name: "QR Code Generator",
     shortName: "QR Code",
     desc: "Create QR codes for links, text, or contact info instantly.",
@@ -277,8 +277,8 @@ export const TOOLS: ToolItem[] = [
         ⚏
       </div>
     ),
-    path: "/tools/qr-generator",
-    url: "/qr-generator",
+    path: "/qr-code-generator",
+    url: "/qr-code-generator",
   },
 
   // 12 - Age Calculator
@@ -299,7 +299,7 @@ export const TOOLS: ToolItem[] = [
         📅
       </div>
     ),
-    path: "/tools/age-calculator",
+    path: "/age-calculator",
     url: "/age-calculator",
   },
 
@@ -321,13 +321,13 @@ export const TOOLS: ToolItem[] = [
         %
       </div>
     ),
-    path: "/tools/unit-converter",
+    path: "/unit-converter",
     url: "/unit-converter",
   },
 
   // 14 - Tool #14: Car Accident Settlement Calculator
   {
-    slug: "car-accident-settlement-calculator",
+    slug: "global-accident-emergency",
     name: "Car Accident Settlement Calculator",
     shortName: "Car Accident Calc",
     desc: "195 Countries supported - Estimate insurance claim settlement, lost wages, rehab cost, and court awards.",
@@ -343,8 +343,8 @@ export const TOOLS: ToolItem[] = [
         🚑
       </div>
     ),
-    path: "/tools/car-accident-settlement-calculator",
-    url: "/tools/car-accident-settlement-calculator",
+    path: "/global-accident-emergency",
+    url: "/global-accident-emergency",
     isFeatured: true,
     isNew: true,
   },

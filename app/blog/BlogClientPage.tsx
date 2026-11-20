@@ -10,10 +10,9 @@ export default function BlogClientPage() {
   const navigateTo = (page: string) => {
     if (page === 'home' || page === '/') {
       window.location.href = '/';
-    } else if (page.startsWith('/tools/') || page.startsWith('/')) {
-      window.location.href = page;
     } else {
-      window.location.href = `/tools/${page}`;
+      const clean = page.replace(/^\/+|\/+$/g, '').replace(/^tools\//, '');
+      window.location.href = `/${clean}`;
     }
   };
 

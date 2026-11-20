@@ -264,10 +264,14 @@ export default function AllToolsSEO({ toolName, slug, keyword, desc }) {
   // Select 5 related tools excluding current one
   const relatedTools = ALL_10_TOOLS.filter((t) => t.slug !== normalizedSlug).slice(0, 5);
 
+  const canonicalUrl = `https://alltoolspk.com${normalizedSlug}`;
+
   const softwareSchema = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     'name': `${toolName} - AllToolsPK`,
+    'description': desc || `${toolName} - Free 100% private client-side utility on AllToolsPK.`,
+    'url': canonicalUrl,
     'operatingSystem': 'All (Web Browser, Windows, Mac, Android, iOS)',
     'applicationCategory': 'UtilitiesApplication',
     'aggregateRating': {
@@ -279,7 +283,7 @@ export default function AllToolsSEO({ toolName, slug, keyword, desc }) {
     'offers': {
       '@type': 'Offer',
       'price': '0',
-      'priceCurrency': 'PKR'
+      'priceCurrency': 'USD'
     }
   };
 

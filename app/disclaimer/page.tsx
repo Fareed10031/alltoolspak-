@@ -1,48 +1,19 @@
-'use client';
-
 import React from 'react';
-import { DisclaimerPage } from '@/components/pages/DisclaimerPage';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
-import { CookieBanner } from '@/components/CookieBanner';
+import DisclaimerClientPage from './DisclaimerClientPage';
+
+export const metadata = {
+  title: 'Legal, Financial & Medical Estimator Disclaimer | AllToolsPK',
+  description: 'Read the official AllToolsPK disclaimer regarding financial calculators, accident settlement estimates, and informational content.',
+  alternates: {
+    canonical: 'https://alltoolspk.com/disclaimer',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    'max-image-preview': 'large',
+  },
+};
 
 export default function Page() {
-  const navigateTo = (page: string) => {
-    if (page === 'home') {
-      window.location.href = '/';
-    } else if (
-      [
-        'pdf-tools',
-        'image-compress',
-        'youtube-thumb',
-        'amazon-vat',
-        'paraphraser',
-        'detector',
-        'resume-builder',
-      ].includes(page)
-    ) {
-      window.location.href = `/tools/${page}`;
-    } else {
-      window.location.href = `/${page}`;
-    }
-  };
-
-  return (
-    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
-      <Header
-        activeTool="disclaimer"
-        onSelectTool={navigateTo}
-        onNavigate={navigateTo}
-        isDark={false}
-        onToggleTheme={() => {
-          document.documentElement.classList.toggle('dark');
-        }}
-      />
-      <main className="flex-1">
-        <DisclaimerPage />
-      </main>
-      <Footer onNavigate={navigateTo} onSelectTool={navigateTo} />
-      <CookieBanner onNavigate={navigateTo} />
-    </div>
-  );
+  return <DisclaimerClientPage />;
 }

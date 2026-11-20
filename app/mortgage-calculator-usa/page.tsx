@@ -6,7 +6,12 @@ export const metadata = {
   title: "Free Mortgage Calculator Pakistan Overseas - US Home Loan Estimator",
   description: "Free Mortgage Calculator Pakistan for overseas buyers in USA. Calculate monthly payments with PMI, property tax, insurance, and amortization schedules.",
   alternates: {
-    canonical: "https://alltoolspk.com/mortgage-calculator-usa/",
+    canonical: "https://alltoolspk.com/mortgage-calculator-usa",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
   },
 };
 

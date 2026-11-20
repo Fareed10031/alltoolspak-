@@ -6,7 +6,12 @@ export const metadata = {
   title: "Free Amazon EU VAT Calculator Pakistan - OSS & IOSS Rates",
   description: "Free Amazon EU VAT Calculator Pakistan for FBA sellers, dropshippers, and exporters. Calculate 27 EU member VAT rates, OSS, and profit margins instantly.",
   alternates: {
-    canonical: "https://alltoolspk.com/amazon-eu-vat-calculator/",
+    canonical: "https://alltoolspk.com/amazon-eu-vat-calculator",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
   },
 };
 

@@ -6,7 +6,12 @@ export const metadata = {
   title: "Free PDF 3X Pro Pakistan - PDF to Word, Merge & Compress",
   description: "Free PDF Tools Pakistan for office, legal, and academic work. High-accuracy PDF to Word, fast PDF compression, and merging without server uploads.",
   alternates: {
-    canonical: "https://alltoolspk.com/pdf-3x-pro/",
+    canonical: "https://alltoolspk.com/pdf-3x-pro",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
   },
 };
 

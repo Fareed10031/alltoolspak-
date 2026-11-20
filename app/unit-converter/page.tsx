@@ -8,6 +8,11 @@ export const metadata = {
   alternates: {
     canonical: "https://alltoolspk.com/unit-converter",
   },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
+  },
 };
 
 export default function Page() {

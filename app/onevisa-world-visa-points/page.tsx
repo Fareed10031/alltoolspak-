@@ -6,7 +6,12 @@ export const metadata = {
   title: "Free Visa Points Calculator Pakistan - UK, Canada CRS, Australia & Germany",
   description: "Free Visa Points Calculator Pakistan for UK Skilled Worker 70 points, Canada Express Entry CRS, Australia GSM 65 points, and Germany Opportunity Card.",
   alternates: {
-    canonical: "https://alltoolspk.com/onevisa-world-visa-points/",
+    canonical: "https://alltoolspk.com/onevisa-world-visa-points",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
   },
 };
 

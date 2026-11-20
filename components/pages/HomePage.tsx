@@ -55,11 +55,11 @@ export function HomePage({ onSelectTool, onNavigate }: HomePageProps) {
             <ArrowRight className="w-4 h-4 shrink-0" width={16} height={16} />
           </a>
           <a 
-            href="/tools/car-accident-settlement-calculator"
+            href="/global-accident-emergency"
             onClick={(e) => {
               if (onSelectTool) {
                 e.preventDefault();
-                onSelectTool('car-accident-settlement-calculator');
+                onSelectTool('global-accident-emergency');
               }
             }}
             className="inline-flex items-center justify-center gap-2 min-h-[56px] min-w-[260px] px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"

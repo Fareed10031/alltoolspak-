@@ -1,26 +1,25 @@
 'use client';
 
 import React from 'react';
-import { ContactPage } from '@/components/pages/ContactPage';
+import { PrivacyPage } from '@/components/pages/PrivacyPage';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
 
-export default function ContactClientPage() {
+export default function PrivacyClientPage() {
   const navigateTo = (page: string) => {
     if (page === 'home' || page === '/') {
       window.location.href = '/';
-    } else if (page.startsWith('/tools/') || page.startsWith('/')) {
-      window.location.href = page;
     } else {
-      window.location.href = `/tools/${page}`;
+      const clean = page.replace(/^\/+|\/+$/g, '').replace(/^tools\//, '');
+      window.location.href = `/${clean}`;
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
       <Header
-        activeTool="contact"
+        activeTool="privacy-policy"
         onSelectTool={navigateTo}
         onNavigate={navigateTo}
         isDark={false}
@@ -29,7 +28,7 @@ export default function ContactClientPage() {
         }}
       />
       <main className="flex-1">
-        <ContactPage />
+        <PrivacyPage />
       </main>
       <Footer onNavigate={navigateTo} onSelectTool={navigateTo} />
       <CookieBanner onNavigate={navigateTo} />

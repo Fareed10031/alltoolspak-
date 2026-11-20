@@ -1,9 +1,17 @@
 import React from 'react';
-import ContactClientPage from '../contact/ContactClientPage';
+import ContactClientPage from './ContactClientPage';
 
 export const metadata = {
-  title: "Contact Us - AllToolsPK",
-  description: "Contact AllToolsPK and founder Fareed Ullah for support, feedback, bug reports, and business inquiries."
+  title: 'Contact AllToolsPK Support & Founder Fareed Ullah',
+  description: 'Get in touch with AllToolsPK for technical support, bug reports, feature requests, and partnership inquiries.',
+  alternates: {
+    canonical: 'https://alltoolspk.com/contact-us',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    'max-image-preview': 'large',
+  },
 };
 
 export default function ContactUsPage() {
